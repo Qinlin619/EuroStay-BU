@@ -85,7 +85,7 @@ EuroStay_website/
 2. 在 `Source` 部分，选择 `GitHub Actions` 作为部署源
 3. 每次推送到 `main` 分支时，GitHub Actions 会自动构建并部署网站
 
-网站将部署到：`https://qinxinren1.github.io/EuroStay_Website/`
+网站将部署到：`https://qinlin619.github.io/EuroStay-BU/`
 
 ## 浏览器支持
 
