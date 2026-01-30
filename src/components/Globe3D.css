@@ -1,0 +1,246 @@
+.globe-3d-wrapper {
+  position: relative;
+  width: 100%;
+  height: 50rem;
+  min-height: 50rem;
+}
+
+.globe-3d-container {
+  width: 100%;
+  height: 100%;
+  max-width: 60rem;
+  max-height: 60rem;
+  margin: 0 auto;
+  position: relative;
+  overflow: visible;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0.4rem 2rem rgba(122, 99, 199, 0.08);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(122, 99, 199, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(122, 99, 199, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(122, 99, 199, 0.08) 0%, transparent 60%),
+    radial-gradient(0.2rem at 25% 20%, rgba(122, 99, 199, 0.3), transparent),
+    radial-gradient(0.2rem at 75% 40%, rgba(122, 99, 199, 0.25), transparent),
+    radial-gradient(0.15rem at 30% 60%, rgba(122, 99, 199, 0.4), transparent),
+    radial-gradient(0.15rem at 60% 80%, rgba(122, 99, 199, 0.35), transparent),
+    radial-gradient(0.1rem at 40% 30%, rgba(122, 99, 199, 0.3), transparent),
+    radial-gradient(0.1rem at 70% 50%, rgba(122, 99, 199, 0.3), transparent),
+    radial-gradient(0.1rem at 20% 70%, rgba(122, 99, 199, 0.25), transparent),
+    radial-gradient(0.1rem at 85% 25%, rgba(122, 99, 199, 0.3), transparent),
+    radial-gradient(0.1rem at 15% 45%, rgba(122, 99, 199, 0.25), transparent),
+    radial-gradient(0.08rem at 55% 15%, rgba(122, 99, 199, 0.3), transparent),
+    radial-gradient(0.08rem at 90% 65%, rgba(122, 99, 199, 0.3), transparent);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 
+    20rem 20rem, 18rem 18rem, 15rem 15rem, 16rem 16rem,
+    14rem 14rem, 13rem 13rem, 12rem 12rem, 11rem 11rem,
+    10rem 10rem, 9rem 9rem, 8.5rem 8.5rem;
+  background-position: 
+    0 0, 0 0, 0 0,
+    25% 20%, 75% 40%, 30% 60%, 60% 80%,
+    40% 30%, 70% 50%, 20% 70%, 85% 25%,
+    15% 45%, 55% 15%, 90% 65%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.globe-3d-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.globe-card {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: all;
+  transform: translate(-50%, -100%);
+  margin-top: -2rem;
+  animation: cardFadeIn 0.3s ease-out;
+}
+
+.globe-card-content {
+  background: var(--color-white);
+  border-radius: 1.2rem;
+  padding: 1.4rem;
+  min-width: 20rem;
+  max-width: 24rem;
+  box-shadow: 0 0.8rem 3.2rem rgba(0, 0, 0, 0.15);
+  border: 0.1rem solid rgba(122, 99, 199, 0.1);
+}
+
+.globe-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 0.1rem solid var(--color-bg-base);
+}
+
+.globe-card-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-default);
+}
+
+.location-icon {
+  font-size: 1.4rem;
+}
+
+.globe-card-close {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-text-unselected);
+  cursor: pointer;
+  padding: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.globe-card-close:hover {
+  background: var(--color-bg-base);
+  color: var(--color-text-default);
+}
+
+.globe-card-author {
+  display: flex;
+  gap: 1.2rem;
+  align-items: center;
+  margin-bottom: 1.6rem;
+}
+
+.globe-card-avatar {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-yellow-primary));
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.globe-card-author-name {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-text-default);
+  margin-bottom: 0.4rem;
+}
+
+.globe-card-date {
+  font-size: 1.2rem;
+  color: var(--color-text-unselected);
+}
+
+.globe-card-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-text-default);
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+.globe-card-content-text {
+  font-size: 1.4rem;
+  color: var(--color-text-unselected);
+  line-height: 1.6;
+  margin-bottom: 1.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.globe-card-action {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-yellow-primary));
+  color: var(--color-white);
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.globe-card-action:hover {
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.4);
+}
+
+.globe-card-user-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 0;
+  text-align: center;
+}
+
+.globe-card-count-number {
+  font-size: 2.8rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-yellow-primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.6rem;
+  line-height: 1.2;
+}
+
+.globe-card-count-label {
+  font-size: 1.4rem;
+  color: var(--color-text-unselected);
+  font-weight: 500;
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+@media (max-width: 76.8rem) {
+  .globe-3d-wrapper {
+    height: 35rem;
+  }
+
+  .globe-card {
+    transform: translate(-50%, -100%);
+    margin-top: -1rem;
+  }
+
+  .globe-card-content {
+    min-width: 18rem;
+    max-width: 22rem;
+    padding: 1.2rem;
+  }
+
+  .globe-card-title {
+    font-size: 1.6rem;
+  }
+
+  .globe-card-content-text {
+    font-size: 1.3rem;
+  }
+}
