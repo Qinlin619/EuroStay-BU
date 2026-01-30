@@ -40,6 +40,10 @@ jobs:
       - name: Copy 404.html for GitHub Pages routing
         run: |
           cp dist/index.html dist/404.html || true
+          # 确保 404.html 存在且内容正确
+          if [ ! -f dist/404.html ]; then
+            cp dist/index.html dist/404.html
+          fi
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
