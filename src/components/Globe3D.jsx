@@ -7,6 +7,8 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
   const [activeCard, setActiveCard] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 })
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState(null)
   const globeRef = useRef(null)
   const countryUserCountsRef = useRef(countryUserCounts)
   const languageRef = useRef(language)
@@ -111,11 +113,25 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
   }
 
   useEffect(() => {
-    if (!globeEl.current) return
+    if (!globeEl.current) {
+      console.error('Globe3D: globeEl.current is null')
+      return
+    }
 
+    console.log('Globe3D: Initializing globe...')
+    
     // Initialize Globe - following choropleth-countries example structure
-    const world = Globe()(globeEl.current)
-      .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg')
+    let world
+    try {
+      world = Globe()(globeEl.current)
+      console.log('Globe3D: Globe instance created')
+    } catch (error) {
+      console.error('Globe3D: Failed to create Globe instance:', error)
+      return
+    }
+
+    world
+      .globeImageUrl('https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg')
       .backgroundColor('#ffffff') // White background
       .pointOfView({ lat: 50, lng: 10, altitude: 2.0 }, 0) // Focus on Europe, larger initial view
       .lineHoverPrecision(0)
@@ -150,6 +166,9 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
     }
     
     loadCountries().then(countries => {
+        console.log('Globe3D: Countries data loaded:', countries.features.length, 'countries')
+        setIsLoading(false)
+        setLoadError(null)
         // Generate varied colors for countries to create depth/hierarchy
         // Countries with stories get purple shades, others get varied gray/blue tones
         const generateCountryColor = (isoCode, hasStories) => {
@@ -235,7 +254,13 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
           .polygonsTransitionDuration(300)
       })
       .catch(err => {
-        console.error('All GeoJSON sources failed:', err)
+        console.error('Globe3D: All GeoJSON sources failed:', err)
+        setIsLoading(false)
+        setLoadError(err.message)
+        // 显示错误提示
+        if (globeEl.current) {
+          globeEl.current.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #999; font-size: 1.4rem;">加载地球数据失败，请刷新页面重试</div>'
+        }
       })
 
     // Set initial points
@@ -347,6 +372,45 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
 
   return (
     <div className="globe-3d-wrapper">
+      {isLoading && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          color: '#999',
+          fontSize: '1.4rem',
+          zIndex: 10
+        }}>
+          加载地球中...
+        </div>
+      )}
+      {loadError && (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          color: '#ff5e5e',
+          fontSize: '1.4rem',
+          zIndex: 10,
+          textAlign: 'center',
+          padding: '2rem'
+        }}>
+          加载失败: {loadError}<br />
+          <button onClick={() => window.location.reload()} style={{
+            marginTop: '1rem',
+            padding: '0.5rem 1rem',
+            background: '#7A63C7',
+            color: 'white',
+            border: 'none',
+            borderRadius: '0.5rem',
+            cursor: 'pointer'
+          }}>
+            刷新页面
+          </button>
+        </div>
+      )}
       <div ref={globeEl} className="globe-3d-container" />
       {/* Card for point markers */}
       {activeCard !== null && stories[activeCard] && (
