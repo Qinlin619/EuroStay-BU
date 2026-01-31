@@ -32,6 +32,8 @@
   gap: 1rem;
   height: 100%;
   line-height: 1;
+  margin-left: -2.5rem;
+  margin-right: 6rem;
 }
 
 .navbar-logo:hover {

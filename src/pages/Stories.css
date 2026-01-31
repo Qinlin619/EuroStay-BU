@@ -68,6 +68,23 @@
   border: 0.1rem solid rgba(255, 255, 255, 0.12);
 }
 
+/* 英文：缩小字体、向右拉长玻璃框、文字两行 */
+.stories-hero-en .stories-hero-text-box {
+  max-width: 72.0rem;
+  padding: 2.6rem 6.0rem 2.6rem 8rem;
+}
+
+.stories-hero-en .stories-hero-line1,
+.stories-hero-en .stories-hero-line2 {
+  font-size: 1.6rem;
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.stories-hero-en .stories-hero-line1 {
+  margin-bottom: 0.8rem;
+}
+
 .stories-hero-line1,
 .stories-hero-line2 {
   color: rgba(255, 255, 255, 0.98);
@@ -1139,6 +1156,17 @@
     margin-left: 0;
     padding: 2.4rem 2.8rem;
     max-width: 90%;
+  }
+
+  .stories-hero-en .stories-hero-text-box {
+    max-width: 95%;
+    padding: 2.2rem 2.4rem 2.2rem 2.8rem;
+  }
+
+  .stories-hero-en .stories-hero-line1,
+  .stories-hero-en .stories-hero-line2 {
+    white-space: normal;
+    font-size: 1.5rem;
   }
 
   .stories-hero-line1,

@@ -134,7 +134,7 @@ const Stories = () => {
 
   return (
     <div className="stories-page">
-      <section className="stories-hero">
+      <section className={`stories-hero ${language === 'en' ? 'stories-hero-en' : ''}`}>
         <div 
           className="stories-hero-background"
           style={{

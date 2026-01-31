@@ -23,7 +23,7 @@
 .hero {
   max-width: 120.0rem;
   margin: 0 auto;
-  padding: 6.0rem 2.0rem 0 2.0rem;
+  padding: 6.0rem 2.0rem 0 0.5rem;
   background-color: var(--color-white);
 }
 
@@ -52,6 +52,15 @@
   flex-direction: column;
   gap: 0;
   margin-bottom: 2rem;
+}
+
+.hero-title-slogan {
+  font-size: 2.0rem;
+  font-weight: 400;
+  color: var(--color-purple-secondary);
+  margin: 0 0 0.8rem 0;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 .hero-title-line {
@@ -112,7 +121,6 @@
   line-height: 1;
   font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   white-space: nowrap;
-  box-shadow: 0 0.2rem 0.4rem rgba(122, 99, 199, 0.2);
   transform: translate(0, -80px);
   flex-shrink: 0;
 }
@@ -178,8 +186,8 @@
 .link-text {
   color: var(--color-purple-primary);
   text-decoration: underline;
-  font-size: 1.6rem;
-  font-weight: 500;
+  font-size: 2.0rem;
+  font-weight: 300;
   transition: color 0.3s ease;
 }
 
@@ -277,6 +285,116 @@
 .steps-flow.animate .steps-title {
   opacity: 1;
   transform: translateY(0);
+}
+
+.steps-subtitle {
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--color-purple-primary);
+  line-height: 1.6;
+  text-align: center;
+  margin: -1rem auto 4rem;
+  opacity: 0;
+  transform: translateY(-1rem);
+  transition: opacity 0.8s ease 0.15s, transform 0.8s ease 0.15s;
+  white-space: nowrap;
+}
+
+.steps-flow.animate .steps-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.guide-modules {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6.0rem;
+  max-width: 92.0rem;
+  margin: 0 auto;
+  padding: 2.0rem 0;
+}
+
+.guide-module {
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.6rem;
+  overflow: hidden;
+  background-color: var(--color-white);
+  border: 0.1rem solid rgba(122, 99, 199, 0.12);
+  box-shadow: 0 0.4rem 1.6rem rgba(0, 0, 0, 0.06), 0 0 0 0.1rem rgba(255, 255, 255, 0.8) inset;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.guide-module:hover {
+  box-shadow: 0 0.6rem 2.0rem rgba(122, 99, 199, 0.14), 0 0 0 0.1rem rgba(255, 255, 255, 0.9) inset;
+  border-color: rgba(122, 99, 199, 0.2);
+  transform: translateY(-0.2rem);
+}
+
+.guide-module-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+}
+
+.guide-module-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.guide-module-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(90, 74, 143, 0.82);
+  padding: 2.4rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.guide-module:hover .guide-module-image-overlay {
+  opacity: 1;
+}
+
+.guide-module-image-overlay-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+  text-align: center;
+}
+
+.guide-module-image-overlay-desc {
+  font-size: 2.0rem;
+  font-weight: 300;
+  color: var(--color-white);
+  line-height: 1.55;
+  max-width: 28rem;
+}
+
+.guide-module-content {
+  padding: 2.4rem 3.6rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(232, 226, 255, 0.5) 45%, rgba(255, 245, 230, 0.4) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+}
+
+.guide-module-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--color-purple-primary);
+  margin: 0;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
 }
 
 .steps-container {
@@ -500,7 +618,17 @@
   font-size: 4.8rem;
   font-weight: bold;
   color: var(--color-purple-primary);
-  margin-bottom: 6.0rem;
+  margin-bottom: 1.5rem;
+}
+
+.features-subtitle {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--color-purple-primary);
+  line-height: 1.6;
+  margin: -1rem auto 4rem;
+  white-space: nowrap;
 }
 
 .features-grid {
@@ -853,6 +981,7 @@
   gap: 1.5rem;
   width: 72.0rem;
   height: 68.0rem;
+  margin-top: -30px;
   min-width: 72.0rem;
   padding: 3.0rem;
   background: radial-gradient(ellipse at center, rgba(210, 200, 253, 0.6) 0%, rgba(210, 200, 253, 0.35) 30%, rgba(210, 200, 253, 0.12) 50%, rgba(255, 255, 255, 0) 65%);
@@ -1001,6 +1130,117 @@
   min-width: 0;
 }
 
+/* 第一个卡片：文字区域带星星背景 */
+.feature-card:first-child .feature-card-text-wrap {
+  position: relative;
+  margin-top: -20px;
+}
+
+.feature-card:first-child .feature-card-text-wrap h3,
+.feature-card:first-child .feature-card-text-wrap .feature-card-subtitle,
+.feature-card:first-child .feature-card-text-wrap .feature-card-desc-small {
+  position: relative;
+  z-index: 1;
+}
+
+/* 星星背景动效 */
+@keyframes star-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-0.4rem) rotate(3deg); }
+}
+
+@keyframes star-float-alt {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(0.35rem) rotate(-2deg); }
+}
+
+.feature-card-star-bg {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.85;
+  object-fit: contain;
+  animation-duration: 4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.feature-card-star-bg--1 {
+  width: 9rem;
+  height: 9rem;
+  top: -0.5rem;
+  right: 1rem;
+  animation-name: star-float;
+  animation-delay: 0s;
+}
+
+.feature-card-star-bg--2 {
+  width: 2.8rem;
+  height: 2.8rem;
+  top: 4rem;
+  left: -0.5rem;
+  animation-name: star-float-alt;
+  animation-delay: 0.8s;
+  animation-duration: 3.5s;
+}
+
+.feature-card-star-bg--3 {
+  width: 3.5rem;
+  height: 3.5rem;
+  bottom: 2rem;
+  right: 3rem;
+  animation-name: star-float;
+  animation-delay: 1.2s;
+  animation-duration: 4.5s;
+}
+
+/* 第一张卡片：星星位置错落，不对称 */
+.feature-card:first-child .feature-card-star-bg--1 {
+  top: -1rem;
+  right: 2rem;
+}
+.feature-card:first-child .feature-card-star-bg--2 {
+  top: 8rem;
+  left: -1rem;
+}
+.feature-card:first-child .feature-card-star-bg--3 {
+  bottom: 3rem;
+  right: -0.5rem;
+}
+
+/* 第二张卡片：星星偏左但高低错开，不对称 */
+.feature-card:nth-child(2) .feature-card-star-bg--1 {
+  top: 0.5rem;
+  right: auto;
+  left: -1.5rem;
+}
+.feature-card:nth-child(2) .feature-card-star-bg--2 {
+  top: 7rem;
+  left: 2rem;
+}
+.feature-card:nth-child(2) .feature-card-star-bg--3 {
+  bottom: 2.5rem;
+  right: auto;
+  left: -0.5rem;
+}
+
+/* 第三张卡片：星星偏右但高低错开，不对称 */
+.feature-card:nth-child(3) .feature-card-star-bg--1 {
+  top: 2rem;
+  left: auto;
+  right: -1rem;
+}
+.feature-card:nth-child(3) .feature-card-star-bg--2 {
+  top: 6.5rem;
+  left: auto;
+  right: 1.5rem;
+}
+.feature-card:nth-child(3) .feature-card-star-bg--3 {
+  bottom: 1rem;
+  left: auto;
+  right: -2rem;
+}
+
 .feature-card:nth-child(odd) .feature-card-content {
   text-align: left;
 }
@@ -1025,10 +1265,89 @@
 }
 
 .feature-card-content h3 {
-  font-size: 3.84rem;
-  font-weight: bold;
+  font-size: 3.2rem;
+  font-weight: 800;
   color: var(--color-text-default);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+/* 第一个卡片标题：两行分别样式 */
+.feature-card:first-child .feature-card-content h3 {
+  font-size: 4.4rem;
+}
+
+/* 快速链接：毛玻璃质感 */
+.feature-card:first-child .feature-card-content h3 .feature-title-line1 {
+  font-size: 6.5rem;
+  display: block;
+  line-height: 1.1;
+  margin-bottom: -2.5rem;
+  background: linear-gradient(135deg, #8B7BC7 0%, #A898E0 40%, #C4B6F5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  filter: drop-shadow(0 0.05rem 0.08rem rgba(122, 99, 199, 0.25));
+}
+
+/* 世界各地的换宿伙伴：纯紫色 */
+.feature-card:first-child .feature-card-content h3 .feature-title-line2 {
+  font-weight: 600;
+  font-size: 4.4rem;
+  margin-top: -2.5rem;
+  display: block;
+  color: var(--color-purple-primary);
+  -webkit-text-fill-color: var(--color-purple-primary);
+}
+
+/* 第二、三张卡片：同格式，占位符样式（右对齐 / 左对齐由 nth-child 控制） */
+.feature-card:nth-child(2) .feature-card-text-wrap,
+.feature-card:nth-child(3) .feature-card-text-wrap {
+  position: relative;
+}
+
+.feature-card:nth-child(2) .feature-card-text-wrap h3,
+.feature-card:nth-child(2) .feature-card-text-wrap .feature-card-subtitle,
+.feature-card:nth-child(2) .feature-card-text-wrap .feature-card-desc-small,
+.feature-card:nth-child(3) .feature-card-text-wrap h3,
+.feature-card:nth-child(3) .feature-card-text-wrap .feature-card-subtitle,
+.feature-card:nth-child(3) .feature-card-text-wrap .feature-card-desc-small {
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line1,
+.feature-card:nth-child(3) .feature-card-text-wrap h3 .feature-title-line1 {
+  font-size: 6.5rem;
+  display: block;
+  line-height: 1.1;
+  margin-bottom: -2.5rem;
+  color: var(--color-purple-primary);
+  -webkit-text-fill-color: var(--color-purple-primary);
+}
+
+.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line2,
+.feature-card:nth-child(3) .feature-card-text-wrap h3 .feature-title-line2 {
+  font-weight: 600;
+  font-size: 4.4rem;
+  margin-top: -2.5rem;
+  display: block;
+  color: var(--color-purple-primary);
+  -webkit-text-fill-color: var(--color-purple-primary);
+}
+
+.feature-card-subtitle {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.6;
+  margin: 0 0 3rem;
+}
+
+/* 副标题单独设紫色，避免被 .feature-card-content p 的灰色覆盖 */
+.feature-card-content p.feature-card-subtitle {
+  color: var(--color-purple-primary);
+  font-size: 2rem;
 }
 
 .feature-card-content p {
@@ -1036,6 +1355,21 @@
   color: var(--color-text-unselected);
   line-height: 1.6;
   margin: 0;
+}
+
+.feature-card-desc-small {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--color-text-unselected);
+  white-space: pre-line;
+  text-align: justify;
+}
+
+.feature-card-content p.feature-card-desc-small {
+  font-size: 2rem;
+  margin-top: 3rem;
+  text-align: justify;
 }
 
 /* 数据条：左右分散、单排 5 列，防止数字被截断、视觉更柔和 */
@@ -1500,7 +1834,7 @@
   height: 5.0rem;
   border-radius: 50%;
   background-color: var(--color-white);
-  border: 0.2rem solid var(--color-purple-primary);
+  border: none;
   color: var(--color-purple-primary);
   font-size: 2.4rem;
   cursor: pointer;
@@ -1509,13 +1843,13 @@
   justify-content: center;
   transition: all 0.3s ease;
   z-index: 10;
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.2rem 1.0rem rgba(0, 0, 0, 0.12);
 }
 
 .gallery-btn:hover {
-  background-color: var(--color-purple-primary);
-  color: var(--color-white);
-  box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.3);
+  background-color: var(--color-white);
+  color: var(--color-purple-secondary);
+  box-shadow: 0 0.4rem 1.4rem rgba(122, 99, 199, 0.25);
 }
 
 .gallery-btn-prev {
@@ -1558,6 +1892,45 @@
   background-color: var(--color-purple-secondary);
   transform: translateY(-0.2rem);
   box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.3);
+}
+
+/* 紫色简约弹窗：已复制微信号 */
+.copy-toast-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  animation: copy-toast-fade-in 0.2s ease-out;
+}
+
+.copy-toast {
+  background: linear-gradient(135deg, var(--color-purple-primary) 0%, var(--color-purple-secondary) 100%);
+  color: var(--color-white);
+  padding: 2.4rem 3.6rem;
+  border-radius: 1.2rem;
+  font-size: 1.7rem;
+  font-weight: 500;
+  box-shadow: 0 0.8rem 3.2rem rgba(122, 99, 199, 0.35);
+  animation: copy-toast-scale-in 0.25s ease-out;
+  min-width: 24.0rem;
+  text-align: center;
+}
+
+.copy-toast-text {
+  letter-spacing: 0.02em;
+}
+
+@keyframes copy-toast-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes copy-toast-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .reviews-section {
@@ -1618,6 +1991,13 @@
   font-size: 2.0rem;
   font-weight: bold;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.review-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .review-user-info {
@@ -1678,7 +2058,7 @@
 
 @media (max-width: 76.8rem) {
   .hero {
-    padding: 4.0rem 2.0rem 1.5rem 2.0rem;
+    padding: 4.0rem 2.0rem 1.5rem 0.5rem;
   }
 
   .hero-main {
@@ -1733,6 +2113,10 @@
     font-size: 1.8rem;
   }
 
+  .hero-content .link-text {
+    font-size: 1.8rem;
+  }
+
   .hero-placeholder {
     height: 30.0rem;
   }
@@ -1758,6 +2142,32 @@
   .steps-title {
     font-size: 3.2rem;
     margin-bottom: 3.0rem;
+  }
+
+  .steps-subtitle {
+    white-space: normal;
+  }
+
+  .features-subtitle {
+    white-space: normal;
+  }
+
+  .guide-modules {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 1.5rem 0;
+  }
+
+  .guide-module {
+    padding: 2.5rem;
+  }
+
+  .guide-module-title {
+    font-size: 2.0rem;
+  }
+
+  .guide-module-image-overlay-desc {
+    font-size: 1.5rem;
   }
 
   .steps-container {

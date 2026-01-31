@@ -53,6 +53,7 @@ const Products = () => {
       <FadeSection as="section" className="guide-section">
         <div className="container">
           <h2 className="section-title">{t.guideTitle}</h2>
+          <p className="guide-subtitle">{t.guideSubtitle}</p>
           <div className="guide-steps">
             <div className={`guide-step ${expandedSteps[1] ? 'expanded' : ''}`}>
               <div className="step-header" onClick={() => toggleStep(1)}>

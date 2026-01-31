@@ -18,10 +18,18 @@ const CountUpNumber = ({ value, duration = 2000 }) => {
 
 // 评价卡片组件
 const ReviewCard = ({ review, language }) => {
+  const base = import.meta.env.BASE_URL || ''
+  const avatarUrl = review.avatar ? (review.avatar.startsWith('http') ? review.avatar : base + review.avatar) : null
   return (
     <div className="review-card">
       <div className="review-header">
-        <div className="review-avatar">{review.name.charAt(0)}</div>
+        <div className="review-avatar">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={review.name} loading="lazy" decoding="async" />
+          ) : (
+            review.name.charAt(0)
+          )}
+        </div>
         <div className="review-user-info">
           <div className="review-user-name">{review.name}</div>
           <div className="review-user-location">{review.location}</div>
@@ -66,6 +74,8 @@ const Home = () => {
   const [featuresRevealed, setFeaturesRevealed] = useState(false)
   const [visionRevealed, setVisionRevealed] = useState(false)
   const [reviewsRevealed, setReviewsRevealed] = useState(false)
+  const [showCopyToast, setShowCopyToast] = useState(false)
+  const copyToastTimer = useRef(null)
   const productFadeOutTimer = useRef(null)
   const featuresFadeOutTimer = useRef(null)
   const visionFadeOutTimer = useRef(null)
@@ -76,6 +86,10 @@ const Home = () => {
   useEffect(() => { if (featuresInView) setFeaturesLoaded(true) }, [featuresInView])
   useEffect(() => { if (visionInView) setVisionLoaded(true) }, [visionInView])
   useEffect(() => { if (reviewsInView) setReviewsLoaded(true) }, [reviewsInView])
+
+  useEffect(() => {
+    return () => { if (copyToastTimer.current) clearTimeout(copyToastTimer.current) }
+  }, [])
 
   // 首屏（hero + 数据横幅）：只淡入、不淡出
   useEffect(() => {
@@ -182,10 +196,11 @@ const Home = () => {
     'CY': 15,      // 塞浦路斯
   }
 
-  // 评价数据 - 可以直接在这里添加或修改评价
+  // 评价数据 - 可以直接在这里添加或修改评价；avatar 为头像 URL（外链或 public 下路径）
   const reviews = [
     {
       name: '小雨',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaoyu&size=128',
       location: language === 'zh' ? '🇨🇳 北京' : '🇨🇳 Beijing',
       content: language === 'zh' 
         ? '我之前去巴黎要是有这个app可以方便好多！！！巴黎好多用户呀！下次一定用！'
@@ -195,6 +210,7 @@ const Home = () => {
     },
     {
       name: '小吴',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaowu&size=128',
       location: language === 'zh' ? '🇨🇳 上海' : '🇨🇳 Shanghai',
       content: language === 'zh'
         ? '刚刚下载了EuroStay你们变化好大哈哈哈哈，记得一开始只是一个小程序，现在的App好好用好丝滑啊，加油！'
@@ -204,6 +220,7 @@ const Home = () => {
     },
     {
       name: '小杨',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaoyang&size=128',
       location: language === 'zh' ? '🇨🇳 广州' : '🇨🇳 Guangzhou',
       content: language === 'zh'
         ? '加油啊！真的很好看，我在上面已经成功找到3个换宿了！体验都非常棒，我们后来也有联系，等待其中两位朋友来我家玩ing'
@@ -213,6 +230,7 @@ const Home = () => {
     },
     {
       name: '火星',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=huoxing&size=128',
       location: language === 'zh' ? '🇨🇳 杭州' : '🇨🇳 Hangzhou',
       content: language === 'zh'
         ? '第一次知道你们的App，非常有趣，马上下载了成为新用户～期待我的第一次换宿体验！'
@@ -222,6 +240,7 @@ const Home = () => {
     },
     {
       name: 'Alex',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=alex&size=128',
       location: language === 'zh' ? '🇳🇱 阿姆斯特丹' : '🇳🇱 Amsterdam',
       content: language === 'zh'
         ? '在EuroStay上找到了超棒的换宿机会！Host非常热情，带我体验了真正的荷兰生活。房间干净整洁，位置也很好。强烈推荐！'
@@ -231,6 +250,7 @@ const Home = () => {
     },
     {
       name: 'Maria',
+      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=maria&size=128',
       location: language === 'zh' ? '🇫🇷 巴黎' : '🇫🇷 Paris',
       content: language === 'zh'
         ? '通过EuroStay在巴黎找到了完美的换宿机会。主人是一位艺术家，不仅提供了舒适的住所，还带我参观了当地的艺术场所。这是一次难忘的经历！'
@@ -242,7 +262,7 @@ const Home = () => {
 
   const scrollGallery = (direction) => {
     if (galleryContainerRef.current) {
-      const scrollAmount = 350
+      const scrollAmount = 700
       galleryContainerRef.current.scrollBy({
         left: direction * scrollAmount,
         behavior: 'smooth'
@@ -360,12 +380,16 @@ const Home = () => {
   }, [productLoaded, productInView])
 
   const copyWeChatId = async () => {
-    const wechatId = 'EuroStay' // 可以替换为实际的微信号
+    const wechatId = 'EuroStay'
     try {
       await navigator.clipboard.writeText(wechatId)
-      alert(language === 'zh' ? '微信号已复制到剪贴板！' : 'WeChat ID copied to clipboard!')
+      if (copyToastTimer.current) clearTimeout(copyToastTimer.current)
+      setShowCopyToast(true)
+      copyToastTimer.current = setTimeout(() => {
+        setShowCopyToast(false)
+        copyToastTimer.current = null
+      }, 2500)
     } catch (err) {
-      // 降级方案：使用传统方法
       const textArea = document.createElement('textarea')
       textArea.value = wechatId
       textArea.style.position = 'fixed'
@@ -374,8 +398,13 @@ const Home = () => {
       textArea.select()
       try {
         document.execCommand('copy')
-        alert(language === 'zh' ? '微信号已复制到剪贴板！' : 'WeChat ID copied to clipboard!')
-      } catch (err) {
+        if (copyToastTimer.current) clearTimeout(copyToastTimer.current)
+        setShowCopyToast(true)
+        copyToastTimer.current = setTimeout(() => {
+          setShowCopyToast(false)
+          copyToastTimer.current = null
+        }, 2500)
+      } catch (e) {
         alert(language === 'zh' ? '复制失败，请手动复制：' + wechatId : 'Copy failed, please copy manually: ' + wechatId)
       }
       document.body.removeChild(textArea)
@@ -388,6 +417,7 @@ const Home = () => {
         <div className="hero-main">
           <div className="hero-content">
             <div className="hero-title-wrapper">
+              <p className="hero-title-slogan">{t.heroSlogan}</p>
               <div className="hero-title-line">
                 <div className="hero-title-images">
                   <img
@@ -487,32 +517,37 @@ const Home = () => {
           <section className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
             <div className="container">
               <div className="product-content">
-                <div className="steps-flow">
+                <div className="steps-flow" ref={stepsContainerRef}>
                   <h2 className="steps-title">{translations[language].products.guideTitle}</h2>
-                  <div className="steps-container" ref={stepsContainerRef}>
-                    <div className="step-item">
-                      <div className="step-number">1</div>
-                      <div className="step-title">{translations[language].products.step1Title}</div>
+                  <p className="steps-subtitle">{translations[language].products.guideSubtitle}</p>
+                  <div className="guide-modules">
+                    <div className="guide-module guide-module-title-first">
+                      <div className="guide-module-content">
+                        <h3 className="guide-module-title">{translations[language].products.guideModule1Title}</h3>
+                      </div>
+                      <div className="guide-module-image-wrap">
+                        <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/1.jpg)` }} />
+                        <div className="guide-module-image-overlay">
+                          <div className="guide-module-image-overlay-inner">
+                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc1}</span>
+                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc2}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="step-item">
-                      <div className="step-number">2</div>
-                      <div className="step-title">{translations[language].products.step2Title}</div>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">3</div>
-                      <div className="step-title">{translations[language].products.step3Title}</div>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">4</div>
-                      <div className="step-title">{translations[language].products.step4Title}</div>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">5</div>
-                      <div className="step-title">{translations[language].products.step5Title}</div>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">6</div>
-                      <div className="step-title">{translations[language].products.step6Title}</div>
+                    <div className="guide-module guide-module-title-first">
+                      <div className="guide-module-content">
+                        <h3 className="guide-module-title">{translations[language].products.guideModule2Title}</h3>
+                      </div>
+                      <div className="guide-module-image-wrap">
+                        <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/2.jpg)` }} />
+                        <div className="guide-module-image-overlay">
+                          <div className="guide-module-image-overlay-inner">
+                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc1}</span>
+                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc2}</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -529,6 +564,7 @@ const Home = () => {
       <section className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
         <div className="container">
           <h2 className="section-title">{t.featuresTitle}</h2>
+          <p className="features-subtitle">{t.featuresSubtitle}</p>
           <div className="features-grid">
             <FadeSection className="feature-card">
               <div className="feature-image feature-phone-gallery">
@@ -559,8 +595,22 @@ const Home = () => {
                 </button>
               </div>
               <div className="feature-card-content">
-                <h3>{t.feature1Title}</h3>
-                <p>{t.feature1Desc}</p>
+                <div className="feature-card-text-wrap">
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <h3>
+                    {(t.feature1Title.split('\n').length > 1) ? (
+                      <>
+                        <span className="feature-title-line1">{t.feature1Title.split('\n')[0]}</span>
+                        <br />
+                        <span className="feature-title-line2">{t.feature1Title.split('\n')[1]}</span>
+                      </>
+                    ) : t.feature1Title}
+                  </h3>
+                  <p className="feature-card-subtitle">{t.feature1Subtitle}</p>
+                  <p className="feature-card-desc feature-card-desc-small">{t.feature1Desc}</p>
+                </div>
               </div>
             </FadeSection>
             <FadeSection className="feature-card">
@@ -609,8 +659,22 @@ const Home = () => {
                 </div>
               </div>
               <div className="feature-card-content">
-                <h3>{t.feature2Title}</h3>
-                <p>{t.feature2Desc}</p>
+                <div className="feature-card-text-wrap feature-card-text-wrap--right">
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <h3>
+                    {(t.feature2Title.split('\n').length > 1) ? (
+                      <>
+                        <span className="feature-title-line1">{t.feature2Title.split('\n')[0]}</span>
+                        <br />
+                        <span className="feature-title-line2">{t.feature2Title.split('\n')[1]}</span>
+                      </>
+                    ) : t.feature2Title}
+                  </h3>
+                  <p className="feature-card-subtitle">{t.feature2Subtitle}</p>
+                  <p className="feature-card-desc feature-card-desc-small">{t.feature2Desc}</p>
+                </div>
               </div>
             </FadeSection>
             <FadeSection className="feature-card">
@@ -781,8 +845,22 @@ const Home = () => {
                 </button>
               </div>
               <div className="feature-card-content">
-                <h3>{t.feature3Title}</h3>
-                <p>{t.feature3Desc}</p>
+                <div className="feature-card-text-wrap feature-card-text-wrap--left">
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <h3>
+                    {(t.feature3Title.split('\n').length > 1) ? (
+                      <>
+                        <span className="feature-title-line1">{t.feature3Title.split('\n')[0]}</span>
+                        <br />
+                        <span className="feature-title-line2">{t.feature3Title.split('\n')[1]}</span>
+                      </>
+                    ) : t.feature3Title}
+                  </h3>
+                  <p className="feature-card-subtitle">{t.feature3Subtitle}</p>
+                  <p className="feature-card-desc feature-card-desc-small">{t.feature3Desc}</p>
+                </div>
               </div>
             </FadeSection>
           </div>
@@ -864,6 +942,17 @@ const Home = () => {
       </section>
         )}
       </div>
+
+      {/* 紫色简约弹窗：已复制微信号 */}
+      {showCopyToast && (
+        <div className="copy-toast-overlay" onClick={() => setShowCopyToast(false)} role="presentation">
+          <div className="copy-toast" onClick={(e) => e.stopPropagation()}>
+            <span className="copy-toast-text">
+              {language === 'zh' ? '已经复制微信号：EuroStay' : 'WeChat ID copied: EuroStay'}
+            </span>
+          </div>
+        </div>
+      )}
 
     </div>
   )

@@ -219,7 +219,17 @@
   font-size: 4.8rem;
   font-weight: bold;
   color: var(--color-purple-primary);
-  margin-bottom: 5.0rem;
+  margin-bottom: 1.0rem;
+}
+
+.guide-subtitle {
+  font-size: 1.9rem;
+  font-weight: 400;
+  color: var(--color-purple-primary);
+  line-height: 1.6;
+  text-align: center;
+  margin: 0 auto 4.0rem;
+  white-space: nowrap;
 }
 
 .guide-steps {
@@ -404,6 +414,10 @@
 @media (max-width: 76.8rem) {
   .page-title {
     font-size: 3.6rem;
+  }
+
+  .guide-subtitle {
+    white-space: normal;
   }
 
   .page-subtitle {
