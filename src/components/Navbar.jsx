@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={`${import.meta.env.BASE_URL}images/globe/logo.png`} alt="EuroStay Logo" className="navbar-logo-img" />
+          <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" />
         </Link>
         <button
           className="navbar-toggle"
@@ -49,15 +49,6 @@ const Navbar = () => {
           ))}
           <li>
             <button
-              className="language-toggle"
-              onClick={toggleLanguage}
-              aria-label="Toggle language"
-            >
-              {language === 'zh' ? 'EN' : '中文'}
-            </button>
-          </li>
-          <li>
-            <button
               className="download-button"
               onClick={() => {
                 setIsMenuOpen(false)
@@ -73,6 +64,15 @@ const Navbar = () => {
               aria-label="Download"
             >
               {t.nav.download}
+            </button>
+          </li>
+          <li>
+            <button
+              className="language-toggle"
+              onClick={toggleLanguage}
+              aria-label="Toggle language"
+            >
+              {language === 'zh' ? 'EN' : '中文'}
             </button>
           </li>
         </ul>

@@ -3,10 +3,12 @@
   top: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(135deg, var(--color-yellow-primary) 0%, var(--color-purple-primary) 100%);
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #C4B5F5 0%, #A896E8 50%, #8B7DD8 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.25);
   z-index: 1000;
   padding: 0 2rem;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.2);
 }
 
 .navbar-container {
@@ -64,21 +66,27 @@
 }
 
 .navbar-link {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   text-decoration: none;
   font-size: 1.6rem;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
-  text-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+  text-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
   line-height: 1;
+  min-width: 9rem;
+  padding: 0 0.5rem;
+  text-align: center;
 }
 
 .navbar-link:hover {
   color: var(--color-white);
+  text-shadow: 0 0.1rem 0.4rem rgba(255, 255, 255, 0.5);
+  transform: translateY(-0.1rem);
 }
 
 .navbar-link.active {
@@ -89,19 +97,22 @@
   content: '';
   position: absolute;
   bottom: 0.5rem;
-  left: 0;
-  right: 0;
-  height: 0.2rem;
-  background-color: var(--color-white);
+  left: 0.5rem;
+  right: 0.5rem;
+  height: 0.25rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.8) 100%);
+  border-radius: 0.2rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(255, 255, 255, 0.4);
 }
 
 .language-toggle {
-  background-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%);
   backdrop-filter: blur(10px);
   color: var(--color-white);
-  border: 0.1rem solid rgba(255, 255, 255, 0.3);
+  border: 0.1rem solid rgba(255, 255, 255, 0.35);
+  min-width: 10.5rem;
   padding: 0.8rem 1.6rem;
-  border-radius: 0.6rem;
+  border-radius: 0.8rem;
   font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
@@ -109,36 +120,43 @@
   margin-left: 1rem;
   display: flex;
   align-items: center;
-  line-height: 1;
-}
-
-.language-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-0.2rem);
-}
-
-.download-button {
-  background-color: var(--color-yellow-primary);
-  color: var(--color-white);
-  border: none;
-  padding: 0.8rem 1.6rem;
-  border-radius: 0.6rem;
-  font-size: 1.4rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 1rem;
-  display: flex;
-  align-items: center;
+  justify-content: center;
   line-height: 1;
   box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
 }
 
-.download-button:hover {
-  background-color: #FFC84D;
+.language-toggle:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.25) 100%);
+  border-color: rgba(255, 255, 255, 0.6);
   transform: translateY(-0.2rem);
-  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.3rem 0.6rem rgba(0, 0, 0, 0.15);
+}
+
+.download-button {
+  background: linear-gradient(135deg, #FFD35E 0%, #FFE082 100%);
+  color: #5A4A8F;
+  border: none;
+  min-width: 10.5rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 0.3rem 0.6rem rgba(255, 211, 94, 0.3);
+  text-shadow: none;
+}
+
+.download-button:hover {
+  background: linear-gradient(135deg, #FFE082 0%, #FFD35E 100%);
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.5rem 1rem rgba(255, 211, 94, 0.4);
+  color: #4A3A7F;
 }
 
 .navbar-toggle {
@@ -168,12 +186,14 @@
     top: 7rem;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, var(--color-yellow-primary) 0%, var(--color-purple-primary) 100%);
+    background: linear-gradient(135deg, #C4B5F5 0%, #A896E8 50%, #8B7DD8 100%);
+    backdrop-filter: blur(10px);
     flex-direction: column;
     padding: 2rem;
-    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.25);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.2);
   }
 
   .navbar-menu.active {

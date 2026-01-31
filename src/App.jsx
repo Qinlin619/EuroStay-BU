@@ -62,7 +62,12 @@ function App() {
   
   return (
     <LanguageProvider>
-      <Router basename={basename}>
+      <Router 
+        basename={basename}
+        future={{
+          v7_relativeSplatPath: true
+        }}
+      >
         <ScrollToTop />
         <div className="app">
           <Navbar />

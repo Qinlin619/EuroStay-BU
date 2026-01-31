@@ -320,15 +320,27 @@ const Home = () => {
           <div className="hero-content">
             <div className="hero-title-wrapper">
               <div className="hero-title-line">
-                <img 
-                  src={`${import.meta.env.BASE_URL}images/globe/title.png`} 
-                  alt="EURO STAY" 
-                  className="hero-title-image"
-                />
-                <span className="hero-title-tag">世界不贵</span>
+                <div className="hero-title-images">
+                  <img
+                    src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/2.svg`}
+                    alt=""
+                    className="hero-title-image hero-title-image-1"
+                  />
+                  <img
+                    src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/1.svg`}
+                    alt=""
+                    className="hero-title-image hero-title-image-2"
+                  />
+                </div>
+                <span className="hero-title-tag">{t.heroTag ?? (language === 'zh' ? '世界不贵' : 'World not pricey')}</span>
               </div>
             </div>
             <p className="hero-subtitle">{t.heroSubtitle}</p>
+            <div className="hero-links">
+              <Link to="/products" className="link-text">
+                {t.learnMore} →
+              </Link>
+            </div>
             <div className="hero-buttons">
               <a
                 href="#"
@@ -358,16 +370,11 @@ const Home = () => {
               countryUserCounts={countryUserCounts}
               language={language}
             />
-            <div className="hero-links">
-              <Link to="/products" className="link-text">
-                {t.learnMore} →
-              </Link>
-            </div>
           </div>
         </div>
       </section>
 
-      <section className="hero-stats">
+      <section className="hero-stats home-stats-below-globe">
         <div className="stat-item">
           <div className="stat-number stat-purple">2024</div>
           <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>

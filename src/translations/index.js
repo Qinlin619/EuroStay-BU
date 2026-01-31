@@ -9,6 +9,7 @@ export const translations = {
     },
     home: {
       heroTitle: 'EuroStay 世界不贵',
+      heroTag: '世界不贵',
       heroSubtitle: '连接世界各地的旅行者，探索生活的无限可能性',
       downloadIOS: '下载 iOS 应用',
       downloadAndroid: '下载 Android 应用',
@@ -218,6 +219,7 @@ export const translations = {
     },
     home: {
       heroTitle: 'Welcome to EuroStay',
+      heroTag: 'World not pricey',
       heroSubtitle: 'Experience unique homestay exchanges and connect with travelers worldwide',
       downloadIOS: 'Download iOS App',
       downloadAndroid: 'Download Android App',
