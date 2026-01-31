@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import Globe from 'globe.gl'
 import * as THREE from 'three'
 import './Globe3D.css'
@@ -787,8 +788,8 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
         </div>
       )}
       <div ref={globeEl} className="globe-3d-container" />
-      {/* Card for point markers */}
-      {activeCard !== null && stories[activeCard] && (
+      {/* 弹窗挂到 body，避免被父级 transform 影响，与 clientX/clientY 对齐 */}
+      {activeCard !== null && stories[activeCard] && createPortal(
         <div
           className="globe-card"
           style={{
@@ -835,10 +836,10 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
               查看详情 →
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
-      {/* 国家悬浮提示：无关闭按钮，简洁设计 */}
-      {hoveredCountry !== null && isMouseOverGlobe && (
+      {hoveredCountry !== null && isMouseOverGlobe && createPortal(
         <div
           className="globe-country-tooltip"
           style={{
@@ -859,7 +860,8 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
               {language === 'zh' ? '暂无用户，等你加入' : 'No Users Yet，Join Us'}
             </div>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

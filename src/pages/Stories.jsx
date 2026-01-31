@@ -3,6 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import { useCountUp } from '../hooks/useCountUp'
 import Globe3D from '../components/Globe3D'
+import FadeSection from '../components/FadeSection'
 import './Stories.css'
 
 // 数字递增动画组件
@@ -165,10 +166,16 @@ const Stories = () => {
             </div>
             <div className="stat-label">{t.stat3Label}</div>
           </div>
+          <div className="stat-column">
+            <div className="stat-number">
+              <CountUpNumber value={t.stat4Number} duration={2000} />
+            </div>
+            <div className="stat-label">{t.stat4Label}</div>
+          </div>
         </div>
       </section>
 
-      <section className="stories-section">
+      <FadeSection as="section" className="stories-section">
         <div className="container">
           <h1 className="stories-main-title">{t.storiesTagline}</h1>
           <h2 className="section-title">{t.userStoriesTitle}</h2>
@@ -202,7 +209,7 @@ const Stories = () => {
                     className={`story-card ${currentIndex === index ? 'story-card-active' : ''}`}
                   >
                     <div className="story-image-container">
-                      <img src={story.image} alt={story.title} className="story-image" />
+                      <img src={story.image} alt={story.title} className="story-image" loading="lazy" decoding="async" fetchPriority="low" />
                       <div className="story-image-overlay"></div>
                       <div className="story-location-badge">
                         <span className="location-icon">📍</span>
@@ -249,9 +256,9 @@ const Stories = () => {
             ))}
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="activities-section">
+      <FadeSection as="section" className="activities-section">
         <div className="container">
           <h2 className="section-title">{t.activityHistoryTitle}</h2>
           <p className="activity-history-intro">{t.activityHistoryIntro}</p>
@@ -277,7 +284,7 @@ const Stories = () => {
             ))}
           </div>
         </div>
-      </section>
+      </FadeSection>
     </div>
   )
 }

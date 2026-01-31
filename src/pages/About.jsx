@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
+import FadeSection from '../components/FadeSection'
 import './About.css'
 
 const About = () => {
@@ -23,7 +24,7 @@ const About = () => {
         </div>
       </section>
 
-      <section className="about-section">
+      <FadeSection as="section" className="about-section">
         <div className="container">
           <div className="about-content">
             <div className="about-text">
@@ -38,9 +39,9 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="mission-section">
+      <FadeSection as="section" className="mission-section">
         <div className="container">
           <h2 className="section-title">{t.missionTitle}</h2>
           <div className="mission-cards">
@@ -67,9 +68,9 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="values-section">
+      <FadeSection as="section" className="values-section">
         <div className="container">
           <h2 className="section-title">{t.valuesTitle}</h2>
           <div className="values-list">
@@ -95,9 +96,9 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="contact-section">
+      <FadeSection as="section" className="contact-section">
         <div className="container">
           <h2 className="section-title">{t.contactTitle}</h2>
           <div className="contact-info">
@@ -124,9 +125,9 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="team-section">
+      <FadeSection as="section" className="team-section">
         <div className="container">
           <h2 className="section-title">{t.teamTitle}</h2>
           <div className="team-grid">
@@ -164,7 +165,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
     </div>
   )
 }

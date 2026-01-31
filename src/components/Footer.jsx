@@ -17,6 +17,9 @@ const Footer = () => {
               src={`${import.meta.env.BASE_URL}images/globe/logo_footer.png`} 
               alt="EuroStay Logo" 
               className="footer-logo-image"
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
             />
           </div>
           <p className="footer-description">{t.description}</p>

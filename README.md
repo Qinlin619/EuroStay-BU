@@ -87,6 +87,16 @@ EuroStay_website/
 
 网站将部署到：`https://qinlin619.github.io/EuroStay-BU/`
 
+## 图片与性能
+
+若网站仍感觉卡顿，多半是图片体积过大。建议：
+
+- **压缩图片**：用 [TinyPNG](https://tinypng.com/) 或 [Squoosh](https://squoosh.app/) 压缩 `public/images` 下的 jpeg/png，尽量单张 < 200KB
+- **优先用 WebP**：在支持 WebP 的浏览器中可显著减小体积，可用 `<picture>` 或构建时转 WebP
+- **控制尺寸**：展示宽度/高度不大的图（如缩略图）用对应尺寸导出，不要用大图再 CSS 缩小
+
+项目已对图片做：懒加载（`loading="lazy"`）、异步解码（`decoding="async"`）、非首屏低优先级（`fetchPriority="low"`），首屏外的图会延后加载以减轻卡顿。
+
 ## 浏览器支持
 
 - Chrome (最新版)

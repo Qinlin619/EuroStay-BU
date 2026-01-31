@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" />
+          <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
         </Link>
         <button
           className="navbar-toggle"

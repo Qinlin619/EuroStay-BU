@@ -2,6 +2,24 @@
   width: 100%;
 }
 
+.lazy-section-root {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 50vh;
+}
+
+.lazy-section-placeholder {
+  background: var(--color-white);
+  width: 100%;
+}
+
+.globe-placeholder {
+  width: 100%;
+  height: 100%;
+  min-height: 40rem;
+  background: linear-gradient(135deg, var(--color-purple-secondary) 0%, var(--color-white) 100%);
+  border-radius: 1.2rem;
+}
+
 .hero {
   max-width: 120.0rem;
   margin: 0 auto;
@@ -26,6 +44,7 @@
   position: relative;
   z-index: 2;
   margin-top: calc(14rem - 50px);
+  margin-left: -100px;
 }
 
 .hero-title-wrapper {
@@ -78,17 +97,24 @@
 }
 
 .hero-title-tag {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  min-width: 12rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
   background-color: var(--color-purple-secondary);
   color: var(--color-white);
-  padding: 0.8rem 2rem;
   border-radius: 2rem;
   font-size: 1.8rem;
   font-weight: 600;
+  line-height: 1;
   font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   white-space: nowrap;
   box-shadow: 0 0.2rem 0.4rem rgba(122, 99, 199, 0.2);
-  transform: translateY(-80px);
+  transform: translate(0, -80px);
+  flex-shrink: 0;
 }
 
 .hero-subtitle {
@@ -221,7 +247,7 @@
 }
 
 .product-section {
-  padding: 8.0rem 2.0rem;
+  padding: 26.0rem 2.0rem 8.0rem;
   background-color: var(--color-white);
 }
 
@@ -232,14 +258,16 @@
 
 .steps-flow {
   max-width: 120.0rem;
-  margin: 0 auto;
+  margin: 12rem auto 0;
+  padding-top: 0;
 }
 
 .steps-title {
   font-size: 4.8rem;
   font-weight: bold;
   color: var(--color-purple-primary);
-  margin-bottom: 6.0rem;
+  margin-top: 0;
+  margin-bottom: 5.0rem;
   text-align: center;
   opacity: 0;
   transform: translateY(-2.0rem);

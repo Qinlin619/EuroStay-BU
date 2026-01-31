@@ -1,10 +1,13 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import { useCountUp } from '../hooks/useCountUp'
-import Globe3D from '../components/Globe3D'
+import { useInView } from '../hooks/useInView'
+import FadeSection from '../components/FadeSection'
 import './Home.css'
+
+const Globe3D = lazy(() => import('../components/Globe3D'))
 
 // 数字递增动画组件
 const CountUpNumber = ({ value, duration = 2000 }) => {
@@ -42,6 +45,92 @@ const Home = () => {
   const phoneGalleryRef = useRef(null)
   const stepsContainerRef = useRef(null)
   const communityGalleryRef = useRef(null)
+
+  // 进入视口 1/3 处淡入，离开视口 1/8 处淡出（常见滚动交互）；首屏 hero+stats 不淡出
+  const revealRootMargin = '-33.333% 0px -12.5% 0px'
+  const [heroRef, heroInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
+  const [statsRef, statsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
+  const [productRef, productInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
+  const [featuresRef, featuresInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
+  const [visionRef, visionInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
+  const [reviewsRef, reviewsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
+
+  // 懒加载区块：进入过视口后不再卸载，仅用 in-view 控制淡入淡出
+  const [productLoaded, setProductLoaded] = useState(false)
+  const [featuresLoaded, setFeaturesLoaded] = useState(false)
+  const [visionLoaded, setVisionLoaded] = useState(false)
+  const [reviewsLoaded, setReviewsLoaded] = useState(false)
+  const [heroRevealed, setHeroRevealed] = useState(false)
+  const [statsRevealed, setStatsRevealed] = useState(false)
+  const [productRevealed, setProductRevealed] = useState(false)
+  const [featuresRevealed, setFeaturesRevealed] = useState(false)
+  const [visionRevealed, setVisionRevealed] = useState(false)
+  const [reviewsRevealed, setReviewsRevealed] = useState(false)
+  const productFadeOutTimer = useRef(null)
+  const featuresFadeOutTimer = useRef(null)
+  const visionFadeOutTimer = useRef(null)
+  const reviewsFadeOutTimer = useRef(null)
+  const FADE_OUT_DELAY_MS = 180
+
+  useEffect(() => { if (productInView) setProductLoaded(true) }, [productInView])
+  useEffect(() => { if (featuresInView) setFeaturesLoaded(true) }, [featuresInView])
+  useEffect(() => { if (visionInView) setVisionLoaded(true) }, [visionInView])
+  useEffect(() => { if (reviewsInView) setReviewsLoaded(true) }, [reviewsInView])
+
+  // 首屏（hero + 数据横幅）：只淡入、不淡出
+  useEffect(() => {
+    if (heroInView) {
+      const id = requestAnimationFrame(() => setHeroRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+  }, [heroInView])
+  useEffect(() => {
+    if (statsInView) {
+      const id = requestAnimationFrame(() => setStatsRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+  }, [statsInView])
+  // 其余区块：进入视口下一帧淡入；离开视口延迟 180ms 再淡出
+  useEffect(() => {
+    if (!productLoaded) return
+    if (productInView) {
+      if (productFadeOutTimer.current) { clearTimeout(productFadeOutTimer.current); productFadeOutTimer.current = null }
+      const id = requestAnimationFrame(() => setProductRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+    productFadeOutTimer.current = setTimeout(() => { productFadeOutTimer.current = null; setProductRevealed(false) }, FADE_OUT_DELAY_MS)
+    return () => { if (productFadeOutTimer.current) { clearTimeout(productFadeOutTimer.current); productFadeOutTimer.current = null } }
+  }, [productLoaded, productInView])
+  useEffect(() => {
+    if (!featuresLoaded) return
+    if (featuresInView) {
+      if (featuresFadeOutTimer.current) { clearTimeout(featuresFadeOutTimer.current); featuresFadeOutTimer.current = null }
+      const id = requestAnimationFrame(() => setFeaturesRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+    featuresFadeOutTimer.current = setTimeout(() => { featuresFadeOutTimer.current = null; setFeaturesRevealed(false) }, FADE_OUT_DELAY_MS)
+    return () => { if (featuresFadeOutTimer.current) { clearTimeout(featuresFadeOutTimer.current); featuresFadeOutTimer.current = null } }
+  }, [featuresLoaded, featuresInView])
+  useEffect(() => {
+    if (!visionLoaded) return
+    if (visionInView) {
+      if (visionFadeOutTimer.current) { clearTimeout(visionFadeOutTimer.current); visionFadeOutTimer.current = null }
+      const id = requestAnimationFrame(() => setVisionRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+    visionFadeOutTimer.current = setTimeout(() => { visionFadeOutTimer.current = null; setVisionRevealed(false) }, FADE_OUT_DELAY_MS)
+    return () => { if (visionFadeOutTimer.current) { clearTimeout(visionFadeOutTimer.current); visionFadeOutTimer.current = null } }
+  }, [visionLoaded, visionInView])
+  useEffect(() => {
+    if (!reviewsLoaded) return
+    if (reviewsInView) {
+      if (reviewsFadeOutTimer.current) { clearTimeout(reviewsFadeOutTimer.current); reviewsFadeOutTimer.current = null }
+      const id = requestAnimationFrame(() => setReviewsRevealed(true))
+      return () => cancelAnimationFrame(id)
+    }
+    reviewsFadeOutTimer.current = setTimeout(() => { reviewsFadeOutTimer.current = null; setReviewsRevealed(false) }, FADE_OUT_DELAY_MS)
+    return () => { if (reviewsFadeOutTimer.current) { clearTimeout(reviewsFadeOutTimer.current); reviewsFadeOutTimer.current = null } }
+  }, [reviewsLoaded, reviewsInView])
 
   // Host card images - 3:4 aspect ratio
   const hostCardImages = [
@@ -224,71 +313,52 @@ const Home = () => {
     }
   }
 
-  // 初始化时设置中间屏幕
+  // 初始化时设置中间屏幕（features 懒加载后才存在）
   useEffect(() => {
-    if (phoneGalleryRef.current) {
-      const container = phoneGalleryRef.current
-      // 初始化时滚动到中间
-      setTimeout(() => {
-        const scrollWidth = container.scrollWidth - container.clientWidth
-        container.scrollLeft = scrollWidth / 2
-        updateCenterPhone()
-      }, 100)
-      
-      // 监听滚动事件
-      container.addEventListener('scroll', updateCenterPhone)
-      
-      return () => {
-        container.removeEventListener('scroll', updateCenterPhone)
-      }
-    }
-  }, [])
+    if (!featuresLoaded || !phoneGalleryRef.current) return
+    const container = phoneGalleryRef.current
+    setTimeout(() => {
+      const scrollWidth = container.scrollWidth - container.clientWidth
+      container.scrollLeft = scrollWidth / 2
+      updateCenterPhone()
+    }, 100)
+    container.addEventListener('scroll', updateCenterPhone)
+    return () => container.removeEventListener('scroll', updateCenterPhone)
+  }, [featuresLoaded])
 
-  // 初始化社群gallery，让第一张图片居中
+  // 初始化社群 gallery（features 懒加载后才存在）
   useEffect(() => {
-    if (communityGalleryRef.current) {
-      const container = communityGalleryRef.current
-      // 初始化时滚动到开始位置（第一张图片已经通过padding居中）
-      setTimeout(() => {
-        container.scrollLeft = 0
-      }, 100)
-    }
-  }, [])
+    if (!featuresLoaded || !communityGalleryRef.current) return
+    const container = communityGalleryRef.current
+    setTimeout(() => { container.scrollLeft = 0 }, 100)
+  }, [featuresLoaded])
 
-  // 步骤动画触发
+  // 步骤动画：与整块一致，在「1/3 可见带」内才触发，依次出现（标题→1→2→…→6→箭头）
   useEffect(() => {
-    if (stepsContainerRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // 为整个流程容器添加动画类
-              const stepsFlow = entry.target.closest('.steps-flow')
-              if (stepsFlow) {
-                stepsFlow.classList.add('animate')
-              }
-              // 为每个步骤项添加延迟动画
-              const stepItems = entry.target.querySelectorAll('.step-item')
-              const connectors = entry.target.querySelectorAll('.step-connector')
-              stepItems.forEach((item, index) => {
-                setTimeout(() => {
-                  item.classList.add('animate')
-                }, index * 150 + 300)
-              })
-              connectors.forEach((connector, index) => {
-                setTimeout(() => {
-                  connector.classList.add('animate')
-                }, (index + 1) * 150 + 450)
-              })
-            }
-          })
-        },
-        { threshold: 0.2 }
-      )
-      observer.observe(stepsContainerRef.current)
-      return () => observer.disconnect()
-    }
-  }, [])
+    if (!productLoaded || !stepsContainerRef.current) return
+    const el = stepsContainerRef.current
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const stepsFlow = entry.target.closest('.steps-flow')
+            if (stepsFlow) stepsFlow.classList.add('animate')
+            const stepItems = entry.target.querySelectorAll('.step-item')
+            const connectors = entry.target.querySelectorAll('.step-connector')
+            stepItems.forEach((item, index) => {
+              setTimeout(() => item.classList.add('animate'), index * 220 + 400)
+            })
+            connectors.forEach((connector, index) => {
+              setTimeout(() => connector.classList.add('animate'), (index + 1) * 220 + 520)
+            })
+          }
+        })
+      },
+      { threshold: 0.15, rootMargin: '-33.333% 0px -12.5% 0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [productLoaded, productInView])
 
   const copyWeChatId = async () => {
     const wechatId = 'EuroStay' // 可以替换为实际的微信号
@@ -315,7 +385,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <section className="hero">
+      <section className={`hero section-reveal ${heroRevealed ? 'in-view' : ''}`}>
         <div className="hero-main">
           <div className="hero-content">
             <div className="hero-title-wrapper">
@@ -325,11 +395,13 @@ const Home = () => {
                     src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/2.svg`}
                     alt=""
                     className="hero-title-image hero-title-image-1"
+                    decoding="async"
                   />
                   <img
                     src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/1.svg`}
                     alt=""
                     className="hero-title-image hero-title-image-2"
+                    decoding="async"
                   />
                 </div>
                 <span className="hero-title-tag">{t.heroTag ?? (language === 'zh' ? '世界不贵' : 'World not pricey')}</span>
@@ -364,17 +436,21 @@ const Home = () => {
               </a>
             </div>
           </div>
-          <div className="hero-image">
-            <Globe3D 
-              stories={[]} 
-              countryUserCounts={countryUserCounts}
-              language={language}
-            />
+          <div className="hero-image" ref={heroRef}>
+            {heroInView && (
+              <Suspense fallback={<div className="globe-placeholder" aria-hidden />}>
+                <Globe3D 
+                  stories={[]} 
+                  countryUserCounts={countryUserCounts}
+                  language={language}
+                />
+              </Suspense>
+            )}
           </div>
         </div>
       </section>
 
-      <section className="hero-stats home-stats-below-globe">
+      <section ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
         <div className="stat-item">
           <div className="stat-number stat-purple">2024</div>
           <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>
@@ -409,52 +485,62 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="product-section">
-        <div className="container">
-          <div className="product-content">
-            <div className="steps-flow">
-              <h2 className="steps-title">{translations[language].products.guideTitle}</h2>
-              <div className="steps-container" ref={stepsContainerRef}>
-                <div className="step-item">
-                  <div className="step-number">1</div>
-                  <div className="step-title">{translations[language].products.step1Title}</div>
-                </div>
-                <div className="step-connector"></div>
-                <div className="step-item">
-                  <div className="step-number">2</div>
-                  <div className="step-title">{translations[language].products.step2Title}</div>
-                </div>
-                <div className="step-connector"></div>
-                <div className="step-item">
-                  <div className="step-number">3</div>
-                  <div className="step-title">{translations[language].products.step3Title}</div>
-                </div>
-                <div className="step-connector"></div>
-                <div className="step-item">
-                  <div className="step-number">4</div>
-                  <div className="step-title">{translations[language].products.step4Title}</div>
-                </div>
-                <div className="step-connector"></div>
-                <div className="step-item">
-                  <div className="step-number">5</div>
-                  <div className="step-title">{translations[language].products.step5Title}</div>
-                </div>
-                <div className="step-connector"></div>
-                <div className="step-item">
-                  <div className="step-number">6</div>
-                  <div className="step-title">{translations[language].products.step6Title}</div>
+      <div ref={productRef} className="lazy-section-root">
+        {!productLoaded ? (
+          <div className="lazy-section-placeholder" style={{ minHeight: '50vh' }} aria-hidden />
+        ) : (
+          <section className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
+            <div className="container">
+              <div className="product-content">
+                <div className="steps-flow">
+                  <h2 className="steps-title">{translations[language].products.guideTitle}</h2>
+                  <div className="steps-container" ref={stepsContainerRef}>
+                    <div className="step-item">
+                      <div className="step-number">1</div>
+                      <div className="step-title">{translations[language].products.step1Title}</div>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className="step-item">
+                      <div className="step-number">2</div>
+                      <div className="step-title">{translations[language].products.step2Title}</div>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className="step-item">
+                      <div className="step-number">3</div>
+                      <div className="step-title">{translations[language].products.step3Title}</div>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className="step-item">
+                      <div className="step-number">4</div>
+                      <div className="step-title">{translations[language].products.step4Title}</div>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className="step-item">
+                      <div className="step-number">5</div>
+                      <div className="step-title">{translations[language].products.step5Title}</div>
+                    </div>
+                    <div className="step-connector"></div>
+                    <div className="step-item">
+                      <div className="step-number">6</div>
+                      <div className="step-title">{translations[language].products.step6Title}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        )}
+      </div>
 
-      <section className="features">
+      <div ref={featuresRef} className="lazy-section-root">
+        {!featuresLoaded ? (
+          <div className="lazy-section-placeholder" style={{ minHeight: '70vh' }} aria-hidden />
+        ) : (
+      <section className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
         <div className="container">
           <h2 className="section-title">{t.featuresTitle}</h2>
           <div className="features-grid">
-            <div className="feature-card">
+            <FadeSection className="feature-card">
               <div className="feature-image feature-phone-gallery">
                 <button className="phone-nav-btn phone-nav-prev" onClick={() => scrollPhoneGallery(-1)}>
                   ‹
@@ -469,6 +555,9 @@ const Home = () => {
                             src={`${import.meta.env.BASE_URL}images/home/phone-screens/${num}.png`}
                             alt={language === 'zh' ? `界面 ${num}` : `Screen ${num}`}
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            loading="lazy"
+                            decoding="async"
+                            fetchPriority="low"
                           />
                         </div>
                       </div>
@@ -483,8 +572,8 @@ const Home = () => {
                 <h3>{t.feature1Title}</h3>
                 <p>{t.feature1Desc}</p>
               </div>
-            </div>
-            <div className="feature-card">
+            </FadeSection>
+            <FadeSection className="feature-card">
               <div className="feature-image feature-image-grid">
                 <div className="image-grid-container">
                   <div className="grid-image grid-image-1">
@@ -492,6 +581,9 @@ const Home = () => {
                       src={`${import.meta.env.BASE_URL}images/home/features/security/1.jpeg`}
                       alt={language === 'zh' ? '图片 1' : 'Image 1'}
                       className="grid-image-img"
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   </div>
                   <div className="grid-image grid-image-2">
@@ -499,6 +591,9 @@ const Home = () => {
                       src={`${import.meta.env.BASE_URL}images/home/features/security/2.jpeg`}
                       alt={language === 'zh' ? '图片 2' : 'Image 2'}
                       className="grid-image-img"
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   </div>
                   <div className="grid-image grid-image-3">
@@ -506,6 +601,9 @@ const Home = () => {
                       src={`${import.meta.env.BASE_URL}images/home/features/security/3.jpeg`}
                       alt={language === 'zh' ? '图片 3' : 'Image 3'}
                       className="grid-image-img"
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   </div>
                   <div className="grid-image grid-image-4">
@@ -513,6 +611,9 @@ const Home = () => {
                       src={`${import.meta.env.BASE_URL}images/home/features/security/4.jpeg`}
                       alt={language === 'zh' ? '图片 4' : 'Image 4'}
                       className="grid-image-img"
+                      loading="lazy"
+                      decoding="async"
+                      fetchPriority="low"
                     />
                   </div>
                 </div>
@@ -521,8 +622,8 @@ const Home = () => {
                 <h3>{t.feature2Title}</h3>
                 <p>{t.feature2Desc}</p>
               </div>
-            </div>
-            <div className="feature-card">
+            </FadeSection>
+            <FadeSection className="feature-card">
               <div className="feature-image feature-community-gallery">
                 <button className="community-nav-btn community-nav-prev" onClick={() => scrollCommunityGallery(-1)}>
                   ‹
@@ -534,6 +635,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/1.jpeg`}
                         alt={language === 'zh' ? '社群图片 1' : 'Community Image 1'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery1Location}</div>
@@ -545,6 +649,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/2.jpeg`}
                         alt={language === 'zh' ? '社群图片 2' : 'Community Image 2'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery2Location}</div>
@@ -556,6 +663,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/3.jpeg`}
                         alt={language === 'zh' ? '社群图片 3' : 'Community Image 3'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery3Location}</div>
@@ -567,6 +677,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/4.jpeg`}
                         alt={language === 'zh' ? '社群图片 4' : 'Community Image 4'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery4Location}</div>
@@ -578,6 +691,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/5.jpeg`}
                         alt={language === 'zh' ? '社群图片 5' : 'Community Image 5'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery5Location}</div>
@@ -589,6 +705,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/6.jpeg`}
                         alt={language === 'zh' ? '社群图片 6' : 'Community Image 6'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery6Location}</div>
@@ -600,6 +719,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/7.jpeg`}
                         alt={language === 'zh' ? '社群图片 7' : 'Community Image 7'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery7Location}</div>
@@ -611,6 +733,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/8.jpeg`}
                         alt={language === 'zh' ? '社群图片 8' : 'Community Image 8'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery8Location}</div>
@@ -622,6 +747,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/9.jpeg`}
                         alt={language === 'zh' ? '社群图片 9' : 'Community Image 9'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery9Location}</div>
@@ -633,6 +761,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/10.jpeg`}
                         alt={language === 'zh' ? '社群图片 10' : 'Community Image 10'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery10Location}</div>
@@ -644,6 +775,9 @@ const Home = () => {
                         src={`${import.meta.env.BASE_URL}images/home/features/community/11.jpeg`}
                         alt={language === 'zh' ? '社群图片 11' : 'Community Image 11'}
                         className="community-image"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                       <div className="community-image-info">
                         <div className="community-info-location">{t.communityGallery11Location}</div>
@@ -660,12 +794,18 @@ const Home = () => {
                 <h3>{t.feature3Title}</h3>
                 <p>{t.feature3Desc}</p>
               </div>
-            </div>
+            </FadeSection>
           </div>
         </div>
       </section>
+        )}
+      </div>
 
-      <section className="vision">
+      <div ref={visionRef} className="lazy-section-root">
+        {!visionLoaded ? (
+          <div className="lazy-section-placeholder" style={{ minHeight: '60vh' }} aria-hidden />
+        ) : (
+      <section className={`vision section-reveal ${visionRevealed ? 'in-view' : ''}`}>
         <div className="container">
           <div className="vision-header">
             <h2 className="vision-title-primary">{t.visionTitlePrimary}</h2>
@@ -690,6 +830,9 @@ const Home = () => {
                         src={card.src} 
                         alt={card.title}
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                       />
                     </div>
                   </div>
@@ -707,8 +850,14 @@ const Home = () => {
 
         </div>
       </section>
+        )}
+      </div>
 
-      <section className="reviews-section">
+      <div ref={reviewsRef} className="lazy-section-root">
+        {!reviewsLoaded ? (
+          <div className="lazy-section-placeholder" style={{ minHeight: '55vh' }} aria-hidden />
+        ) : (
+      <section className={`reviews-section section-reveal ${reviewsRevealed ? 'in-view' : ''}`}>
         <h2 className="reviews-title">{t.reviewsTitle}</h2>
         <div className="reviews-grid">
           {reviews.map((review, index) => (
@@ -723,6 +872,8 @@ const Home = () => {
             </button>
           </div>
       </section>
+        )}
+      </div>
 
     </div>
   )

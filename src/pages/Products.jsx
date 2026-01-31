@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
+import FadeSection from '../components/FadeSection'
 import './Products.css'
 
 const Products = () => {
@@ -25,7 +26,7 @@ const Products = () => {
 
   return (
     <div className="products-page">
-      <section className="tips-section">
+      <FadeSection as="section" className="tips-section">
         <div className="container">
           <h2 className="section-title">{t.tipsTitle}</h2>
           <div className="tips-grid">
@@ -47,9 +48,9 @@ const Products = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="guide-section">
+      <FadeSection as="section" className="guide-section">
         <div className="container">
           <h2 className="section-title">{t.guideTitle}</h2>
           <div className="guide-steps">
@@ -181,9 +182,9 @@ const Products = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
 
-      <section className="qa-section">
+      <FadeSection as="section" className="qa-section">
         <div className="container">
           <h2 className="section-title">{t.qaTitle}</h2>
           <div className="qa-list">
@@ -225,7 +226,7 @@ const Products = () => {
             </div>
           </div>
         </div>
-      </section>
+      </FadeSection>
     </div>
   )
 }
