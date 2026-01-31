@@ -1033,16 +1033,19 @@
   margin: 0;
 }
 
-/* 数据条：放在地球下方，作为下一屏顶部，当前屏不显示 */
+/* 数据条：上下各多 20px 背景，字相对页面位置不变 */
 .hero-stats {
   display: flex;
   align-items: center;
   justify-content: space-around;
   background-color: #FFF8E7;
-  padding: calc(2.4rem + 10px) 2.0rem;
+  margin-top: -20px;
+  margin-bottom: -20px;
+  padding: 3rem 2.0rem;
   width: 100%;
   max-width: 100vw;
-  margin: 0;
+  margin-right: 0;
+  margin-left: 0;
   box-sizing: border-box;
 }
 
@@ -1090,7 +1093,7 @@
 
 .stat-divider {
   width: 1px;
-  height: 5.0rem;
+  height: 6.8rem;
   background-color: var(--color-purple-primary);
   margin: 0 2.0rem;
   opacity: 0.4;
