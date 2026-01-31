@@ -1,5 +1,6 @@
-# 从 main 分支根目录部署：构建后把 dist 复制到仓库根并推送，Settings -> Pages 选 Branch main / root
-name: Deploy to GitHub Pages (branch)
+# 部署到 gh-pages 分支：main 保留源码，构建产物推送到 gh-pages
+# Settings -> Pages 选 Branch: gh-pages / root
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -12,7 +13,7 @@ permissions:
   contents: write
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,16 +36,9 @@ jobs:
       - name: Copy 404 for SPA routing
         run: cp dist/index.html dist/404.html
 
-      - name: Copy built files to repo root
-        run: |
-          cp dist/index.html .
-          cp dist/404.html .
-          cp -r dist/assets .
-          cp -r dist/images .
-
-      - name: Commit and push (root)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html 404.html assets images
-          git diff --staged --quiet && echo "No changes" || (git commit -m "chore: update built files for GitHub Pages (root) [skip ci]" && git push origin main)
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
