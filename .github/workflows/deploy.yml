@@ -1,6 +1,5 @@
-# 部署到 GitHub Pages（必须使用 Actions 部署，不要用「从分支部署」）
-# 若出现 main.jsx 或 404，请到仓库 Settings -> Pages -> Source 选「GitHub Actions」
-name: Deploy to GitHub Pages
+# 从 main 分支根目录部署：构建后把 dist 复制到仓库根并推送，Settings -> Pages 选 Branch main / root
+name: Deploy to GitHub Pages (branch)
 
 on:
   push:
@@ -10,58 +9,42 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  build:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build
         run: npm run build
         env:
           NODE_ENV: production
-      
-      - name: Copy 404.html for GitHub Pages routing
-        run: |
-          cp dist/index.html dist/404.html || true
-          # 确保 404.html 存在且内容正确
-          if [ ! -f dist/404.html ]; then
-            cp dist/index.html dist/404.html
-          fi
-      
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
 
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Copy 404 for SPA routing
+        run: cp dist/index.html dist/404.html
+
+      - name: Copy built files to repo root
+        run: |
+          cp dist/index.html .
+          cp dist/404.html .
+          cp -r dist/assets .
+          cp -r dist/images .
+
+      - name: Commit and push (root)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html 404.html assets images
+          git diff --staged --quiet && echo "No changes" || (git commit -m "chore: update built files for GitHub Pages (root) [skip ci]" && git push origin main)
