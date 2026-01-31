@@ -251,28 +251,33 @@ const Home = () => {
   }
 
   const scrollPhoneGallery = (direction) => {
-    if (phoneGalleryRef.current) {
-      const container = phoneGalleryRef.current
-      const scrollAmount = 202.5 // 187.5px width + 15px gap
-      const currentScroll = container.scrollLeft
-      const targetScroll = currentScroll + (direction * scrollAmount)
-      
-      container.scrollTo({
-        left: targetScroll,
-        behavior: 'smooth'
-      })
-      
-      // 滚动后更新中间屏幕
-      setTimeout(() => {
-        updateCenterPhone()
-      }, 100)
+    if (!phoneGalleryRef.current) return
+    const container = phoneGalleryRef.current
+    const scrollAmount = 225 // 21rem width + 1.5rem gap (主图放大)
+    const maxScroll = container.scrollWidth - container.clientWidth
+    
+    let targetScroll = container.scrollLeft + (direction * scrollAmount)
+    // 可循环
+    if (targetScroll <= 0 && direction < 0) {
+      targetScroll = maxScroll
+    } else if (targetScroll >= maxScroll && direction > 0) {
+      targetScroll = 0
+    } else {
+      targetScroll = Math.max(0, Math.min(targetScroll, maxScroll))
     }
+    
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    })
+    
+    setTimeout(() => updateCenterPhone(), 100)
   }
 
   const scrollCommunityGallery = (direction) => {
     if (communityGalleryRef.current) {
       const container = communityGalleryRef.current
-      const scrollAmount = 320 // 30rem (300px) 图片宽度 + 2rem (20px) gap
+      const scrollAmount = 380 // 36rem width + 2rem gap
       const currentScroll = container.scrollLeft
       const targetScroll = currentScroll + (direction * scrollAmount)
       
@@ -284,42 +289,40 @@ const Home = () => {
   }
 
   const updateCenterPhone = () => {
-    if (phoneGalleryRef.current) {
-      const container = phoneGalleryRef.current
-      const phoneMockups = container.querySelectorAll('.phone-mockup')
+    if (!phoneGalleryRef.current) return
+    const container = phoneGalleryRef.current
+    const phoneMockups = container.querySelectorAll('.phone-mockup')
+    const containerRect = container.getBoundingClientRect()
+    const centerX = containerRect.left + containerRect.width / 2
+    const maxDistance = containerRect.width / 2 + 80
+    
+    phoneMockups.forEach((mockup) => {
+      const rect = mockup.getBoundingClientRect()
+      const mockupCenterX = rect.left + rect.width / 2
+      const distance = Math.abs(centerX - mockupCenterX)
       
-      phoneMockups.forEach((mockup) => {
-        const rect = mockup.getBoundingClientRect()
-        const containerRect = container.getBoundingClientRect()
-        const centerX = containerRect.left + containerRect.width / 2
-        const mockupCenterX = rect.left + rect.width / 2
-        const distance = Math.abs(centerX - mockupCenterX)
-        const maxDistance = containerRect.width / 2 + 100
-        
-        if (distance < 150) {
-          // 中间的屏幕
-          mockup.style.transform = 'scale(1.15)'
-          mockup.style.opacity = '1'
-          mockup.style.zIndex = '2'
-        } else {
-          // 两侧的屏幕
-          const scale = Math.max(0.85, 1 - (distance / maxDistance) * 0.3)
-          const opacity = Math.max(0.6, 1 - (distance / maxDistance) * 0.4)
-          mockup.style.transform = `scale(${scale})`
-          mockup.style.opacity = opacity
-          mockup.style.zIndex = '1'
-        }
-      })
-    }
+      if (distance < 120) {
+        // 中间的屏幕 - 主图放大
+        mockup.style.transform = 'scale(1.28)'
+        mockup.style.opacity = '1'
+        mockup.style.zIndex = '2'
+      } else {
+        // 两侧的屏幕 - 更小、更淡出
+        const scale = Math.max(0.65, 1 - (distance / maxDistance) * 0.45)
+        const opacity = Math.max(0.3, 1 - (distance / maxDistance) * 0.7)
+        mockup.style.transform = `scale(${scale})`
+        mockup.style.opacity = opacity
+        mockup.style.zIndex = '1'
+      }
+    })
   }
 
-  // 初始化时设置中间屏幕（features 懒加载后才存在）
+  // 初始化时第一页第一个展示，可循环（features 懒加载后才存在）
   useEffect(() => {
     if (!featuresLoaded || !phoneGalleryRef.current) return
     const container = phoneGalleryRef.current
     setTimeout(() => {
-      const scrollWidth = container.scrollWidth - container.clientWidth
-      container.scrollLeft = scrollWidth / 2
+      container.scrollLeft = 0
       updateCenterPhone()
     }, 100)
     container.addEventListener('scroll', updateCenterPhone)
@@ -333,7 +336,7 @@ const Home = () => {
     setTimeout(() => { container.scrollLeft = 0 }, 100)
   }, [featuresLoaded])
 
-  // 步骤动画：与整块一致，在「1/3 可见带」内才触发，依次出现（标题→1→2→…→6→箭头）
+  // 步骤动画：与整块一致，在「1/3 可见带」内才触发，依次出现（标题→1→2→…→6）
   useEffect(() => {
     if (!productLoaded || !stepsContainerRef.current) return
     const el = stepsContainerRef.current
@@ -344,12 +347,8 @@ const Home = () => {
             const stepsFlow = entry.target.closest('.steps-flow')
             if (stepsFlow) stepsFlow.classList.add('animate')
             const stepItems = entry.target.querySelectorAll('.step-item')
-            const connectors = entry.target.querySelectorAll('.step-connector')
             stepItems.forEach((item, index) => {
-              setTimeout(() => item.classList.add('animate'), index * 220 + 400)
-            })
-            connectors.forEach((connector, index) => {
-              setTimeout(() => connector.classList.add('animate'), (index + 1) * 220 + 520)
+              setTimeout(() => item.classList.add('animate'), index * 150 + 300)
             })
           }
         })
@@ -451,34 +450,30 @@ const Home = () => {
       </section>
 
       <section ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
-        <div className="stat-item">
-          <div className="stat-number stat-purple">2024</div>
+        <div className="stat-column">
+          <div className="stat-number">2024</div>
           <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>
         </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number stat-yellow">
+        <div className="stat-column">
+          <div className="stat-number">
             <CountUpNumber value="100万+" duration={2000} />
           </div>
           <div className="stat-label">{language === 'zh' ? '话题热度' : 'Topic Popularity'}</div>
         </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number stat-yellow">
+        <div className="stat-column">
+          <div className="stat-number">
             <CountUpNumber value="30000+" duration={2000} />
           </div>
           <div className="stat-label">{language === 'zh' ? '换宿会员' : 'Community Members'}</div>
         </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number stat-yellow">
+        <div className="stat-column">
+          <div className="stat-number">
             <CountUpNumber value="30+" duration={1500} />
           </div>
           <div className="stat-label">{language === 'zh' ? '覆盖国家' : 'Countries Covered'}</div>
         </div>
-        <div className="stat-divider"></div>
-        <div className="stat-item">
-          <div className="stat-number stat-yellow">
+        <div className="stat-column">
+          <div className="stat-number">
             <CountUpNumber value="500+" duration={1500} />
           </div>
           <div className="stat-label">{language === 'zh' ? '房源总量' : 'House Resources'}</div>
@@ -499,27 +494,22 @@ const Home = () => {
                       <div className="step-number">1</div>
                       <div className="step-title">{translations[language].products.step1Title}</div>
                     </div>
-                    <div className="step-connector"></div>
                     <div className="step-item">
                       <div className="step-number">2</div>
                       <div className="step-title">{translations[language].products.step2Title}</div>
                     </div>
-                    <div className="step-connector"></div>
                     <div className="step-item">
                       <div className="step-number">3</div>
                       <div className="step-title">{translations[language].products.step3Title}</div>
                     </div>
-                    <div className="step-connector"></div>
                     <div className="step-item">
                       <div className="step-number">4</div>
                       <div className="step-title">{translations[language].products.step4Title}</div>
                     </div>
-                    <div className="step-connector"></div>
                     <div className="step-item">
                       <div className="step-number">5</div>
                       <div className="step-title">{translations[language].products.step5Title}</div>
                     </div>
-                    <div className="step-connector"></div>
                     <div className="step-item">
                       <div className="step-number">6</div>
                       <div className="step-title">{translations[language].products.step6Title}</div>
@@ -554,7 +544,7 @@ const Home = () => {
                           <img 
                             src={`${import.meta.env.BASE_URL}images/home/phone-screens/${num}.png`}
                             alt={language === 'zh' ? `界面 ${num}` : `Screen ${num}`}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                             loading="lazy"
                             decoding="async"
                             fetchPriority="low"
