@@ -16,32 +16,25 @@ const CountUpNumber = ({ value, duration = 2000 }) => {
   return <span ref={elementRef}>{displayValue}</span>
 }
 
+// Apple iOS 风格头像颜色（每人一色）
+const IOS_AVATAR_COLORS = ['ios-blue', 'ios-green', 'ios-orange', 'ios-purple', 'ios-pink', 'ios-teal']
+
 // 评价卡片组件
-const ReviewCard = ({ review, language }) => {
-  const base = import.meta.env.BASE_URL || ''
-  const avatarUrl = review.avatar ? (review.avatar.startsWith('http') ? review.avatar : base + review.avatar) : null
+const ReviewCard = ({ review, index }) => {
+  const initials = review.name.length >= 2 ? review.name.slice(0, 2) : review.name.charAt(0)
+  const colorClass = IOS_AVATAR_COLORS[index % IOS_AVATAR_COLORS.length]
   return (
     <div className="review-card">
-      <div className="review-header">
-        <div className="review-avatar">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt={review.name} loading="lazy" decoding="async" />
-          ) : (
-            review.name.charAt(0)
-          )}
-        </div>
-        <div className="review-user-info">
-          <div className="review-user-name">{review.name}</div>
-          <div className="review-user-location">{review.location}</div>
-        </div>
+      <div className={`review-avatar review-avatar-ios ${colorClass}`}>
+        {initials}
       </div>
+      <div className="review-user-name">{review.name}</div>
       <div className="review-rating">
         {Array.from({ length: review.rating || 5 }, (_, i) => (
           <span key={i} className="review-star">★</span>
         ))}
       </div>
       <div className="review-content">{review.content}</div>
-      <div className="review-date">{review.date}</div>
     </div>
   )
 }
@@ -81,6 +74,7 @@ const Home = () => {
   const [visionRevealed, setVisionRevealed] = useState(false)
   const [reviewsRevealed, setReviewsRevealed] = useState(false)
   const [showCopyToast, setShowCopyToast] = useState(false)
+  const [showAndroidModal, setShowAndroidModal] = useState(false)
   const copyToastTimer = useRef(null)
   const productFadeOutTimer = useRef(null)
   const featuresFadeOutTimer = useRef(null)
@@ -95,6 +89,32 @@ const Home = () => {
 
   useEffect(() => {
     return () => { if (copyToastTimer.current) clearTimeout(copyToastTimer.current) }
+  }, [])
+
+  // 关键词悬浮交互效果
+  useEffect(() => {
+    const handleKeywordHover = (e) => {
+      const keyword = e.target.closest('.keyword-highlight')
+      if (!keyword) return
+      const target = keyword.getAttribute('data-target')
+      if (!target) return
+      const gridImage = document.querySelector(`.grid-image[data-keyword="${target}"]`)
+      if (gridImage) gridImage.classList.add('keyword-active')
+    }
+    const handleKeywordLeave = (e) => {
+      const keyword = e.target.closest('.keyword-highlight')
+      if (!keyword) return
+      const target = keyword.getAttribute('data-target')
+      if (!target) return
+      const gridImage = document.querySelector(`.grid-image[data-keyword="${target}"]`)
+      if (gridImage) gridImage.classList.remove('keyword-active')
+    }
+    document.addEventListener('mouseover', handleKeywordHover)
+    document.addEventListener('mouseout', handleKeywordLeave)
+    return () => {
+      document.removeEventListener('mouseover', handleKeywordHover)
+      document.removeEventListener('mouseout', handleKeywordLeave)
+    }
   }, [])
 
   // 首屏（hero + 数据横幅）：只淡入、不淡出
@@ -202,69 +222,51 @@ const Home = () => {
     'CY': 15,      // 塞浦路斯
   }
 
-  // 评价数据 - 可以直接在这里添加或修改评价；avatar 为头像 URL（外链或 public 下路径）
-  const reviews = [
+  // 评价数据
+  const reviews = useMemo(() => [
     {
       name: '小雨',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaoyu&size=128',
-      location: language === 'zh' ? '🇨🇳 北京' : '🇨🇳 Beijing',
       content: language === 'zh' 
         ? '我之前去巴黎要是有这个app可以方便好多！！！巴黎好多用户呀！下次一定用！'
         : 'If I had this app when I went to Paris, it would have been so much more convenient!!! There are so many users in Paris! I\'ll definitely use it next time!',
-      rating: 5,
-      date: language === 'zh' ? '2024年4月' : 'April 2024'
+      rating: 5
     },
     {
       name: '小吴',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaowu&size=128',
-      location: language === 'zh' ? '🇨🇳 上海' : '🇨🇳 Shanghai',
       content: language === 'zh'
         ? '刚刚下载了EuroStay你们变化好大哈哈哈哈，记得一开始只是一个小程序，现在的App好好用好丝滑啊，加油！'
         : 'Just downloaded EuroStay and you\'ve changed so much hahaha! I remember it was just a mini-program at first, but now the App is so smooth and easy to use. Keep it up!',
-      rating: 5,
-      date: language === 'zh' ? '2024年4月' : 'April 2024'
+      rating: 5
     },
     {
       name: '小杨',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=xiaoyang&size=128',
-      location: language === 'zh' ? '🇨🇳 广州' : '🇨🇳 Guangzhou',
       content: language === 'zh'
         ? '加油啊！真的很好看，我在上面已经成功找到3个换宿了！体验都非常棒，我们后来也有联系，等待其中两位朋友来我家玩ing'
         : 'Keep it up! It\'s really great! I\'ve successfully found 3 homestays on the platform! All experiences were amazing, and we\'ve kept in touch. Waiting for two of those friends to come visit me!',
-      rating: 5,
-      date: language === 'zh' ? '2024年3月' : 'March 2024'
+      rating: 5
     },
     {
       name: '火星',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=huoxing&size=128',
-      location: language === 'zh' ? '🇨🇳 杭州' : '🇨🇳 Hangzhou',
       content: language === 'zh'
         ? '第一次知道你们的App，非常有趣，马上下载了成为新用户～期待我的第一次换宿体验！'
         : 'First time learning about your App, very interesting! Downloaded it immediately and became a new user. Looking forward to my first homestay experience!',
-      rating: 5,
-      date: language === 'zh' ? '2024年4月' : 'April 2024'
+      rating: 5
     },
     {
       name: 'Alex',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=alex&size=128',
-      location: language === 'zh' ? '🇳🇱 阿姆斯特丹' : '🇳🇱 Amsterdam',
       content: language === 'zh'
         ? '在EuroStay上找到了超棒的换宿机会！Host非常热情，带我体验了真正的荷兰生活。房间干净整洁，位置也很好。强烈推荐！'
         : 'Found an amazing homestay opportunity on EuroStay! The host was very welcoming and showed me the real Dutch life. The room was clean and tidy, and the location was great. Highly recommended!',
-      rating: 5,
-      date: language === 'zh' ? '2024年3月' : 'March 2024'
+      rating: 5
     },
     {
       name: 'Maria',
-      avatar: 'https://api.dicebear.com/7.x/identicon/png?seed=maria&size=128',
-      location: language === 'zh' ? '🇫🇷 巴黎' : '🇫🇷 Paris',
       content: language === 'zh'
         ? '通过EuroStay在巴黎找到了完美的换宿机会。主人是一位艺术家，不仅提供了舒适的住所，还带我参观了当地的艺术场所。这是一次难忘的经历！'
         : 'Found the perfect homestay opportunity in Paris through EuroStay. The host was an artist who not only provided a comfortable place but also took me to local art venues. An unforgettable experience!',
-      rating: 5,
-      date: language === 'zh' ? '2024年2月' : 'February 2024'
+      rating: 5
     }
-  ]
+  ], [language])
 
   const scrollGallery = (direction) => {
     if (galleryContainerRef.current) {
@@ -464,7 +466,7 @@ const Home = () => {
                 className="btn btn-secondary"
                 onClick={(e) => {
                   e.preventDefault()
-                  alert(language === 'zh' ? '下载链接将在这里添加' : 'Download link will be added here')
+                  setShowAndroidModal(true)
                 }}
               >
                 {t.downloadAndroid}
@@ -622,40 +624,40 @@ const Home = () => {
             <FadeSection className="feature-card">
               <div className="feature-image feature-image-grid">
                 <div className="image-grid-container">
-                  <div className="grid-image grid-image-1">
+                  <div className="grid-image grid-image-1" data-keyword="实名认证">
                     <img 
                       src={`${import.meta.env.BASE_URL}images/home/features/security/1.jpeg`}
-                      alt={language === 'zh' ? '图片 1' : 'Image 1'}
+                      alt={language === 'zh' ? '实名认证' : 'Identity Verification'}
                       className="grid-image-img"
                       loading="lazy"
                       decoding="async"
                       fetchPriority="low"
                     />
                   </div>
-                  <div className="grid-image grid-image-2">
+                  <div className="grid-image grid-image-2" data-keyword="换宿 checklist">
                     <img 
                       src={`${import.meta.env.BASE_URL}images/home/features/security/2.jpeg`}
-                      alt={language === 'zh' ? '图片 2' : 'Image 2'}
+                      alt={language === 'zh' ? '换宿 checklist' : 'Homestay Checklist'}
                       className="grid-image-img"
                       loading="lazy"
                       decoding="async"
                       fetchPriority="low"
                     />
                   </div>
-                  <div className="grid-image grid-image-3">
+                  <div className="grid-image grid-image-3" data-keyword="双向评价">
                     <img 
                       src={`${import.meta.env.BASE_URL}images/home/features/security/3.jpeg`}
-                      alt={language === 'zh' ? '图片 3' : 'Image 3'}
+                      alt={language === 'zh' ? '双向评价' : 'Two-way Review'}
                       className="grid-image-img"
                       loading="lazy"
                       decoding="async"
                       fetchPriority="low"
                     />
                   </div>
-                  <div className="grid-image grid-image-4">
+                  <div className="grid-image grid-image-4" data-keyword="举报系统">
                     <img 
                       src={`${import.meta.env.BASE_URL}images/home/features/security/4.jpeg`}
-                      alt={language === 'zh' ? '图片 4' : 'Image 4'}
+                      alt={language === 'zh' ? '举报系统' : 'Reporting System'}
                       className="grid-image-img"
                       loading="lazy"
                       decoding="async"
@@ -679,7 +681,25 @@ const Home = () => {
                     ) : t.feature2Title}
                   </h3>
                   <p className="feature-card-subtitle">{t.feature2Subtitle}</p>
-                  <p className="feature-card-desc feature-card-desc-small">{t.feature2Desc}</p>
+                  <p className="feature-card-desc feature-card-desc-small">
+                    {language === 'zh' ? (
+                      <>
+                        EuroStay 提供一套完整的换宿支持机制，包括
+                        <span className="keyword-highlight" data-target="实名认证">实名认证</span>、
+                        <span className="keyword-highlight" data-target="换宿 checklist">换宿 checklist</span>、
+                        <span className="keyword-highlight" data-target="双向评价">双向评价</span>与
+                        <span className="keyword-highlight" data-target="举报系统">举报系统</span>，帮助你在做出选择前，拥有更多判断依据。
+                      </>
+                    ) : (
+                      <>
+                        EuroStay provides a complete homestay support system—including 
+                        <span className="keyword-highlight" data-target="实名认证">identity verification</span>, 
+                        <span className="keyword-highlight" data-target="换宿 checklist">homestay checklist</span>, 
+                        <span className="keyword-highlight" data-target="双向评价">two-way reviews</span> and 
+                        <span className="keyword-highlight" data-target="举报系统">reporting</span>—so you have more to go on before you choose.
+                      </>
+                    )}
+                  </p>
                 </div>
               </div>
             </FadeSection>
@@ -884,15 +904,10 @@ const Home = () => {
         <div className="container">
           <div className="vision-header">
             <h2 className="vision-title-primary">{t.visionTitlePrimary}</h2>
-            <h2 className="vision-title-secondary">{t.visionTitleSecondary}</h2>
             <p className="vision-tagline">{t.visionTagline}</p>
           </div>
 
-          <div className="vision-description">
-            <p>{t.visionDesc1}</p>
-            <p>{t.visionDesc2}</p>
-            <p>{t.visionDesc3}</p>
-          </div>
+          <p className="vision-description">{t.visionDesc}</p>
 
 
           <div className="vision-gallery">
@@ -936,7 +951,7 @@ const Home = () => {
         <h2 className="reviews-title">{t.reviewsTitle}</h2>
         <div className="reviews-grid">
           {reviews.map((review, index) => (
-            <ReviewCard key={index} review={review} language={language} />
+            <ReviewCard key={index} review={review} index={index} />
           ))}
         </div>
         <div className="vision-cta">
@@ -957,6 +972,22 @@ const Home = () => {
             <span className="copy-toast-text">
               {language === 'zh' ? '已经复制微信号：EuroStay' : 'WeChat ID copied: EuroStay'}
             </span>
+          </div>
+        </div>
+      )}
+
+      {/* Android 弹窗 */}
+      {showAndroidModal && (
+        <div className="android-modal-overlay" onClick={() => setShowAndroidModal(false)}>
+          <div className="android-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="android-modal-close" onClick={() => setShowAndroidModal(false)}>×</button>
+            <div className="android-modal-content">
+              <h3>{language === 'zh' ? '暂未上线 Android 版本' : 'Android Version Not Available Yet'}</h3>
+              <p>{language === 'zh' ? '目前 EuroStay 仅支持 iOS 系统，建议购入苹果设备以获得最佳体验！' : 'EuroStay currently only supports iOS. We recommend getting an Apple device for the best experience!'}</p>
+              <button className="android-modal-btn" onClick={() => setShowAndroidModal(false)}>
+                {language === 'zh' ? '我知道了' : 'Got it'}
+              </button>
+            </div>
           </div>
         </div>
       )}

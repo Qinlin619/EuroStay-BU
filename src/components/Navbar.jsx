@@ -49,6 +49,18 @@ const Navbar = () => {
           ))}
           <li>
             <button
+              className="navbar-tip-btn"
+              onClick={() => {
+                setIsMenuOpen(false)
+                document.getElementById('footer-likes')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+              aria-label="Tip"
+            >
+              {t.nav.tip}
+            </button>
+          </li>
+          <li>
+            <button
               className="download-button"
               onClick={() => {
                 setIsMenuOpen(false)

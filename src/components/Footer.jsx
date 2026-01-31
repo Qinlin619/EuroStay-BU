@@ -66,37 +66,42 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer-bottom">
-        <div className="qr-codes">
-          <div className="qr-code-item">
-            <div className="qr-code-placeholder">
-              <span>{t.xiaohongshu}</span>
+      <div id="footer-likes" className="footer-bottom">
+        <div className="footer-bottom-container">
+          <div className="qr-codes">
+            <div className="qr-code-item">
+              <div className="qr-code-placeholder">
+                <span>{t.xiaohongshu}</span>
+              </div>
+              <p className="qr-code-label">{t.xiaohongshu}</p>
             </div>
-            <p className="qr-code-label">{t.xiaohongshu}</p>
+            <div className="qr-code-item">
+              <div className="qr-code-placeholder">
+                <span>{t.wechatOfficial}</span>
+              </div>
+              <p className="qr-code-label">{t.wechatOfficial}</p>
+            </div>
+            <div className="qr-code-item">
+              <div className="qr-code-placeholder">
+                <span>{t.wechatMini}</span>
+              </div>
+              <p className="qr-code-label">{t.wechatMini}</p>
+            </div>
+            <div className="qr-code-item">
+              <div className="qr-code-placeholder">
+                <span>{t.wechat}</span>
+              </div>
+              <p className="qr-code-label">{t.wechat}</p>
+            </div>
+            <div className="qr-code-item">
+              <div className="qr-code-placeholder">
+                <span>{t.douyin}</span>
+              </div>
+              <p className="qr-code-label">{t.douyin}</p>
+            </div>
           </div>
-          <div className="qr-code-item">
-            <div className="qr-code-placeholder">
-              <span>{t.wechatOfficial}</span>
-            </div>
-            <p className="qr-code-label">{t.wechatOfficial}</p>
-          </div>
-          <div className="qr-code-item">
-            <div className="qr-code-placeholder">
-              <span>{t.wechatMini}</span>
-            </div>
-            <p className="qr-code-label">{t.wechatMini}</p>
-          </div>
-          <div className="qr-code-item">
-            <div className="qr-code-placeholder">
-              <span>{t.wechat}</span>
-            </div>
-            <p className="qr-code-label">{t.wechat}</p>
-          </div>
-          <div className="qr-code-item">
-            <div className="qr-code-placeholder">
-              <span>{t.douyin}</span>
-            </div>
-            <p className="qr-code-label">{t.douyin}</p>
+          <div className="thumbs-up-icon">
+            👍
           </div>
         </div>
       </div>

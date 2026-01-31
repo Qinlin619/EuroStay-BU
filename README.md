@@ -77,15 +77,16 @@ EuroStay_website/
 - 二级黄色：`#FFEDBE`
 - 红色：`#FF5E5E`
 
-## 部署到 GitHub Pages
+## 部署到 GitHub Pages（固定流程，以后都这么推）
 
-项目已配置 GitHub Actions 自动部署。要启用部署：
-
-1. 前往 GitHub 仓库设置：`Settings` > `Pages`
-2. 在 `Source` 部分，选择 `GitHub Actions` 作为部署源
-3. 每次推送到 `main` 分支时，GitHub Actions 会自动构建并部署网站
-
-网站将部署到：`https://qinlin619.github.io/EuroStay-BU/`
+- **发布方式**：从 **main 分支根目录** 部署（不用 GitHub Actions 的 artifact，用「从分支部署」）。
+- **推送**：平时正常往 **main** 推代码；每次推 main 会触发 workflow，自动 `npm run build`，把 `dist/` 里的 `index.html`、`404.html`、`assets/`、`images/` 复制到仓库根并再推一次 main（commit 带 `[skip ci]`）。
+- **仓库设置**（只需设一次）：
+  1. 打开 `Settings` → `Pages`
+  2. **Source** 选 **Deploy from a branch**
+  3. **Branch** 选 **main**
+  4. **Folder** 选 **/ (root)**
+- **站点地址**：`https://qinlin619.github.io/EuroStay-BU/`
 
 ## 图片与性能
 

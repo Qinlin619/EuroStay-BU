@@ -877,25 +877,170 @@
 }
 
 /* 悬停效果 - 放大置顶 */
-.grid-image:hover {
+.grid-image:hover,
+.grid-image.keyword-active {
   z-index: 10 !important;
   box-shadow: 0 1.2rem 3.5rem rgba(122, 99, 199, 0.4);
 }
 
-.grid-image-1:hover {
+.grid-image-1:hover,
+.grid-image-1.keyword-active {
   transform: translate(-11.0rem, -13.0rem) scale(1.1) rotate(0deg) !important;
 }
 
-.grid-image-2:hover {
+.grid-image-2:hover,
+.grid-image-2.keyword-active {
   transform: translate(11.0rem, -9.0rem) scale(1.1) rotate(0deg) !important;
 }
 
-.grid-image-3:hover {
+.grid-image-3:hover,
+.grid-image-3.keyword-active {
   transform: translate(-13.0rem, 12.0rem) scale(1.1) rotate(0deg) !important;
 }
 
-.grid-image-4:hover {
+.grid-image-4:hover,
+.grid-image-4.keyword-active {
   transform: translate(12.0rem, 14.0rem) scale(1.1) rotate(0deg) !important;
+}
+
+/* 关键词高亮样式 */
+.keyword-highlight {
+  color: var(--color-purple-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.keyword-highlight:hover {
+  color: var(--color-purple-secondary);
+}
+
+/* Android 弹窗样式 */
+.android-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.android-modal {
+  background: linear-gradient(135deg, #FFD93D 0%, #F7C844 100%);
+  border-radius: 2.0rem;
+  padding: 4.0rem 3.0rem;
+  max-width: 50.0rem;
+  width: 90%;
+  box-shadow: 0 1.0rem 4.0rem rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(3.0rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.android-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.android-modal-close:hover {
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(0, 0, 0, 0.8);
+  transform: rotate(90deg);
+}
+
+.android-modal-content {
+  text-align: center;
+}
+
+.android-modal-content h3 {
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.android-modal-content p {
+  font-size: 1.8rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 3.0rem;
+}
+
+.android-modal-btn {
+  background: #fff;
+  color: #F7C844;
+  border: none;
+  border-radius: 1.0rem;
+  padding: 1.2rem 3.0rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0.4rem 1.0rem rgba(0, 0, 0, 0.1);
+}
+
+.android-modal-btn:hover {
+  transform: translateY(-0.2rem);
+  box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 76.8rem) {
+  .android-modal {
+    padding: 3.0rem 2.0rem;
+    border-radius: 1.5rem;
+  }
+
+  .android-modal-content h3 {
+    font-size: 2.2rem;
+  }
+
+  .android-modal-content p {
+    font-size: 1.6rem;
+  }
+
+  .android-modal-btn {
+    font-size: 1.6rem;
+    padding: 1.0rem 2.5rem;
+  }
 }
 
 .feature-community-gallery {
@@ -1890,28 +2035,24 @@
 }
 
 .vision-tagline {
-  font-size: 2.2rem;
-  color: var(--color-purple-secondary);
+  font-size: 1.9rem;
+  color: var(--color-purple-primary);
   max-width: 90.0rem;
-  margin: 0 auto;
-  line-height: 1.8;
-  font-weight: 500;
-  letter-spacing: 0.02em;
+  margin: 1.5rem auto 0;
+  line-height: 1.6;
+  font-weight: 400;
   padding: 0 2.0rem;
   text-align: center;
 }
 
 .vision-description {
-  max-width: 120.0rem;
+  max-width: 85.0rem;
   margin: 0 auto 6.0rem;
-  line-height: 1.8;
-  text-align: center;
-}
-
-.vision-description p {
-  font-size: 1.6rem;
-  color: var(--color-text-default);
-  margin-bottom: 2.0rem;
+  font-size: 1.9rem;
+  font-weight: 300;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
+  color: var(--color-text-unselected);
   text-align: center;
 }
 
@@ -1954,12 +2095,6 @@
   border-radius: 1.2rem;
   overflow: hidden;
   box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.host-card:hover {
-  transform: translateY(-0.4rem);
-  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.15);
 }
 
 .host-card-banner {
@@ -2159,7 +2294,9 @@
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  gap: 2.0rem;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
 }
 
 .review-card:hover {
@@ -2168,53 +2305,62 @@
   border-color: var(--color-purple-secondary);
 }
 
-.review-header {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
+/* Apple iOS 风格头像 */
 .review-avatar {
   width: 5.0rem;
   height: 5.0rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-purple-secondary));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-white);
-  font-size: 2.0rem;
-  font-weight: bold;
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   flex-shrink: 0;
   overflow: hidden;
 }
 
-.review-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.review-avatar-ios.ios-blue {
+  background: linear-gradient(145deg, #5ac8fa 0%, #007aff 100%);
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
 }
 
-.review-user-info {
-  flex: 1;
+.review-avatar-ios.ios-green {
+  background: linear-gradient(145deg, #30d158 0%, #34c759 100%);
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
+}
+
+.review-avatar-ios.ios-orange {
+  background: linear-gradient(145deg, #ff9f0a 0%, #ff9500 100%);
+  box-shadow: 0 2px 8px rgba(255, 149, 0, 0.3);
+}
+
+.review-avatar-ios.ios-purple {
+  background: linear-gradient(145deg, #bf5af2 0%, #af52de 100%);
+  box-shadow: 0 2px 8px rgba(175, 82, 222, 0.3);
+}
+
+.review-avatar-ios.ios-pink {
+  background: linear-gradient(145deg, #ff375f 0%, #ff2d55 100%);
+  box-shadow: 0 2px 8px rgba(255, 45, 85, 0.3);
+}
+
+.review-avatar-ios.ios-teal {
+  background: linear-gradient(145deg, #64d2ff 0%, #5ac8fa 100%);
+  box-shadow: 0 2px 8px rgba(90, 200, 250, 0.3);
 }
 
 .review-user-name {
   font-size: 1.8rem;
   font-weight: bold;
   color: var(--color-text-default);
-  margin-bottom: 0.4rem;
-}
-
-.review-user-location {
-  font-size: 1.4rem;
-  color: var(--color-text-unselected);
 }
 
 .review-rating {
   display: flex;
+  justify-content: center;
   gap: 0.4rem;
-  margin-bottom: 1.5rem;
 }
 
 .review-star {
@@ -2226,13 +2372,6 @@
   font-size: 1.6rem;
   color: var(--color-text-default);
   line-height: 1.8;
-  flex: 1;
-}
-
-.review-date {
-  font-size: 1.2rem;
-  color: var(--color-text-unselected);
-  margin-top: auto;
 }
 
 @media (max-width: 96.8rem) {
@@ -2675,7 +2814,7 @@
     font-size: 1.4rem;
   }
 
-  .vision-description p,
+  .vision-description,
   .vision-cta p {
     font-size: 1.4rem;
   }
@@ -2718,10 +2857,6 @@
 
   .review-user-name {
     font-size: 1.6rem;
-  }
-
-  .review-user-location {
-    font-size: 1.2rem;
   }
 
   .review-content {
