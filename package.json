@@ -1,6 +1,6 @@
 {
   "name": "eurostay-website",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "EuroStay Company Landing Page",
   "scripts": {
     "dev": "vite",
