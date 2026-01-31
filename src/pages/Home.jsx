@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, lazy, Suspense } from 'react'
+import React, { useRef, useEffect, useState, useMemo, lazy, Suspense } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
@@ -53,6 +53,12 @@ const Home = () => {
   const phoneGalleryRef = useRef(null)
   const stepsContainerRef = useRef(null)
   const communityGalleryRef = useRef(null)
+
+  // 星星随机基准旋转角（挂载时生成一次，避免重复）
+  const starRotations = useMemo(
+    () => Array.from({ length: 10 }, () => Math.round((Math.random() - 0.5) * 80)),
+    []
+  )
 
   // 进入视口 1/3 处淡入，离开视口 1/8 处淡出（常见滚动交互）；首屏 hero+stats 不淡出
   const revealRootMargin = '-33.333% 0px -12.5% 0px'
@@ -596,9 +602,9 @@ const Home = () => {
               </div>
               <div className="feature-card-content">
                 <div className="feature-card-text-wrap">
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[0]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[1]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[2]}deg` }} />
                   <h3>
                     {(t.feature1Title.split('\n').length > 1) ? (
                       <>
@@ -660,9 +666,9 @@ const Home = () => {
               </div>
               <div className="feature-card-content">
                 <div className="feature-card-text-wrap feature-card-text-wrap--right">
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[3]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[4]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[5]}deg` }} />
                   <h3>
                     {(t.feature2Title.split('\n').length > 1) ? (
                       <>
@@ -846,9 +852,10 @@ const Home = () => {
               </div>
               <div className="feature-card-content">
                 <div className="feature-card-text-wrap feature-card-text-wrap--left">
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden />
-                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[6]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[7]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[8]}deg` }} />
+                  <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--4" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[9]}deg` }} />
                   <h3>
                     {(t.feature3Title.split('\n').length > 1) ? (
                       <>

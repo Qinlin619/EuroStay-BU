@@ -268,8 +268,10 @@
   max-width: 100.0rem;
   margin: 12rem auto 0;
   padding-top: 0;
+  text-align: center;
 }
 
+/* 大标题：与文字同长的黄色背景 */
 .steps-title {
   font-size: 4.8rem;
   font-weight: bold;
@@ -280,6 +282,11 @@
   opacity: 0;
   transform: translateY(-2.0rem);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  display: inline-block;
+  background: var(--color-yellow-secondary);
+  padding: 0.12em 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .steps-flow.animate .steps-title {
@@ -308,7 +315,7 @@
 .guide-modules {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6.0rem;
+  gap: calc(6.0rem + 50px);
   max-width: 92.0rem;
   margin: 0 auto;
   padding: 2.0rem 0;
@@ -613,12 +620,21 @@
   margin: 0 auto;
 }
 
-.section-title {
+/* 仅首页 features 区块的 section-title：与文字同长的黄色背景 */
+.features .section-title {
   text-align: center;
   font-size: 4.8rem;
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 1.5rem;
+  display: inline-block;
+  background: var(--color-yellow-secondary);
+  padding: 0.12em 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.features .container {
+  text-align: center;
 }
 
 .features-subtitle {
@@ -1136,6 +1152,10 @@
   margin-top: -20px;
 }
 
+.feature-card:first-child .feature-card-content {
+  text-align: right;
+}
+
 .feature-card:first-child .feature-card-text-wrap h3,
 .feature-card:first-child .feature-card-text-wrap .feature-card-subtitle,
 .feature-card:first-child .feature-card-text-wrap .feature-card-desc-small {
@@ -1143,15 +1163,15 @@
   z-index: 1;
 }
 
-/* 星星背景动效 */
+/* 星星背景动效（基准旋转由 --star-rotate 控制，每颗星随机） */
 @keyframes star-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-0.4rem) rotate(3deg); }
+  0%, 100% { transform: translateY(0) rotate(var(--star-rotate, 0deg)); }
+  50% { transform: translateY(-0.4rem) rotate(calc(var(--star-rotate, 0deg) + 3deg)); }
 }
 
 @keyframes star-float-alt {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(0.35rem) rotate(-2deg); }
+  0%, 100% { transform: translateY(0) rotate(var(--star-rotate, 0deg)); }
+  50% { transform: translateY(0.35rem) rotate(calc(var(--star-rotate, 0deg) - 2deg)); }
 }
 
 .feature-card-star-bg {
@@ -1208,37 +1228,59 @@
   right: -0.5rem;
 }
 
-/* 第二张卡片：星星偏左但高低错开，不对称 */
+/* 第二张卡片：星1 放大1.6倍，放在「换宿安全」的「安」字右上角，略重叠 */
 .feature-card:nth-child(2) .feature-card-star-bg--1 {
-  top: 0.5rem;
-  right: auto;
-  left: -1.5rem;
+  width: 6.7rem;
+  height: 6.7rem;
+  top: calc(0.2rem - 40px);
+  left: auto;
+  right: calc(0.5rem - 10px);
 }
 .feature-card:nth-child(2) .feature-card-star-bg--2 {
-  top: 7rem;
-  left: 2rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  top: 6rem;
+  left: -1rem;
 }
 .feature-card:nth-child(2) .feature-card-star-bg--3 {
-  bottom: 2.5rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  bottom: 1rem;
   right: auto;
-  left: -0.5rem;
+  left: 1rem;
 }
 
-/* 第三张卡片：星星偏右但高低错开，不对称 */
+/* 第三张卡片：星星重新排布，分散、大小不一、少挡文字 */
+/* 第三张卡片星1：放大2倍，放在「包」和「客」中间上方 */
 .feature-card:nth-child(3) .feature-card-star-bg--1 {
-  top: 2rem;
+  width: 8rem;
+  height: 8rem;
+  top: calc(-0.5rem - 50px);
+  left: 5.5rem;
+  right: auto;
+}
+.feature-card:nth-child(3) .feature-card-star-bg--2 {
+  width: 2.8rem;
+  height: 2.8rem;
+  top: 5.5rem;
+  left: auto;
+  right: 0.5rem;
+}
+.feature-card:nth-child(3) .feature-card-star-bg--3 {
+  width: 3.2rem;
+  height: 3.2rem;
+  bottom: 2rem;
   left: auto;
   right: -1rem;
 }
-.feature-card:nth-child(3) .feature-card-star-bg--2 {
-  top: 6.5rem;
-  left: auto;
-  right: 1.5rem;
-}
-.feature-card:nth-child(3) .feature-card-star-bg--3 {
-  bottom: 1rem;
-  left: auto;
-  right: -2rem;
+
+/* 第三张卡片：小星放在「线上之外」的「线」字左上方 */
+.feature-card:nth-child(3) .feature-card-star-bg--4 {
+  width: 1.8rem;
+  height: 1.8rem;
+  top: 7.8rem;
+  left: -0.3rem;
+  right: auto;
 }
 
 .feature-card:nth-child(odd) .feature-card-content {
@@ -1282,7 +1324,8 @@
   display: block;
   line-height: 1.1;
   margin-bottom: -2.5rem;
-  background: linear-gradient(135deg, #8B7BC7 0%, #A898E0 40%, #C4B6F5 100%);
+  letter-spacing: 0.06em;
+  background: linear-gradient(180deg, #C4B6F5 0%, #B4A4E8 30%, #A898E0 55%, #8B7BC7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1297,6 +1340,7 @@
   font-size: 4.4rem;
   margin-top: -2.5rem;
   display: block;
+  letter-spacing: 0.08em;
   color: var(--color-purple-primary);
   -webkit-text-fill-color: var(--color-purple-primary);
 }
@@ -1305,6 +1349,24 @@
 .feature-card:nth-child(2) .feature-card-text-wrap,
 .feature-card:nth-child(3) .feature-card-text-wrap {
   position: relative;
+}
+
+.feature-card:nth-child(2) .feature-card-content {
+  text-align: right;
+}
+
+/* 第二张卡片：正文块与标题右缘对齐 */
+.feature-card:nth-child(2) .feature-card-desc-small,
+.feature-card:nth-child(2) .feature-card-content p.feature-card-desc-small {
+  margin-left: auto;
+  max-width: 85%;
+  text-align: justify;
+  text-align-last: right;
+}
+
+.feature-card:nth-child(3) .feature-card-desc-small,
+.feature-card:nth-child(3) .feature-card-content p.feature-card-desc-small {
+  max-width: calc(85% + 20px);
 }
 
 .feature-card:nth-child(2) .feature-card-text-wrap h3,
@@ -1317,37 +1379,69 @@
   z-index: 1;
 }
 
-.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line1,
+/* 第二张卡片标题「换宿安全」：与「快速链接」同款渐变 + 字间距 */
+.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line1 {
+  font-size: 6.5rem;
+  display: block;
+  line-height: 1.1;
+  margin-bottom: -2.5rem;
+  letter-spacing: 0.12em;
+  background: linear-gradient(180deg, #8B7BC7 0%, #A898E0 40%, #C4B6F5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+/* 第三张卡片：与「快速链接」同款格式——渐变、字间距、两行间距 */
 .feature-card:nth-child(3) .feature-card-text-wrap h3 .feature-title-line1 {
   font-size: 6.5rem;
   display: block;
   line-height: 1.1;
   margin-bottom: -2.5rem;
+  letter-spacing: 0.12em;
+  background: linear-gradient(135deg, #8B7BC7 0%, #A898E0 25%, #C4B6F5 50%, #A898E0 75%, #8B7BC7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+
+/* 第二张卡片「通过安全机制增强」：与「世界各地的换宿伙伴」同款字间距，与「换宿安全」间距加大 10px */
+.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line2 {
+  font-weight: 600;
+  font-size: 4.4rem;
+  margin-top: calc(-2.5rem + 15px);
+  display: block;
+  letter-spacing: 0.08em;
   color: var(--color-purple-primary);
   -webkit-text-fill-color: var(--color-purple-primary);
 }
 
-.feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line2,
 .feature-card:nth-child(3) .feature-card-text-wrap h3 .feature-title-line2 {
   font-weight: 600;
   font-size: 4.4rem;
-  margin-top: -2.5rem;
+  margin-top: calc(-2.5rem + 20px);
   display: block;
+  letter-spacing: 0.08em;
   color: var(--color-purple-primary);
   -webkit-text-fill-color: var(--color-purple-primary);
 }
 
 .feature-card-subtitle {
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: 400;
   line-height: 1.6;
+  letter-spacing: 0.02em;
   margin: 0 0 3rem;
 }
 
 /* 副标题单独设紫色，避免被 .feature-card-content p 的灰色覆盖 */
 .feature-card-content p.feature-card-subtitle {
   color: var(--color-purple-primary);
-  font-size: 2rem;
+  font-size: 1.9rem;
 }
 
 .feature-card-content p {
@@ -1358,16 +1452,18 @@
 }
 
 .feature-card-desc-small {
-  font-size: 2rem;
+  font-size: 1.9rem;
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
   color: var(--color-text-unselected);
   white-space: pre-line;
   text-align: justify;
+  max-width: 78%;
 }
 
 .feature-card-content p.feature-card-desc-small {
-  font-size: 2rem;
+  font-size: 1.9rem;
   margin-top: 3rem;
   text-align: justify;
 }
@@ -1713,6 +1809,11 @@
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 1.0rem;
+  display: inline-block;
+  background: var(--color-yellow-secondary);
+  padding: 0.12em 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .vision-title-secondary {
@@ -1938,6 +2039,7 @@
   background-color: var(--color-white);
   max-width: 120.0rem;
   margin: 0 auto;
+  text-align: center;
 }
 
 .reviews-title {
@@ -1946,6 +2048,11 @@
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 6.0rem;
+  display: inline-block;
+  background: var(--color-yellow-secondary);
+  padding: 0.12em 0.2em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .reviews-grid {
