@@ -11,8 +11,8 @@ import About from './pages/About'
 import './App.css'
 
 function App() {
-  // 获取 base 路径，用于 GitHub Pages
-  const basename = import.meta.env.BASE_URL || '/'
+  // 生产环境（GitHub Pages 子路径）用固定 basename，开发用 /
+  const basename = import.meta.env.PROD ? '/EuroStay-BU/' : '/'
   
   // 禁用页面缩放
   useEffect(() => {
