@@ -1,3 +1,5 @@
+# 部署到 GitHub Pages（必须使用 Actions 部署，不要用「从分支部署」）
+# 若出现 main.jsx 或 404，请到仓库 Settings -> Pages -> Source 选「GitHub Actions」
 name: Deploy to GitHub Pages
 
 on:
