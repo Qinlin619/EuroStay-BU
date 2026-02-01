@@ -2,12 +2,86 @@ import React, { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Globe from 'globe.gl'
 import * as THREE from 'three'
+import { translations } from '../translations'
 import './Globe3D.css'
 
-const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker, onMarkerHover, countryUserCounts = {}, language = 'zh' }) => {
+// 故事地点 -> 国家 ISO_A2，用于点击国家时跳转/弹窗
+const LOCATION_TO_COUNTRY = {
+  '巴黎, 法国': 'FR', 'Paris, France': 'FR', '巴黎': 'FR', 'Paris': 'FR',
+  '巴塞罗那, 西班牙': 'ES', 'Barcelona, Spain': 'ES', '巴塞罗那': 'ES', 'Barcelona': 'ES',
+  '阿姆斯特丹, 荷兰': 'NL', 'Amsterdam, Netherlands': 'NL', '阿姆斯特丹': 'NL', 'Amsterdam': 'NL',
+  '罗马, 意大利': 'IT', 'Rome, Italy': 'IT', '罗马': 'IT', 'Rome': 'IT',
+  '柏林, 德国': 'DE', 'Berlin, Germany': 'DE', '柏林': 'DE', 'Berlin': 'DE',
+  '伦敦, 英国': 'GB', 'London, UK': 'GB', '伦敦': 'GB', 'London': 'GB',
+  '里斯本, 葡萄牙': 'PT', 'Lisbon, Portugal': 'PT', '里斯本': 'PT', 'Lisbon': 'PT',
+  '维也纳, 奥地利': 'AT', 'Vienna, Austria': 'AT', '维也纳': 'AT', 'Vienna': 'AT',
+}
+
+// 无故事国家点击时用于旋转地球的近似中心（lat, lng）
+const COUNTRY_CENTER = {
+  FR: { lat: 46.2, lng: 2.2 }, ES: { lat: 40.4, lng: -3.7 }, NL: { lat: 52.13, lng: 5.29 },
+  IT: { lat: 41.9, lng: 12.5 }, DE: { lat: 51.2, lng: 10.5 }, GB: { lat: 54.0, lng: -2.5 },
+  PT: { lat: 39.5, lng: -8.0 }, AT: { lat: 47.5, lng: 13.3 }, PL: { lat: 52.0, lng: 19.4 },
+  UA: { lat: 49.0, lng: 32.0 }, SE: { lat: 62.0, lng: 15.6 }, NO: { lat: 62.0, lng: 10.0 },
+  FI: { lat: 64.0, lng: 26.0 }, IE: { lat: 53.4, lng: -8.2 }, BE: { lat: 50.5, lng: 4.5 },
+  CH: { lat: 46.8, lng: 8.2 }, CZ: { lat: 49.8, lng: 15.5 }, GR: { lat: 39.1, lng: 21.8 },
+  RO: { lat: 46.0, lng: 25.0 }, HU: { lat: 47.2, lng: 19.5 }, RU: { lat: 60.0, lng: 100.0 },
+  US: { lat: 38.0, lng: -97.0 }, CN: { lat: 35.9, lng: 104.2 }, JP: { lat: 36.2, lng: 138.3 },
+  IN: { lat: 20.6, lng: 78.9 }, BR: { lat: -14.2, lng: -51.9 }, AU: { lat: -25.3, lng: 133.8 },
+  CA: { lat: 56.0, lng: -106.0 }, MX: { lat: 23.6, lng: -102.5 }, TR: { lat: 39.0, lng: 35.0 },
+  KR: { lat: 35.9, lng: 127.8 }, DK: { lat: 56.3, lng: 9.5 }, SK: { lat: 48.7, lng: 19.7 },
+}
+
+// 各国首都坐标（lat, lng），用于“固定相机、旋转地球”时把首都转到画面中心
+const COUNTRY_CAPITAL = {
+  FR: { lat: 48.8566, lng: 2.3522 },   // Paris
+  ES: { lat: 40.4168, lng: -3.7038 },   // Madrid
+  NL: { lat: 52.3676, lng: 4.9041 },   // Amsterdam
+  IT: { lat: 41.9028, lng: 12.4964 },   // Rome
+  DE: { lat: 52.52, lng: 13.405 },      // Berlin
+  GB: { lat: 51.5074, lng: -0.1278 },   // London
+  PT: { lat: 38.7223, lng: -9.1393 },   // Lisbon
+  AT: { lat: 48.2082, lng: 16.3738 },   // Vienna
+  PL: { lat: 52.2297, lng: 21.0122 },   // Warsaw
+  UA: { lat: 50.4501, lng: 30.5234 },   // Kyiv
+  SE: { lat: 59.3293, lng: 18.0686 },  // Stockholm
+  NO: { lat: 59.9139, lng: 10.7522 },  // Oslo
+  FI: { lat: 60.1699, lng: 24.9384 },   // Helsinki
+  IE: { lat: 53.3498, lng: -6.2603 },   // Dublin
+  BE: { lat: 50.8503, lng: 4.3517 },    // Brussels
+  CH: { lat: 46.948, lng: 7.4474 },    // Bern
+  CZ: { lat: 50.0755, lng: 14.4378 },  // Prague
+  GR: { lat: 37.9838, lng: 23.7275 },  // Athens
+  RO: { lat: 44.4268, lng: 26.1025 },  // Bucharest
+  HU: { lat: 47.4979, lng: 19.0402 },  // Budapest
+  RU: { lat: 55.7558, lng: 37.6173 },  // Moscow
+  US: { lat: 38.9072, lng: -77.0369 }, // Washington
+  CN: { lat: 39.9042, lng: 116.4074 }, // Beijing
+  JP: { lat: 35.6762, lng: 139.6503 }, // Tokyo
+  IN: { lat: 28.6139, lng: 77.209 },   // New Delhi
+  BR: { lat: -15.7939, lng: -47.8828 }, // Brasília
+  AU: { lat: -35.2809, lng: 149.1300 },// Canberra
+  CA: { lat: 45.4215, lng: -75.6972 },  // Ottawa
+  MX: { lat: 19.4326, lng: -99.1332 },  // Mexico City
+  TR: { lat: 39.9334, lng: 32.8597 },   // Ankara
+  KR: { lat: 37.5665, lng: 126.978 },  // Seoul
+  DK: { lat: 55.6761, lng: 12.5683 },  // Copenhagen
+  SK: { lat: 48.1486, lng: 17.1077 },  // Bratislava
+}
+
+const ISO_A3_TO_A2 = { USA: 'US', GBR: 'GB', TWN: 'TW', HKG: 'HK', MAC: 'MO', PRK: 'KP', RUS: 'RU', BOL: 'BO', VEN: 'VE', TLS: 'TL', PSE: 'PS', COD: 'CD', COG: 'CG', TZA: 'TZ', SYR: 'SY', LBY: 'LY', IRQ: 'IQ', IRN: 'IR', VNM: 'VN', KOR: 'KR', MKD: 'MK', FSM: 'FM', MDA: 'MD', LAO: 'LA' }
+const getIso2FromProps = (p) => {
+  if (!p) return null
+  if (p.ISO_A2) return p.ISO_A2
+  const a3 = (p.ISO_A3 || p.ADM0_A3 || '').toUpperCase()
+  return ISO_A3_TO_A2[a3] || a3.slice(0, 2) || null
+}
+
+const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rotationTransitionMs = 0, onMarkerClick, onCountryClick, onCountryHighlight, hoveredMarker, onMarkerHover, countryUserCounts = {}, language = 'zh', showCountryTooltip = true }) => {
   const globeEl = useRef(null)
   const [activeCard, setActiveCard] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null) // 点击高亮的国家 ISO_A2
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 })
   const [isMouseOverGlobe, setIsMouseOverGlobe] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -15,12 +89,37 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
   const globeRef = useRef(null)
   const countryUserCountsRef = useRef(countryUserCounts)
   const languageRef = useRef(language)
+  const selectedCountryRef = useRef(null)
+  const selectedFeatureRef = useRef(null) // 点击的那一块多边形（仅这块变黄，避免同国多块如法国本土+海外都变黄）
+  const countriesWithStoriesRef = useRef(new Set())
+  const countryToStoryIndicesRef = useRef({})
+
+  // 从 stories 推导：有故事的国家集合 + 国家 -> 故事下标
+  const countriesWithStories = React.useMemo(() => {
+    const countrySet = new Set()
+    const map = {}
+    stories.forEach((s, i) => {
+      const code = LOCATION_TO_COUNTRY[s.location]
+      if (code) {
+        countrySet.add(code)
+        if (!map[code]) map[code] = []
+        map[code].push(i)
+      }
+    })
+    countriesWithStoriesRef.current = countrySet
+    countryToStoryIndicesRef.current = map
+    return countrySet
+  }, [stories])
 
   // 更新 ref 以保持最新值
   useEffect(() => {
     countryUserCountsRef.current = countryUserCounts
     languageRef.current = language
   }, [countryUserCounts, language])
+
+  useEffect(() => {
+    selectedCountryRef.current = selectedCountry
+  }, [selectedCountry])
 
   // Theme colors
   const purplePrimary = '#7A63C7'
@@ -29,9 +128,6 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
   const yellowSecondary = '#FFEDBE'
   // 海洋/球体颜色：只改这里，下面会统一用这个值（贴图 + 材质替换）
   const OCEAN_COLOR = '#F0EFF6'
-
-  // Countries with stories (ISO country codes)
-  const countriesWithStories = new Set(['FR', 'ES', 'NL']) // France, Spain, Netherlands
 
   // Convert location to lat/lng coordinates
   // Map location names to real coordinates
@@ -359,17 +455,12 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
           return `hsl(240, ${saturation}%, ${lightness}%)`
         }
         
-        // 统一从 properties 取两字码（用于颜色、用户数）：优先 ISO_A2，否则由 ISO_A3 映射，所有国家一致
-        const ISO_A3_TO_A2 = { USA: 'US', GBR: 'GB', TWN: 'TW', HKG: 'HK', MAC: 'MO', PRK: 'KP', RUS: 'RU', BOL: 'BO', VEN: 'VE', TLS: 'TL', PSE: 'PS', COD: 'CD', COG: 'CG', TZA: 'TZ', SYR: 'SY', LBY: 'LY', IRQ: 'IQ', IRN: 'IR', VNM: 'VN', KOR: 'KR', MKD: 'MK', FSM: 'FM', MDA: 'MD', LAO: 'LA' }
-        const getIso2 = (p) => {
-          if (!p) return null
-          if (p.ISO_A2) return p.ISO_A2
-          const a3 = (p.ISO_A3 || p.ADM0_A3 || '').toUpperCase()
-          return ISO_A3_TO_A2[a3] || a3.slice(0, 2) || null
-        }
+        const getIso2 = getIso2FromProps
         const colorScale = (feat) => {
           const iso2 = getIso2(feat?.properties)
           if (!iso2) return 'hsl(240, 15%, 75%)'
+          if (selectedFeatureRef.current && feat === selectedFeatureRef.current) return yellowPrimary
+          if (iso2 === selectedCountryRef.current) return yellowPrimary
           const hasStories = countriesWithStories.has(iso2)
           return generateCountryColor(iso2, hasStories)
         }
@@ -381,31 +472,50 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
           .polygonAltitude(0.18)
           .polygonCapColor(feat => colorScale(feat))
           .polygonSideColor((feat) => {
+            if (selectedFeatureRef.current && feat === selectedFeatureRef.current) return 'rgba(255, 211, 94, 0.5)'
             const iso2 = getIso2(feat?.properties)
+            if (iso2 === selectedCountryRef.current) return 'rgba(255, 211, 94, 0.5)'
             const hasStories = iso2 ? countriesWithStories.has(iso2) : false
             return hasStories ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
           })
-          .polygonStrokeColor(() => null)
+          .polygonStrokeColor(() => 'rgba(80, 70, 100, 0.35)')
           .polygonLabel(() => null)
           .polygonCapCurvatureResolution(5)
+          .onPolygonClick((clickedFeat) => {
+            if (!clickedFeat?.properties) return
+            const iso2 = getIso2(clickedFeat.properties)
+            if (!iso2) return
+            selectedFeatureRef.current = clickedFeat
+            setSelectedCountry(iso2)
+            onCountryHighlight?.(iso2)
+            const indices = countryToStoryIndicesRef.current[iso2]
+            const name = clickedFeat.properties.ADMIN || clickedFeat.properties.NAME || iso2
+            if (indices && indices.length > 0) {
+              onMarkerClick?.(indices[0])
+            } else {
+              onCountryClick?.(iso2, null, name)
+            }
+          })
           .onPolygonHover((hoverD, prevHoverD) => {
             if (hoverD !== prevHoverD) {
               world.polygonAltitude(d => d === hoverD ? 0.22 : 0.18)
               world.polygonCapColor(d => d === hoverD ? yellowPrimary : colorScale(d))
               world.polygonSideColor(d => {
                 if (d === hoverD) return 'rgba(255, 211, 94, 0.5)'
+                if (selectedFeatureRef.current && d === selectedFeatureRef.current) return 'rgba(255, 211, 94, 0.5)'
                 const iso2 = getIso2(d?.properties)
+                if (iso2 === selectedCountryRef.current) return 'rgba(255, 211, 94, 0.5)'
                 return iso2 && countriesWithStories.has(iso2) ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
               })
             }
-            // 弹窗：板块变黄就显示，变回就消失，与高亮完全同步
+            // 弹窗：板块变黄就显示，变回就消失，与高亮完全同步；存 iso2 供按语言显示国家名
             if (hoverD && hoverD.properties) {
               const p = hoverD.properties
               const iso2 = getIso2(p)
               const isoDisplay = p.ISO_A2 || p.ISO_A3 || p.ADM0_A3 || iso2 || '—'
               const name = p.ADMIN || p.NAME || isoDisplay || '—'
               const userCount = iso2 ? (countryUserCountsRef.current[iso2] || 0) : 0
-              setHoveredCountry({ isoCode: isoDisplay, name, userCount })
+              setHoveredCountry({ isoCode: isoDisplay, iso2, name, userCount })
             } else {
               setHoveredCountry(null)
             }
@@ -732,6 +842,85 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
     globeRef.current.pointsData(updatedPoints)
   }, [currentIndex, stories])
 
+  // 点击国家后保持黄色高亮：selectedCountry 变化时重刷国家颜色
+  useEffect(() => {
+    const world = globeRef.current
+    if (!world || typeof world.polygonCapColor !== 'function') return
+
+    const getCapColor = (feat) => {
+      if (selectedFeatureRef.current && feat === selectedFeatureRef.current) return yellowPrimary
+      const iso2 = getIso2FromProps(feat?.properties)
+      if (!iso2) return 'hsl(240, 15%, 75%)'
+      if (iso2 === selectedCountryRef.current) return yellowPrimary
+      if (countriesWithStoriesRef.current.has(iso2)) return purplePrimary
+      let hash = 0
+      for (let i = 0; i < iso2.length; i++) hash = iso2.charCodeAt(i) + ((hash << 5) - hash)
+      const lightness = 60 + (Math.abs(hash) % 30)
+      const saturation = 15 + (Math.abs(hash >> 8) % 15)
+      return `hsl(240, ${saturation}%, ${lightness}%)`
+    }
+    world.polygonCapColor(getCapColor)
+    world.polygonSideColor((feat) => {
+      if (selectedFeatureRef.current && feat === selectedFeatureRef.current) return 'rgba(255, 211, 94, 0.5)'
+      const iso2 = getIso2FromProps(feat?.properties)
+      if (iso2 === selectedCountryRef.current) return 'rgba(255, 211, 94, 0.5)'
+      return iso2 && countriesWithStoriesRef.current.has(iso2) ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
+    })
+  }, [selectedCountry])
+
+  // 固定相机不动；选择国家时旋转地球，使该国首都转到画面中心（与初始 pointOfView 的 lat:50 lng:10 对齐）
+  const VIEW_CENTER_LAT = 50
+  const VIEW_CENTER_LNG = 10
+
+  useEffect(() => {
+    if (highlightCountry) {
+      setSelectedCountry(highlightCountry)
+      selectedFeatureRef.current = null
+    }
+    const world = globeRef.current
+    if (!world || typeof world.scene !== 'function' || typeof world.getCoords !== 'function') return
+
+    const scene = world.scene()
+    const globeObj = scene?.children?.find(c => typeof c.getCoords === 'function')
+    if (!globeObj) return
+
+    if (!highlightCountry) {
+      globeObj.quaternion.identity()
+      return
+    }
+
+    // 优先用首都坐标，其次故事地点，再国家中心
+    const capital = COUNTRY_CAPITAL[highlightCountry]
+    const story = stories.find(s => LOCATION_TO_COUNTRY[s.location] === highlightCountry)
+    const coord = capital || (story ? convertToLatLng(story) : null) || COUNTRY_CENTER[highlightCountry]
+    if (!coord) return
+
+    const c0 = world.getCoords(coord.lat, coord.lng, 0)
+    const c1 = world.getCoords(VIEW_CENTER_LAT, VIEW_CENTER_LNG, 0)
+    const fromVec = new THREE.Vector3(c0.x, c0.y, c0.z).normalize()
+    const toVec = new THREE.Vector3(c1.x, c1.y, c1.z).normalize()
+
+    const targetQuat = new THREE.Quaternion().setFromUnitVectors(fromVec, toVec)
+    const transitionMs = typeof rotationTransitionMs === 'number' ? Math.max(0, rotationTransitionMs) : 0
+
+    if (transitionMs <= 0) {
+      globeObj.quaternion.copy(targetQuat)
+      return
+    }
+
+    const startQuat = globeObj.quaternion.clone()
+    const startTime = Date.now()
+    let rafId = null
+
+    const tick = () => {
+      const t = Math.min((Date.now() - startTime) / transitionMs, 1)
+      globeObj.quaternion.slerpQuaternions(startQuat, targetQuat, t)
+      if (t < 1) rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => { if (rafId != null) cancelAnimationFrame(rafId) }
+  }, [highlightCountry, stories, rotationTransitionMs])
+
   // Update card position on mouse move
   useEffect(() => {
     const handleMouseMove = (event) => {
@@ -839,30 +1028,37 @@ const Globe3D = ({ stories = [], currentIndex = 0, onMarkerClick, hoveredMarker,
         </div>,
         document.body
       )}
-      {hoveredCountry !== null && isMouseOverGlobe && createPortal(
-        <div
-          className="globe-country-tooltip"
-          style={{
-            left: `${cardPosition.x}px`,
-            top: `${cardPosition.y}px`,
-          }}
-        >
-          <div className="globe-country-tooltip-name">
-            {hoveredCountry.name}
-          </div>
-          {hoveredCountry.userCount > 0 ? (
-            <div className="globe-country-tooltip-count">
-              <span className="globe-country-tooltip-number">{hoveredCountry.userCount.toLocaleString()}</span>
-              <span className="globe-country-tooltip-label">{language === 'zh' ? '用户' : 'Users'}</span>
+      {showCountryTooltip && hoveredCountry !== null && isMouseOverGlobe && (() => {
+        const t = translations[language]?.globeTooltip || {}
+        const countryNames = t.countryNames || {}
+        const keyA2 = hoveredCountry.iso2 ? String(hoveredCountry.iso2).toUpperCase() : ''
+        const keyA3 = hoveredCountry.isoCode ? String(hoveredCountry.isoCode).toUpperCase() : ''
+        const displayName = (keyA2 && countryNames[keyA2]) ? countryNames[keyA2] : (keyA3 && countryNames[keyA3]) ? countryNames[keyA3] : hoveredCountry.name
+        return createPortal(
+          <div
+            className="globe-country-tooltip"
+            style={{
+              left: `${cardPosition.x}px`,
+              top: `${cardPosition.y}px`,
+            }}
+          >
+            <div className="globe-country-tooltip-name">
+              {displayName}
             </div>
-          ) : (
-            <div className="globe-country-tooltip-empty">
-              {language === 'zh' ? '暂无用户，等你加入' : 'No Users Yet，Join Us'}
-            </div>
-          )}
-        </div>,
-        document.body
-      )}
+            {hoveredCountry.userCount > 0 ? (
+              <div className="globe-country-tooltip-count">
+                <span className="globe-country-tooltip-number">{hoveredCountry.userCount.toLocaleString()}</span>
+                <span className="globe-country-tooltip-label">{t.usersLabel ?? (language === 'zh' ? '用户' : 'Users')}</span>
+              </div>
+            ) : (
+              <div className="globe-country-tooltip-empty">
+                {t.noUsersLabel ?? (language === 'zh' ? '暂无用户，等你加入' : 'No Users Yet, Join Us')}
+              </div>
+            )}
+          </div>,
+          document.body
+        )
+      })()}
     </div>
   )
 }
