@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import FadeSection from '../components/FadeSection'
 import './Products.css'
 
 const Products = () => {
+  const location = useLocation()
   const { language } = useLanguage()
   const t = translations[language].products
   const [expandedSteps, setExpandedSteps] = useState({})
   const [expandedQA, setExpandedQA] = useState({})
+
+  useEffect(() => {
+    if (location.hash === '#qa-section') {
+      const el = document.getElementById('qa-section')
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [location.pathname, location.hash])
 
   const toggleStep = (stepNumber) => {
     setExpandedSteps(prev => ({
@@ -26,25 +35,50 @@ const Products = () => {
 
   return (
     <div className="products-page">
-      <FadeSection as="section" className="tips-section">
+      <FadeSection as="section" className="tips-section guidelines-section">
         <div className="container">
-          <h2 className="section-title">{t.tipsTitle}</h2>
-          <div className="tips-grid">
-            <div className="tip-card">
-              <h4>{t.tip1Title}</h4>
-              <p>{t.tip1Desc}</p>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.tipsTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
             </div>
-            <div className="tip-card">
-              <h4>{t.tip2Title}</h4>
-              <p>{t.tip2Desc}</p>
+          </div>
+          <div className="guidelines-list">
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline1Title}</h3>
+              <p className="guideline-desc">{t.guideline1DescPart1}<span className="guideline-highlight">{t.guideline1DescHighlight}</span>{t.guideline1DescPart2}</p>
             </div>
-            <div className="tip-card">
-              <h4>{t.tip3Title}</h4>
-              <p>{t.tip3Desc}</p>
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline2Title}</h3>
+              <p className="guideline-desc">{t.guideline2DescPart1}<span className="guideline-highlight">{t.guideline2DescHighlight}</span>{t.guideline2DescPart2}</p>
             </div>
-            <div className="tip-card">
-              <h4>{t.tip4Title}</h4>
-              <p>{t.tip4Desc}</p>
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline3Title}</h3>
+              <p className="guideline-desc">{t.guideline3DescPart1}<span className="guideline-highlight">{t.guideline3DescHighlight}</span>{t.guideline3DescPart2}</p>
+            </div>
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline4Title}</h3>
+              <p className="guideline-desc">{t.guideline4Desc}</p>
+            </div>
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline5Title}</h3>
+              <p className="guideline-desc">{t.guideline5Desc}</p>
+            </div>
+            <div className="guideline-card">
+              <span className="guideline-card-star guideline-card-star-tl" aria-hidden="true">★</span>
+              <span className="guideline-card-star guideline-card-star-br" aria-hidden="true">★</span>
+              <h3 className="guideline-title">{t.guideline6Title}</h3>
+              <p className="guideline-desc">{t.guideline6Desc}</p>
             </div>
           </div>
         </div>
@@ -52,7 +86,12 @@ const Products = () => {
 
       <FadeSection as="section" className="guide-section">
         <div className="container">
-          <h2 className="section-title">{t.guideTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.guideTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <p className="guide-subtitle">{t.guideSubtitle}</p>
           <div className="guide-steps">
             <div className={`guide-step ${expandedSteps[1] ? 'expanded' : ''}`}>
@@ -70,9 +109,9 @@ const Products = () => {
                   <p>{t.step1Desc}</p>
                 </div>
                 <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤1图片' : 'Step 1 Image'}</span>
-                  </div>
+                  <img src="/images/home/guide/1.jpg" alt={t.step1Title} />
+                  <img src="/images/home/guide/2.jpg" alt={t.step1Title} />
+                  <img src="/images/home/guide/1.jpg" alt={t.step1Title} />
                 </div>
               </div>
             </div>
@@ -91,9 +130,9 @@ const Products = () => {
                   <p>{t.step2Desc}</p>
                 </div>
                 <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤2图片' : 'Step 2 Image'}</span>
-                  </div>
+                  <img src="/images/home/guide/2.jpg" alt={t.step2Title} />
+                  <img src="/images/home/guide/1.jpg" alt={t.step2Title} />
+                  <img src="/images/home/guide/2.jpg" alt={t.step2Title} />
                 </div>
               </div>
             </div>
@@ -112,9 +151,9 @@ const Products = () => {
                   <p>{t.step3Desc}</p>
                 </div>
                 <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤3图片' : 'Step 3 Image'}</span>
-                  </div>
+                  <img src="/images/home/guide/1.jpg" alt={t.step3Title} />
+                  <img src="/images/home/guide/2.jpg" alt={t.step3Title} />
+                  <img src="/images/home/guide/1.jpg" alt={t.step3Title} />
                 </div>
               </div>
             </div>
@@ -133,51 +172,9 @@ const Products = () => {
                   <p>{t.step4Desc}</p>
                 </div>
                 <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤4图片' : 'Step 4 Image'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`guide-step ${expandedSteps[5] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(5)}>
-                <div className="step-number purple">5</div>
-                <div className="step-content">
-                  <h3>{t.step5Title}</h3>
-                </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[5] ? 'expanded' : ''}`}>▼</span>
-                </div>
-              </div>
-              <div className={`step-details ${expandedSteps[5] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step5Desc}</p>
-                </div>
-                <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤5图片' : 'Step 5 Image'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={`guide-step ${expandedSteps[6] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(6)}>
-                <div className="step-number yellow">6</div>
-                <div className="step-content">
-                  <h3>{t.step6Title}</h3>
-                </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[6] ? 'expanded' : ''}`}>▼</span>
-                </div>
-              </div>
-              <div className={`step-details ${expandedSteps[6] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step6Desc}</p>
-                </div>
-                <div className="step-image">
-                  <div className="image-placeholder">
-                    <span>{language === 'zh' ? '步骤6图片' : 'Step 6 Image'}</span>
-                  </div>
+                  <img src="/images/home/guide/2.jpg" alt={t.step4Title} />
+                  <img src="/images/home/guide/1.jpg" alt={t.step4Title} />
+                  <img src="/images/home/guide/2.jpg" alt={t.step4Title} />
                 </div>
               </div>
             </div>
@@ -185,9 +182,14 @@ const Products = () => {
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="qa-section">
+      <FadeSection as="section" id="qa-section" className="qa-section">
         <div className="container">
-          <h2 className="section-title">{t.qaTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.qaTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="qa-list">
             <div className={`qa-item ${expandedQA[1] ? 'expanded' : ''}`}>
               <div className="qa-question" onClick={() => toggleQA(1)}>

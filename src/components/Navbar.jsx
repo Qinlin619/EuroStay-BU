@@ -24,7 +24,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
+          <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
         </Link>
         <button
           className="navbar-toggle"
@@ -52,7 +52,14 @@ const Navbar = () => {
               className="navbar-tip-btn"
               onClick={() => {
                 setIsMenuOpen(false)
-                document.getElementById('footer-likes')?.scrollIntoView({ behavior: 'smooth' })
+                const scrollToBottom = () => {
+                  window.scrollTo({
+                    top: document.documentElement.scrollHeight - window.innerHeight,
+                    left: 0,
+                    behavior: 'smooth'
+                  })
+                }
+                requestAnimationFrame(() => requestAnimationFrame(scrollToBottom))
               }}
               aria-label="Tip"
             >
@@ -68,9 +75,7 @@ const Navbar = () => {
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 } else {
                   navigate('/')
-                  setTimeout(() => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' })
-                  }, 100)
+                  setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 150)
                 }
               }}
               aria-label="Download"

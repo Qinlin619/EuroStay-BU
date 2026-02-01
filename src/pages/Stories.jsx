@@ -177,9 +177,18 @@ const Stories = () => {
 
       <FadeSection as="section" className="stories-section">
         <div className="container">
-          <h1 className="stories-main-title">{t.storiesTagline}</h1>
-          <h2 className="section-title">{t.userStoriesTitle}</h2>
-          
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h1 className="page-hero-title-main">{t.storiesTagline}</h1>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.userStoriesTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="stories-map-gallery-layout">
             <div className="stories-map-container">
               <Globe3D
@@ -260,7 +269,12 @@ const Stories = () => {
 
       <FadeSection as="section" className="activities-section">
         <div className="container">
-          <h2 className="section-title">{t.activityHistoryTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.activityHistoryTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <p className="activity-history-intro">{t.activityHistoryIntro}</p>
           <div className="activities-timeline">
             {activities.map((activity) => (

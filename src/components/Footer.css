@@ -88,10 +88,6 @@
   color: var(--color-purple-primary);
 }
 
-.footer-links li:first-child .footer-link {
-  color: var(--color-text-unselected);
-}
-
 .footer-contact-item {
   display: flex;
   align-items: center;
@@ -143,9 +139,10 @@
 }
 
 .thumbs-up-icon {
-  font-size: 12rem;
+  font-size: 9rem;
   line-height: 1;
   flex-shrink: 0;
+  transform: translate(-50px, -30px);
 }
 
 .qr-code-item {
@@ -155,20 +152,79 @@
   gap: 1.2rem;
 }
 
+.qr-code-box {
+  position: relative;
+  display: inline-block;
+}
+
+.qr-corner-star {
+  position: absolute;
+  font-size: 1.1rem;
+  color: #b69df8;
+  text-shadow: 0 0 0.6rem rgba(182, 157, 248, 0.8);
+  z-index: 2;
+  animation: qr-corner-star-pulse 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.qr-corner-star-tl { top: -0.6rem; left: -0.6rem; animation-delay: 0s; }
+.qr-corner-star-tr { top: -0.6rem; right: -0.6rem; animation-delay: 0.3s; }
+.qr-corner-star-bl { bottom: -0.6rem; left: -0.6rem; animation-delay: 0.6s; }
+.qr-corner-star-br { bottom: -0.6rem; right: -0.6rem; animation-delay: 0.9s; }
+
+@keyframes qr-corner-star-pulse {
+  0%, 100% { opacity: 0.7; transform: scale(0.95); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
 .qr-code-placeholder {
   width: 12rem;
   height: 12rem;
   background-color: var(--color-white);
-  border: 0.2rem solid #E0E0E0;
-  border-radius: 0.8rem;
+  border: 0.1rem solid rgba(122, 99, 199, 0.5);
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
   color: var(--color-text-unselected);
   text-align: center;
-  padding: 1rem;
+  padding: 0.4rem;
   box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 0 0.2rem 0.6rem rgba(122, 99, 199, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.qr-code-item:hover .qr-code-placeholder {
+  border-color: rgba(122, 99, 199, 0.7);
+  box-shadow: 0 0.3rem 1rem rgba(122, 99, 199, 0.12);
+}
+
+.qr-code-placeholder .qr-code-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: 48% 50%;
+  display: block;
+}
+
+/* 微信、抖音：等高地放进框里，框内居中 */
+.qr-code-item-wechat .qr-code-placeholder,
+.qr-code-item-douyin .qr-code-placeholder {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-item-wechat .qr-code-placeholder .qr-code-image,
+.qr-code-item-douyin .qr-code-placeholder .qr-code-image {
+  object-fit: contain;
+  object-position: center center;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .qr-code-label {
@@ -208,7 +264,8 @@
   }
 
   .thumbs-up-icon {
-    font-size: 10rem;
+    font-size: 7.5rem;
+    transform: translate(-50px, -30px);
   }
 }
 
@@ -236,11 +293,16 @@
     font-size: 1rem;
   }
 
+  .qr-corner-star {
+    font-size: 0.9rem;
+  }
+
   .qr-code-label {
     font-size: 1.1rem;
   }
 
   .thumbs-up-icon {
-    font-size: 8rem;
+    font-size: 6rem;
+    transform: translate(-50px, -30px);
   }
 }

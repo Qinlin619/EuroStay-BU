@@ -6,7 +6,9 @@ import './Footer.css'
 
 const Footer = () => {
   const { language } = useLanguage()
-  const t = translations[language].footer
+  const t = translations[language]
+  const nav = t.nav
+  const footer = t.footer
 
   return (
     <footer className="footer">
@@ -14,7 +16,7 @@ const Footer = () => {
         <div className="footer-section footer-left">
           <div className="footer-logo-container">
             <img 
-              src={`${import.meta.env.BASE_URL}images/globe/logo_footer.png`} 
+              src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/0.png`} 
               alt="EuroStay Logo" 
               className="footer-logo-image"
               loading="lazy"
@@ -22,7 +24,7 @@ const Footer = () => {
               fetchPriority="low"
             />
           </div>
-          <p className="footer-description">{t.description}</p>
+          <p className="footer-description">{footer.description}</p>
         </div>
 
         <div className="footer-section footer-nav">
@@ -30,29 +32,34 @@ const Footer = () => {
           <ul className="footer-links">
             <li>
               <Link to="/" className="footer-link">
-                {t.homepage}
+                {nav.home}
               </Link>
             </li>
             <li>
               <Link to="/products" className="footer-link">
-                {t.homestayGuide}
+                {nav.products}
+              </Link>
+            </li>
+            <li>
+              <Link to="/stories" className="footer-link">
+                {nav.stories}
               </Link>
             </li>
             <li>
               <Link to="/about" className="footer-link">
-                {t.aboutUs}
+                {nav.about}
               </Link>
             </li>
             <li>
-              <a href="#" className="footer-link">
+              <Link to="/products#qa-section" className="footer-link">
                 Q&A
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
 
         <div className="footer-section footer-contact">
-          <h3 className="footer-title">{t.coCreation}</h3>
+          <h3 className="footer-title">{footer.coCreation}</h3>
           <div className="footer-contact-item">
             <span className="footer-icon">✉️</span>
             <a href="mailto:EuroStay@163.com" className="footer-contact-link">
@@ -61,7 +68,7 @@ const Footer = () => {
           </div>
           <div className="footer-contact-item">
             <span className="footer-icon">💬</span>
-            <span className="footer-contact-text">{t.wechatId}: EuroStay</span>
+            <span className="footer-contact-text">{footer.wechatId}: EuroStay</span>
           </div>
         </div>
       </div>
@@ -69,35 +76,41 @@ const Footer = () => {
       <div id="footer-likes" className="footer-bottom">
         <div className="footer-bottom-container">
           <div className="qr-codes">
-            <div className="qr-code-item">
-              <div className="qr-code-placeholder">
-                <span>{t.xiaohongshu}</span>
+            <div className="qr-code-item qr-code-item-1">
+              <div className="qr-code-box">
+                <span className="qr-corner-star qr-corner-star-tl" aria-hidden="true">★</span>
+                <div className="qr-code-placeholder">
+                  <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/rednote.png`} alt="" className="qr-code-image" loading="lazy" decoding="async" />
+                </div>
               </div>
-              <p className="qr-code-label">{t.xiaohongshu}</p>
+              <p className="qr-code-label">{footer.xiaohongshu}</p>
             </div>
-            <div className="qr-code-item">
-              <div className="qr-code-placeholder">
-                <span>{t.wechatOfficial}</span>
+            <div className="qr-code-item qr-code-item-2">
+              <div className="qr-code-box">
+                <span className="qr-corner-star qr-corner-star-bl" aria-hidden="true">★</span>
+                <div className="qr-code-placeholder">
+                  <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/${encodeURIComponent('公众号.png')}`} alt="" className="qr-code-image" loading="lazy" decoding="async" />
+                </div>
               </div>
-              <p className="qr-code-label">{t.wechatOfficial}</p>
+              <p className="qr-code-label">{footer.wechatOfficial}</p>
             </div>
-            <div className="qr-code-item">
-              <div className="qr-code-placeholder">
-                <span>{t.wechatMini}</span>
+            <div className="qr-code-item qr-code-item-3 qr-code-item-wechat">
+              <div className="qr-code-box">
+                <span className="qr-corner-star qr-corner-star-tr" aria-hidden="true">★</span>
+                <div className="qr-code-placeholder">
+                  <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/${encodeURIComponent('小助手微信号.png')}`} alt="" className="qr-code-image" loading="lazy" decoding="async" />
+                </div>
               </div>
-              <p className="qr-code-label">{t.wechatMini}</p>
+              <p className="qr-code-label">{footer.wechat}</p>
             </div>
-            <div className="qr-code-item">
-              <div className="qr-code-placeholder">
-                <span>{t.wechat}</span>
+            <div className="qr-code-item qr-code-item-4 qr-code-item-douyin">
+              <div className="qr-code-box">
+                <span className="qr-corner-star qr-corner-star-br" aria-hidden="true">★</span>
+                <div className="qr-code-placeholder">
+                  <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/${encodeURIComponent('抖音.png')}`} alt="" className="qr-code-image" loading="lazy" decoding="async" />
+                </div>
               </div>
-              <p className="qr-code-label">{t.wechat}</p>
-            </div>
-            <div className="qr-code-item">
-              <div className="qr-code-placeholder">
-                <span>{t.douyin}</span>
-              </div>
-              <p className="qr-code-label">{t.douyin}</p>
+              <p className="qr-code-label">{footer.douyin}</p>
             </div>
           </div>
           <div className="thumbs-up-icon">

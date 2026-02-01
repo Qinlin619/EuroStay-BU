@@ -1,8 +1,9 @@
-/* 全站：除 navbar 与顶部首屏外，滑到淡入、划走淡出 */
+/* 全站：除 navbar 与顶部首屏外，滑到淡入、划走淡出；contain 限制重排范围减轻滚动卡顿 */
 .section-reveal {
   opacity: 0;
   transform: translateY(1.6rem);
   transition: opacity 1s ease-out, transform 1s ease-out;
+  contain: layout style;
 }
 
 .section-reveal.in-view {
@@ -20,4 +21,111 @@
 
 .main-content {
   flex: 1;
+}
+
+/* 与首页一致的大标题格式：下划线、星星、间距（Products / Stories / About 共用） */
+.page-hero-title-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 90px;
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.page-hero-title-slogan {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0 0 0.8rem 0;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  background: linear-gradient(
+    105deg,
+    var(--color-purple-secondary) 0%,
+    #a78bfa 25%,
+    var(--color-purple-secondary) 50%,
+    #c4b5fd 75%,
+    var(--color-purple-secondary) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.page-hero-title-line {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.page-hero-title-main {
+  font-size: 4.8rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  font-family: 'Comfortaa', 'Fredoka One', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: var(--color-purple-primary);
+  position: relative;
+  padding-bottom: 0.8rem;
+}
+
+.page-hero-title-main::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  height: 0.25rem;
+  width: 100%;
+  min-width: 20rem;
+  max-width: 36rem;
+  background: linear-gradient(90deg, var(--color-purple-secondary), #c4b5fd);
+  border-radius: 0.2rem;
+}
+
+.page-hero-title-star {
+  font-size: 1.8rem;
+  color: #b69df8;
+  text-shadow: 0 0 1rem #b69df8, 0 0 2rem rgba(182, 157, 248, 0.8);
+  flex-shrink: 0;
+  margin-bottom: 0.6rem;
+}
+
+.page-hero-title-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 4rem;
+  min-width: 12rem;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  background-color: var(--color-purple-secondary);
+  color: var(--color-white);
+  border-radius: 2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1;
+  font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-bottom: 0.6rem;
+}
+
+/* 深色背景（如 About banner）上的大标题：白字 + 白线下划线 + 浅色星 */
+.page-hero-title-main-on-dark {
+  color: var(--color-white);
+  text-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.3);
+}
+
+.page-hero-title-main-on-dark::after {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9));
+}
+
+.page-hero-title-star-on-dark {
+  color: #e9dfff;
+  text-shadow: 0 0 1rem rgba(255, 255, 255, 0.6), 0 0 2rem rgba(233, 223, 255, 0.5);
 }

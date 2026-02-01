@@ -54,13 +54,40 @@
   margin-bottom: 2rem;
 }
 
+/* Slogan 入场：比整块 hero 稍晚一点出现，带轻微上移 */
 .hero-title-slogan {
   font-size: 2.0rem;
   font-weight: 400;
-  color: var(--color-purple-secondary);
   margin: 0 0 0.8rem 0;
   letter-spacing: 0.02em;
   line-height: 1.4;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition: opacity 0.65s ease-out 0.28s, transform 0.65s ease-out 0.28s;
+  /* 渐变文字 + 轻微流动动效 */
+  background: linear-gradient(
+    105deg,
+    var(--color-purple-secondary) 0%,
+    #a78bfa 25%,
+    var(--color-purple-secondary) 50%,
+    #c4b5fd 75%,
+    var(--color-purple-secondary) 100%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.hero.in-view .hero-title-slogan {
+  opacity: 1;
+  transform: translateY(0);
+  animation: slogan-shimmer 5s ease-in-out infinite;
+}
+
+@keyframes slogan-shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
 .hero-title-line {
@@ -75,6 +102,102 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4rem;
+  position: relative;
+}
+
+/* Logo 斜线闪光：白色斜线从左往右扫过整块 EURO/STAY 图案，再汇聚成星星消失 */
+.hero-title-logo-shine {
+  position: absolute;
+  inset: -0.5rem;
+  left: -2rem;
+  right: -2rem;
+  top: -0.5rem;
+  bottom: -0.5rem;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+  will-change: transform;
+}
+
+.hero-title-logo-shine::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(50% + 10px);
+  width: 120%;
+  max-width: 28rem;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  will-change: transform;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.5) 15%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.5) 85%,
+    transparent 100%
+  );
+  box-shadow: 0 0 1.2rem rgba(255, 255, 255, 0.9), 0 0 2.5rem rgba(255, 255, 255, 0.6);
+  transform: rotate(-28deg) translateX(-120%);
+  transform-origin: center center;
+  animation: logo-shine-sweep 10s ease-in-out infinite;
+}
+
+.hero-title-logo-shine::after {
+  content: '★';
+  position: absolute;
+  right: 0;
+  top: calc(32% - 60px);
+  margin-top: -0.9rem;
+  font-size: 1.8rem;
+  color: #fce89a;
+  text-shadow: 0 0 1rem #fce89a, 0 0 2rem rgba(252, 232, 154, 0.8);
+  opacity: 0;
+  transform: scale(0.3) rotate(-180deg);
+  animation: logo-shine-star 10s ease-in-out infinite;
+}
+
+@keyframes logo-shine-sweep {
+  0% { transform: rotate(-28deg) translateX(-120%); opacity: 0; }
+  3% { transform: rotate(-28deg) translateX(-118%); opacity: 1; }
+  18% { transform: rotate(-28deg) translateX(140%); opacity: 1; }
+  20% { opacity: 0; }
+  20.01%, 100% { transform: rotate(-28deg) translateX(140%); opacity: 0; }
+}
+
+/* 白线结束后 50ms 接黄星，黄星后 3s 空档接紫星，紫星消失后 100ms 接白线（10s 循环） */
+@keyframes logo-shine-star {
+  0%, 20.4% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
+  20.5% { opacity: 0.5; transform: scale(0.65) rotate(-90deg); }
+  23.5% { opacity: 1; transform: scale(1) rotate(0deg); }
+  52% { opacity: 1; transform: scale(1.15) rotate(0deg); }
+  55% { opacity: 0; transform: scale(1.2) rotate(0deg); }
+  55.01%, 100% { opacity: 0; }
+}
+
+/* S 左下角同款浅紫色星星 */
+/* S 左下角紫色星星：斜线出现之前旋转出现并消失 */
+.hero-title-s-star {
+  position: absolute;
+  left: calc(-0.2rem - 25px);
+  bottom: 0.2rem;
+  font-size: 1.8rem;
+  color: #b69df8;
+  text-shadow: 0 0 1rem #b69df8, 0 0 2rem rgba(182, 157, 248, 0.8);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transform: scale(0.3) rotate(-180deg);
+  animation: s-star-pulse 10s ease-in-out infinite;
+}
+
+@keyframes s-star-pulse {
+  0%, 84% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
+  85% { opacity: 0.5; transform: scale(0.65) rotate(-90deg); }
+  88% { opacity: 1; transform: scale(1) rotate(0deg); }
+  97% { opacity: 1; transform: scale(1.1) rotate(0deg); }
+  98.89% { opacity: 0; transform: scale(1.15) rotate(0deg); }
+  98.9%, 100% { opacity: 0; }
 }
 
 .hero-title-image {
@@ -133,11 +256,17 @@
   margin-top: 20px;
 }
 
+.hero-buttons-wrapper {
+  position: relative;
+  margin-top: calc(0.6rem + 60px);
+}
+
 .hero-buttons {
   display: flex;
   gap: 2.0rem;
   flex-wrap: wrap;
-  margin-top: calc(0.6rem + 60px);
+  position: relative;
+  z-index: 1;
 }
 
 .btn {
@@ -193,6 +322,16 @@
 
 .link-text:hover {
   color: var(--color-purple-secondary);
+}
+
+.link-arrow {
+  display: inline-block;
+  animation: link-arrow-move 1.2s ease-in-out infinite;
+}
+
+@keyframes link-arrow-move {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(0.35em); }
 }
 
 .hero-image {

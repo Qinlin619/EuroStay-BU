@@ -53,22 +53,22 @@ const Home = () => {
     []
   )
 
-  // 进入视口 1/3 处淡入，离开视口 1/8 处淡出（常见滚动交互）；首屏 hero+stats 不淡出
-  const revealRootMargin = '-33.333% 0px -12.5% 0px'
+  // 进入视口后淡入一次，不淡出（减少滚动时的 setState，减轻卡顿）
+  const revealRootMargin = '-20% 0px -20% 0px'
   const [heroRef, heroInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
-  const [statsRef, statsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
-  const [productRef, productInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
-  const [featuresRef, featuresInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
-  const [visionRef, visionInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
-  const [reviewsRef, reviewsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: false })
+  const statsRef = useRef(null) // 数据条不随滚动淡入，仅作 ref
+  const [productRef, productInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
+  const [featuresRef, featuresInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
+  const [visionRef, visionInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
+  const [reviewsRef, reviewsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
 
-  // 懒加载区块：进入过视口后不再卸载，仅用 in-view 控制淡入淡出
+  // 懒加载区块：进入视口后挂载并淡入，之后保持可见（不因离开视口而淡出）
   const [productLoaded, setProductLoaded] = useState(false)
   const [featuresLoaded, setFeaturesLoaded] = useState(false)
   const [visionLoaded, setVisionLoaded] = useState(false)
   const [reviewsLoaded, setReviewsLoaded] = useState(false)
   const [heroRevealed, setHeroRevealed] = useState(false)
-  const [statsRevealed, setStatsRevealed] = useState(false)
+  const [statsRevealed] = useState(true) // 数据条不随滚动淡入，首屏即显示
   const [productRevealed, setProductRevealed] = useState(false)
   const [featuresRevealed, setFeaturesRevealed] = useState(false)
   const [visionRevealed, setVisionRevealed] = useState(false)
@@ -76,11 +76,6 @@ const Home = () => {
   const [showCopyToast, setShowCopyToast] = useState(false)
   const [showAndroidModal, setShowAndroidModal] = useState(false)
   const copyToastTimer = useRef(null)
-  const productFadeOutTimer = useRef(null)
-  const featuresFadeOutTimer = useRef(null)
-  const visionFadeOutTimer = useRef(null)
-  const reviewsFadeOutTimer = useRef(null)
-  const FADE_OUT_DELAY_MS = 180
 
   useEffect(() => { if (productInView) setProductLoaded(true) }, [productInView])
   useEffect(() => { if (featuresInView) setFeaturesLoaded(true) }, [featuresInView])
@@ -117,7 +112,7 @@ const Home = () => {
     }
   }, [])
 
-  // 首屏（hero + 数据横幅）：只淡入、不淡出
+  // 进入视口后下一帧淡入，只触发一次（once: true），不淡出
   useEffect(() => {
     if (heroInView) {
       const id = requestAnimationFrame(() => setHeroRevealed(true))
@@ -125,52 +120,41 @@ const Home = () => {
     }
   }, [heroInView])
   useEffect(() => {
-    if (statsInView) {
-      const id = requestAnimationFrame(() => setStatsRevealed(true))
-      return () => cancelAnimationFrame(id)
-    }
-  }, [statsInView])
-  // 其余区块：进入视口下一帧淡入；离开视口延迟 180ms 再淡出
-  useEffect(() => {
-    if (!productLoaded) return
     if (productInView) {
-      if (productFadeOutTimer.current) { clearTimeout(productFadeOutTimer.current); productFadeOutTimer.current = null }
-      const id = requestAnimationFrame(() => setProductRevealed(true))
+      const id = requestAnimationFrame(() => {
+        setProductLoaded(true)
+        setProductRevealed(true)
+      })
       return () => cancelAnimationFrame(id)
     }
-    productFadeOutTimer.current = setTimeout(() => { productFadeOutTimer.current = null; setProductRevealed(false) }, FADE_OUT_DELAY_MS)
-    return () => { if (productFadeOutTimer.current) { clearTimeout(productFadeOutTimer.current); productFadeOutTimer.current = null } }
-  }, [productLoaded, productInView])
+  }, [productInView])
   useEffect(() => {
-    if (!featuresLoaded) return
     if (featuresInView) {
-      if (featuresFadeOutTimer.current) { clearTimeout(featuresFadeOutTimer.current); featuresFadeOutTimer.current = null }
-      const id = requestAnimationFrame(() => setFeaturesRevealed(true))
+      const id = requestAnimationFrame(() => {
+        setFeaturesLoaded(true)
+        setFeaturesRevealed(true)
+      })
       return () => cancelAnimationFrame(id)
     }
-    featuresFadeOutTimer.current = setTimeout(() => { featuresFadeOutTimer.current = null; setFeaturesRevealed(false) }, FADE_OUT_DELAY_MS)
-    return () => { if (featuresFadeOutTimer.current) { clearTimeout(featuresFadeOutTimer.current); featuresFadeOutTimer.current = null } }
-  }, [featuresLoaded, featuresInView])
+  }, [featuresInView])
   useEffect(() => {
-    if (!visionLoaded) return
     if (visionInView) {
-      if (visionFadeOutTimer.current) { clearTimeout(visionFadeOutTimer.current); visionFadeOutTimer.current = null }
-      const id = requestAnimationFrame(() => setVisionRevealed(true))
+      const id = requestAnimationFrame(() => {
+        setVisionLoaded(true)
+        setVisionRevealed(true)
+      })
       return () => cancelAnimationFrame(id)
     }
-    visionFadeOutTimer.current = setTimeout(() => { visionFadeOutTimer.current = null; setVisionRevealed(false) }, FADE_OUT_DELAY_MS)
-    return () => { if (visionFadeOutTimer.current) { clearTimeout(visionFadeOutTimer.current); visionFadeOutTimer.current = null } }
-  }, [visionLoaded, visionInView])
+  }, [visionInView])
   useEffect(() => {
-    if (!reviewsLoaded) return
     if (reviewsInView) {
-      if (reviewsFadeOutTimer.current) { clearTimeout(reviewsFadeOutTimer.current); reviewsFadeOutTimer.current = null }
-      const id = requestAnimationFrame(() => setReviewsRevealed(true))
+      const id = requestAnimationFrame(() => {
+        setReviewsLoaded(true)
+        setReviewsRevealed(true)
+      })
       return () => cancelAnimationFrame(id)
     }
-    reviewsFadeOutTimer.current = setTimeout(() => { reviewsFadeOutTimer.current = null; setReviewsRevealed(false) }, FADE_OUT_DELAY_MS)
-    return () => { if (reviewsFadeOutTimer.current) { clearTimeout(reviewsFadeOutTimer.current); reviewsFadeOutTimer.current = null } }
-  }, [reviewsLoaded, reviewsInView])
+  }, [reviewsInView])
 
   // Host card images - 3:4 aspect ratio
   const hostCardImages = [
@@ -385,7 +369,7 @@ const Home = () => {
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [productLoaded, productInView])
+  }, [productLoaded])
 
   const copyWeChatId = async () => {
     const wechatId = 'EuroStay'
@@ -440,6 +424,8 @@ const Home = () => {
                     className="hero-title-image hero-title-image-2"
                     decoding="async"
                   />
+                  <span className="hero-title-s-star" aria-hidden="true">★</span>
+                  <div className="hero-title-logo-shine" aria-hidden="true" />
                 </div>
                 <span className="hero-title-tag">{t.heroTag ?? (language === 'zh' ? '世界不贵' : 'World not pricey')}</span>
               </div>
@@ -447,30 +433,32 @@ const Home = () => {
             <p className="hero-subtitle">{t.heroSubtitle}</p>
             <div className="hero-links">
               <Link to="/products" className="link-text">
-                {t.learnMore} →
+                {t.learnMore} <span className="link-arrow">→</span>
               </Link>
             </div>
-            <div className="hero-buttons">
-              <a
-                href="#"
-                className="btn btn-primary"
-                onClick={(e) => {
-                  e.preventDefault()
-                  alert(language === 'zh' ? '下载链接将在这里添加' : 'Download link will be added here')
-                }}
-              >
-                {t.downloadIOS}
-              </a>
-              <a
-                href="#"
-                className="btn btn-secondary"
-                onClick={(e) => {
-                  e.preventDefault()
-                  setShowAndroidModal(true)
-                }}
-              >
-                {t.downloadAndroid}
-              </a>
+            <div className="hero-buttons-wrapper">
+              <div className="hero-buttons">
+                <a
+                  href="#"
+                  className="btn btn-primary"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    alert(language === 'zh' ? '下载链接将在这里添加' : 'Download link will be added here')
+                  }}
+                >
+                  {t.downloadIOS}
+                </a>
+                <a
+                  href="#"
+                  className="btn btn-secondary"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setShowAndroidModal(true)
+                  }}
+                >
+                  {t.downloadAndroid}
+                </a>
+              </div>
             </div>
           </div>
           <div className="hero-image" ref={heroRef}>
@@ -955,8 +943,6 @@ const Home = () => {
           ))}
         </div>
         <div className="vision-cta">
-            <p>{t.visionCta1}</p>
-            <p>{t.visionCta2}</p>
             <button className="btn-copy-wechat" onClick={copyWeChatId}>
               {language === 'zh' ? '复制微信号' : 'Copy WeChat ID'}
             </button>

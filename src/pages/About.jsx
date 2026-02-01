@@ -18,7 +18,12 @@ const About = () => {
         </div>
         <div className="banner-overlay">
           <div className="container">
-            <h1 className="page-title">{t.title}</h1>
+            <div className="page-hero-title-wrapper">
+              <div className="page-hero-title-line">
+                <h1 className="page-hero-title-main page-hero-title-main-on-dark">{t.title}</h1>
+                <span className="page-hero-title-star page-hero-title-star-on-dark" aria-hidden="true">★</span>
+              </div>
+            </div>
             <p className="page-subtitle">{t.subtitle}</p>
           </div>
         </div>
@@ -43,7 +48,12 @@ const About = () => {
 
       <FadeSection as="section" className="mission-section">
         <div className="container">
-          <h2 className="section-title">{t.missionTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.missionTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="mission-cards">
             <div className="mission-card">
               <div className="mission-icon purple">
@@ -72,7 +82,12 @@ const About = () => {
 
       <FadeSection as="section" className="values-section">
         <div className="container">
-          <h2 className="section-title">{t.valuesTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.valuesTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="values-list">
             <div className="value-item">
               <div className="value-icon">🙏</div>
@@ -100,7 +115,12 @@ const About = () => {
 
       <FadeSection as="section" className="contact-section">
         <div className="container">
-          <h2 className="section-title">{t.contactTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.contactTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="contact-info">
             <div className="contact-item">
               <div className="contact-icon">📧</div>
@@ -129,7 +149,12 @@ const About = () => {
 
       <FadeSection as="section" className="team-section">
         <div className="container">
-          <h2 className="section-title">{t.teamTitle}</h2>
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.teamTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
           <div className="team-grid">
             <div className="team-member">
               <div className="team-member-avatar">
