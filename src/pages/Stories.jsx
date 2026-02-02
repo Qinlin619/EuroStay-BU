@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import { useCountUp } from '../hooks/useCountUp'
-import Globe3D from '../components/Globe3D'
+import StoriesGlobe from '../components/StoriesGlobe'
 import FadeSection from '../components/FadeSection'
 import './Stories.css'
 
@@ -47,10 +47,11 @@ const Stories = () => {
 
   const scrollToStory = (index) => {
     setCurrentIndex(index)
-    setCurrentPage(Math.floor(index / CARDS_PER_PAGE))
+    setCurrentPage(index)
   }
 
   const handleCountryClick = (isoCode, storyIndex, countryName) => {
+    console.log('handleCountryClick:', { isoCode, storyIndex, countryName, language })
     if (storyIndex != null) {
       scrollToStory(storyIndex)
       setHighlightCountryForMap(isoCode)
@@ -60,7 +61,7 @@ const Stories = () => {
         setNoStoryCountryCode(isoCode || '')
         setNoStoryCountryName(countryName || isoCode)
         setShowNoStoryModal(true)
-      }, 700)
+      }, 400)
     }
   }
 
@@ -77,12 +78,13 @@ const Stories = () => {
   }, [showNoStoryModal])
 
   const scrollGallery = (direction) => {
-    const nextPage =
+    const nextIndex =
       direction === 1
-        ? Math.min(currentPage + 1, totalPages - 1)
+        ? Math.min(currentPage + 1, stories.length - 1)
         : Math.max(currentPage - 1, 0)
-    setCurrentPage(nextPage)
-    setCurrentIndex(nextPage * CARDS_PER_PAGE)
+    setCurrentPage(nextIndex)
+    setCurrentIndex(nextIndex)
+    setHighlightCountryForMap(stories[nextIndex].countryCode)
   }
 
   const activities = [
@@ -94,6 +96,7 @@ const Stories = () => {
       description: t.activity1Desc,
       gradient: 'purple-yellow',
       emoji: '🌸',
+      image: 'https://images.unsplash.com/photo-1490750967868-88aa354d700f?w=800'
     },
     {
       id: 2,
@@ -103,6 +106,7 @@ const Stories = () => {
       description: t.activity2Desc,
       gradient: 'yellow-purple',
       emoji: '📖',
+      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800'
     },
     {
       id: 3,
@@ -112,6 +116,7 @@ const Stories = () => {
       description: t.activity3Desc,
       gradient: 'purple-blue',
       emoji: '🎓',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800'
     },
     {
       id: 4,
@@ -121,13 +126,14 @@ const Stories = () => {
       description: t.activity4Desc,
       gradient: 'yellow-orange',
       emoji: '🏆',
+      image: 'https://images.unsplash.com/photo-1510074377623-8cf13fb86c08?w=800'
     },
   ]
 
   return (
     <div className="stories-page">
       <section className={`stories-hero ${language === 'en' ? 'stories-hero-en' : ''}`}>
-        <div 
+        <div
           className="stories-hero-background"
           style={{
             backgroundImage: `url(${import.meta.env.BASE_URL}images/stories/cover.jpeg)`
@@ -178,107 +184,100 @@ const Stories = () => {
           </div>
           <div className="stories-map-gallery-layout">
             <div className="stories-map-container">
-              <Globe3D
-                stories={stories}
-                currentIndex={currentIndex}
-                highlightCountry={highlightCountryForMap}
-                rotationTransitionMs={700}
-                onMarkerClick={scrollToStory}
-                onCountryClick={handleCountryClick}
-                onCountryHighlight={setHighlightCountryForMap}
-                hoveredMarker={hoveredMapMarker}
-                onMarkerHover={setHoveredMapMarker}
-                showCountryTooltip={false}
-              />
-            </div>
-            
-            <div className="stories-gallery-wrapper">
-            <div className="stories-gallery" ref={galleryRef}>
-              <div
-                className="stories-gallery-track"
-                style={{
-                  width: `${totalPages * 100}%`,
-                  transform: `translateX(-${currentPage * (100 / totalPages)}%)`,
-                }}
-              >
-                {Array.from({ length: totalPages }, (_, pageIndex) => (
-                  <div
-                    key={pageIndex}
-                    className="stories-gallery-page"
-                    style={{ flex: `0 0 ${100 / totalPages}%` }}
-                  >
-                    <div className="stories-gallery-grid">
-                      {stories
-                        .slice(pageIndex * CARDS_PER_PAGE, pageIndex * CARDS_PER_PAGE + CARDS_PER_PAGE)
-                        .map((story, i) => {
-                          const globalIndex = pageIndex * CARDS_PER_PAGE + i
-                          const isSelected = globalIndex === currentIndex
-                          return (
-                          <div
-                            key={story.id}
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => handleStoryCardClick(globalIndex, story.countryCode)}
-                            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleStoryCardClick(globalIndex, story.countryCode) } }}
-                            className={`story-card ${i % 2 === 0 ? 'story-card-extend-right' : 'story-card-extend-left'} ${isSelected ? 'story-card-selected' : ''}`}
-                          >
-                            <div className="story-info-bar">
-                              <div className="story-user-overlay">
-                                <span className="story-author">{story.author}</span>
-                                <span className="story-date">{story.date}</span>
-                              </div>
-                              <div className="story-location-badge">
-                                <span className="location-icon">📍</span>
-                                <span>{story.location}</span>
-                              </div>
-                            </div>
-                            <div className="story-image-container">
-                              <img src={story.image} alt={story.title} className="story-image" loading="lazy" decoding="async" fetchPriority="low" />
-                              <div className="story-image-overlay"></div>
-                            </div>
-                            <div className="story-hover-overlay">
-                              <h3 className="story-title">{story.title}</h3>
-                              <p className="story-content">{story.content}</p>
-                            </div>
-                          </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                ))}
+              <div className="globe-3d-wrapper">
+                <StoriesGlobe
+                  onCountryClick={handleCountryClick}
+                  highlightCountry={highlightCountryForMap}
+                  stories={stories}
+                  currentIndex={currentIndex}
+                  rotationTransitionMs={400}
+                  onMarkerClick={scrollToStory}
+                  onCountryHighlight={setHighlightCountryForMap}
+                  hoveredMarker={hoveredMapMarker}
+                  onMarkerHover={setHoveredMapMarker}
+                  showCountryTooltip={false}
+                />
+              </div>
+              <div className="map-intro-overlay">
+                <div className="map-hint-badge">
+                  <span className="hint-icon">🖱️</span>
+                  <span>{t.mapDragHint}</span>
+                </div>
               </div>
             </div>
 
-            <div className="gallery-nav-row">
-              <button
-                className="gallery-nav-btn gallery-nav-prev"
-                onClick={() => scrollGallery(-1)}
-                disabled={currentPage === 0}
-                aria-label="Previous page"
-              >
-                ‹
-              </button>
-              <div className="gallery-dots">
-                {Array.from({ length: totalPages }, (_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    className={`gallery-dot ${i === currentPage ? 'gallery-dot-active' : ''}`}
-                    onClick={() => scrollToStory(i * CARDS_PER_PAGE)}
-                    aria-label={language === 'zh' ? `第 ${i + 1} 页` : `Page ${i + 1}`}
-                    aria-current={i === currentPage ? 'true' : undefined}
-                  />
-                ))}
+            <div className="stories-gallery-wrapper">
+              <div className="stories-gallery">
+                <div
+                  className="stories-gallery-track"
+                  style={{ transform: `translateX(-${currentPage * 72}%)` }}
+                >
+                  {stories.map((story, index) => (
+                    <div
+                      key={story.id}
+                      className={`story-card ${currentIndex === index ? 'story-card-selected' : ''}`}
+                      onClick={() => handleStoryCardClick(index, story.countryCode)}
+                    >
+                      <div className="story-info-bar">
+                        <div className="story-user-overlay">
+                          <h4 className="story-author">{story.author}</h4>
+                          <span className="story-date">{story.date}</span>
+                        </div>
+                        <div className="story-location-badge">
+                          <span className="location-pin">📍</span>
+                          <span className="location-name">{story.location}</span>
+                        </div>
+                      </div>
+                      <div className="story-image-container">
+                        <img
+                          src={story.image}
+                          alt={story.title}
+                          className="story-image"
+                          loading="lazy"
+                        />
+                        <div className="story-image-overlay"></div>
+                        <div className="story-hover-overlay">
+                          <h3 className="story-hover-title">{story.title}</h3>
+                          <p className="story-hover-desc">{story.content}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <button
-                className="gallery-nav-btn gallery-nav-next"
-                onClick={() => scrollGallery(1)}
-                disabled={currentPage >= totalPages - 1}
-                aria-label="Next page"
-              >
-                ›
-              </button>
-            </div>
+
+              <div className="gallery-footer">
+                <button
+                  className="gallery-nav-btn"
+                  onClick={() => scrollGallery(-1)}
+                  disabled={currentPage === 0}
+                  aria-label="Previous story"
+                >
+                  ‹
+                </button>
+                <div className="gallery-dots">
+                  {stories.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`gallery-dot ${currentPage === index ? 'gallery-dot-active' : ''}`}
+                      onClick={() => {
+                        setCurrentPage(index);
+                        setCurrentIndex(index);
+                        setHighlightCountryForMap(stories[index].countryCode);
+                      }}
+                      aria-label={`Go to story ${index + 1}`}
+                    />
+                  ))}
+                </div>
+                <button
+                  className="gallery-nav-btn"
+                  onClick={() => scrollGallery(1)}
+                  disabled={currentPage >= stories.length - 1}
+                  aria-label="Next story"
+                >
+                  ›
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -293,26 +292,38 @@ const Stories = () => {
             </div>
           </div>
           <p className="activity-history-intro">{t.activityHistoryIntro}</p>
-          <div className="activities-timeline">
-            {activities.map((activity) => (
-              <div key={activity.id} className={`activity-item activity-${activity.gradient}`}>
-                <div className="activity-image">
-                  <div className="activity-emoji">{activity.emoji}</div>
-                  <div className="activity-gradient-overlay"></div>
-                </div>
-                <div className="activity-content">
-                  <div className="activity-date-badge">
-                    <span className="date-text">{activity.date}</span>
+          <div className="storyboard-container">
+            <div className="z-path-bg" aria-hidden="true">
+              <svg viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 200 L1100 200 L100 600 L1100 600" stroke="url(#z-gradient)" strokeWidth="4" strokeLinecap="round" strokeDasharray="10 15" />
+                <defs>
+                  <linearGradient id="z-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-purple-primary)" stopOpacity="0.2" />
+                    <stop offset="50%" stopColor="var(--color-yellow-primary)" stopOpacity="0.6" />
+                    <stop offset="100%" stopColor="var(--color-purple-primary)" stopOpacity="0.2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <div className="storyboard-grid">
+              {activities.map((activity) => (
+                <div key={activity.id} className="storyboard-card">
+                  <div className="storyboard-media">
+                    <img src={activity.image} alt={activity.title} className="storyboard-img" loading="lazy" />
+                    <div className="storyboard-emoji-badge">{activity.emoji}</div>
+                    <div className="storyboard-gradient-overlay"></div>
                   </div>
-                  <h3 className="activity-title">{activity.title}</h3>
-                  <div className="activity-location">
-                    <span className="location-icon">📍</span>
-                    <span>{activity.location}</span>
+                  <div className="storyboard-overlay">
+                    <div className="storyboard-content">
+                      <div className="storyboard-date">{activity.date}</div>
+                      <h3 className="storyboard-title">{activity.title}</h3>
+                      <div className="storyboard-location">📍 {activity.location}</div>
+                      <p className="storyboard-desc">{activity.description}</p>
+                    </div>
                   </div>
-                  <p className="activity-description">{activity.description}</p>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </FadeSection>
@@ -328,7 +339,10 @@ const Stories = () => {
           <div className="stories-no-story-modal" onClick={(e) => e.stopPropagation()}>
             <h3 id="no-story-modal-title" className="stories-no-story-modal-title">{t.noStoryModalTitle}</h3>
             <p className="stories-no-story-modal-message">
-              {(noStoryCountryCode && (translations[language]?.globeTooltip?.countryNames?.[noStoryCountryCode] ?? translations[language]?.globeTooltip?.countryNames?.[String(noStoryCountryCode).toUpperCase()])) ?? noStoryCountryName} {t.noStoryModalMessage}
+              {noStoryCountryCode
+                ? (translations[language]?.globeTooltip?.countryNames?.[noStoryCountryCode] || noStoryCountryCode)
+                : noStoryCountryName
+              } {t.noStoryModalMessage}
             </p>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import FadeSection from '../components/FadeSection'
@@ -9,8 +9,15 @@ const Products = () => {
   const location = useLocation()
   const { language } = useLanguage()
   const t = translations[language].products
-  const [expandedSteps, setExpandedSteps] = useState({})
   const [expandedQA, setExpandedQA] = useState({})
+  const [showCopyToast, setShowCopyToast] = useState(false)
+
+  const handleCopyWeChat = () => {
+    navigator.clipboard.writeText('EuroStay').then(() => {
+      setShowCopyToast(true)
+      setTimeout(() => setShowCopyToast(false), 3000)
+    })
+  }
 
   useEffect(() => {
     if (location.hash === '#qa-section') {
@@ -18,13 +25,6 @@ const Products = () => {
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }, [location.pathname, location.hash])
-
-  const toggleStep = (stepNumber) => {
-    setExpandedSteps(prev => ({
-      ...prev,
-      [stepNumber]: !prev[stepNumber]
-    }))
-  }
 
   const toggleQA = (qaNumber) => {
     setExpandedQA(prev => ({
@@ -93,90 +93,134 @@ const Products = () => {
             </div>
           </div>
           <p className="guide-subtitle">{t.guideSubtitle}</p>
-          <div className="guide-steps">
-            <div className={`guide-step ${expandedSteps[1] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(1)}>
-                <div className="step-number purple">1</div>
-                <div className="step-content">
+          <div className="guide-steps-grid">
+            <div className="guide-step-card">
+              <div className="step-info">
+                <div className="step-title-row">
+                  <div className="step-number-badge">1</div>
                   <h3>{t.step1Title}</h3>
                 </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[1] ? 'expanded' : ''}`}>▼</span>
-                </div>
+                <p>{t.step1Desc}</p>
               </div>
-              <div className={`step-details ${expandedSteps[1] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step1Desc}</p>
-                </div>
-                <div className="step-image">
-                  <img src="/images/home/guide/1.jpg" alt={t.step1Title} />
-                  <img src="/images/home/guide/2.jpg" alt={t.step1Title} />
-                  <img src="/images/home/guide/1.jpg" alt={t.step1Title} />
-                </div>
+              <div className="step-image-wrap">
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/1.png`} alt={t.step1Title} />
               </div>
             </div>
-            <div className={`guide-step ${expandedSteps[2] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(2)}>
-                <div className="step-number yellow">2</div>
-                <div className="step-content">
+            <div className="guide-step-card">
+              <div className="step-info">
+                <div className="step-title-row">
+                  <div className="step-number-badge alternate">2</div>
                   <h3>{t.step2Title}</h3>
                 </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[2] ? 'expanded' : ''}`}>▼</span>
-                </div>
+                <p>{t.step2Desc}</p>
               </div>
-              <div className={`step-details ${expandedSteps[2] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step2Desc}</p>
-                </div>
-                <div className="step-image">
-                  <img src="/images/home/guide/2.jpg" alt={t.step2Title} />
-                  <img src="/images/home/guide/1.jpg" alt={t.step2Title} />
-                  <img src="/images/home/guide/2.jpg" alt={t.step2Title} />
-                </div>
+              <div className="step-image-wrap">
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/2.png`} alt={t.step2Title} />
               </div>
             </div>
-            <div className={`guide-step ${expandedSteps[3] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(3)}>
-                <div className="step-number purple">3</div>
-                <div className="step-content">
+            <div className="guide-step-card">
+              <div className="step-info">
+                <div className="step-title-row">
+                  <div className="step-number-badge">3</div>
                   <h3>{t.step3Title}</h3>
                 </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[3] ? 'expanded' : ''}`}>▼</span>
+                <p>{t.step3Desc}</p>
+              </div>
+              <div className="step-image-wrap">
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/3.png`} alt={t.step3Title} />
+              </div>
+            </div>
+            <div className="guide-step-card">
+              <div className="step-info">
+                <div className="step-title-row">
+                  <div className="step-number-badge alternate">4</div>
+                  <h3>{t.step4Title}</h3>
+                </div>
+                <p>{t.step4Desc}</p>
+              </div>
+              <div className="step-image-wrap">
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/4.png`} alt={t.step4Title} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </FadeSection>
+
+      <FadeSection as="section" className="membership-section">
+        <div className="container">
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.membershipTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
+
+          <div className="membership-grid">
+            {/* Basic Column */}
+            <div className="membership-column basic">
+              <span className="membership-basic-crown">👑</span>
+              <div className="membership-header">
+                <div className="membership-type-title">
+                  <h3>{t.membershipBasicTitle}</h3>
+                  <span className="membership-type-subtitle">{t.membershipBasicSubtitle}</span>
                 </div>
               </div>
-              <div className={`step-details ${expandedSteps[3] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step3Desc}</p>
+              <ul className="membership-list">
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>{t.membershipBasicItem1}</span>
+                </li>
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>{t.membershipBasicItem2}</span>
+                </li>
+                <li>
+                  <span className="check-icon">✓</span>
+                  <span>{t.membershipBasicItem3}</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Pro Column */}
+            <div className="membership-column pro">
+              <span className="membership-crown">👑</span>
+              <div className="membership-header">
+                <div className="membership-type-title">
+                  <h3><span className="gold-star">⭐</span> {t.membershipProTitle}</h3>
                 </div>
-                <div className="step-image">
-                  <img src="/images/home/guide/1.jpg" alt={t.step3Title} />
-                  <img src="/images/home/guide/2.jpg" alt={t.step3Title} />
-                  <img src="/images/home/guide/1.jpg" alt={t.step3Title} />
+              </div>
+              <div className="membership-pro-items">
+                <div className="membership-pro-item">
+                  <h4>{t.membershipProItem1Title}</h4>
+                  <p>{t.membershipProItem1Desc}</p>
+                </div>
+                <div className="membership-pro-item">
+                  <h4>{t.membershipProItem2Title}</h4>
+                  <p>{t.membershipProItem2Desc}</p>
+                </div>
+                <div className="membership-pro-item">
+                  <h4>{t.membershipProItem3Title}</h4>
+                  <p>{t.membershipProItem3Desc}</p>
+                </div>
+                <div className="membership-pro-item">
+                  <h4>{t.membershipProItem4Title}</h4>
+                  <p>{t.membershipProItem4Desc}</p>
+                </div>
+                <div className="membership-pro-item">
+                  <h4>{t.membershipProItem5Title}</h4>
+                  <p>{t.membershipProItem5Desc}</p>
                 </div>
               </div>
             </div>
-            <div className={`guide-step ${expandedSteps[4] ? 'expanded' : ''}`}>
-              <div className="step-header" onClick={() => toggleStep(4)}>
-                <div className="step-number yellow">4</div>
-                <div className="step-content">
-                  <h3>{t.step4Title}</h3>
-                </div>
-                <div className="step-toggle">
-                  <span className={`toggle-icon ${expandedSteps[4] ? 'expanded' : ''}`}>▼</span>
-                </div>
-              </div>
-              <div className={`step-details ${expandedSteps[4] ? 'expanded' : ''}`}>
-                <div className="step-description">
-                  <p>{t.step4Desc}</p>
-                </div>
-                <div className="step-image">
-                  <img src="/images/home/guide/2.jpg" alt={t.step4Title} />
-                  <img src="/images/home/guide/1.jpg" alt={t.step4Title} />
-                  <img src="/images/home/guide/2.jpg" alt={t.step4Title} />
-                </div>
-              </div>
+          </div>
+
+          <div className="membership-referral">
+            <div className="referral-box">
+              <h3><span className="gift-emoji">🎁</span> {t.membershipReferralTitle.replace('🎁 ', '')}</h3>
+              <p className="referral-highlight">{t.membershipReferralDesc}</p>
+              <Link to="/" className="membership-download-btn">
+                {t.membershipDownloadBtn}
+              </Link>
             </div>
           </div>
         </div>
@@ -191,6 +235,19 @@ const Products = () => {
             </div>
           </div>
           <div className="qa-list">
+            <div className={`qa-item qa-item-prohibited ${expandedQA['prohibited'] ? 'expanded' : ''}`}>
+              <div className="qa-question" onClick={() => setExpandedQA(prev => ({ ...prev, prohibited: !prev.prohibited }))}>
+                <h3>{t.qaProhibitedTitle}</h3>
+                <span className={`qa-toggle ${expandedQA['prohibited'] ? 'expanded' : ''}`}>▼</span>
+              </div>
+              <div className={`qa-answer ${expandedQA['prohibited'] ? 'expanded' : ''}`}>
+                <div
+                  className="qa-answer-content"
+                  style={{ whiteSpace: 'pre-line' }}
+                  dangerouslySetInnerHTML={{ __html: t.qaProhibitedContent }}
+                />
+              </div>
+            </div>
             <div className={`qa-item ${expandedQA[1] ? 'expanded' : ''}`}>
               <div className="qa-question" onClick={() => toggleQA(1)}>
                 <h3>{t.qa1Question}</h3>
@@ -228,7 +285,20 @@ const Products = () => {
               </div>
             </div>
           </div>
+          <div className="qa-support-footer">
+            <p>{t.qaSupportPrompt}</p>
+            <button className="qa-contact-btn" onClick={handleCopyWeChat}>
+              <span className="wechat-icon">💬</span>
+              {t.qaContactBtn}
+            </button>
+          </div>
         </div>
+
+        {showCopyToast && (
+          <div className="copy-toast">
+            <p>{t.qaCopySuccess}</p>
+          </div>
+        )}
       </FadeSection>
     </div>
   )

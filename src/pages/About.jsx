@@ -11,21 +11,10 @@ const About = () => {
   return (
     <div className="about-page">
       <section className="about-hero-banner">
-        <div className="banner-image">
-          <div className="banner-placeholder">
-            <span>{language === 'zh' ? '品牌宣传图片' : 'Brand Banner'}</span>
-          </div>
+        <div className="banner-images-grid hero-single-image">
+          <img src={`${import.meta.env.BASE_URL}images/aboutus/2.jpg`} alt="About EuroStay" className="hero-grid-img" />
         </div>
         <div className="banner-overlay">
-          <div className="container">
-            <div className="page-hero-title-wrapper">
-              <div className="page-hero-title-line">
-                <h1 className="page-hero-title-main page-hero-title-main-on-dark">{t.title}</h1>
-                <span className="page-hero-title-star page-hero-title-star-on-dark" aria-hidden="true">★</span>
-              </div>
-            </div>
-            <p className="page-subtitle">{t.subtitle}</p>
-          </div>
         </div>
       </section>
 
@@ -38,9 +27,7 @@ const About = () => {
               <p>{t.story2}</p>
             </div>
             <div className="about-image">
-              <div className="image-placeholder">
-                <span>{language === 'zh' ? '团队照片' : 'Team Photo'}</span>
-              </div>
+              <img src={`${import.meta.env.BASE_URL}images/aboutus/1.jpg`} alt="Our Story" className="about-story-img" />
             </div>
           </div>
         </div>

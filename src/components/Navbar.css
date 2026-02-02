@@ -60,6 +60,19 @@
   padding: 0;
   align-items: center;
   height: 100%;
+  position: relative;
+  /* For indicator positioning */
+}
+
+.navbar-sliding-indicator {
+  position: absolute;
+  bottom: 0.5rem;
+  height: 0.25rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.8) 100%);
+  border-radius: 0.2rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(255, 255, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  pointer-events: none;
 }
 
 .navbar-menu li {
@@ -94,18 +107,6 @@
 
 .navbar-link.active {
   color: var(--color-white);
-}
-
-.navbar-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0.5rem;
-  left: 0.5rem;
-  right: 0.5rem;
-  height: 0.25rem;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.8) 100%);
-  border-radius: 0.2rem;
-  box-shadow: 0 0.1rem 0.3rem rgba(255, 255, 255, 0.4);
 }
 
 .navbar-tip-btn {
@@ -229,7 +230,7 @@
     transform: translateX(0);
   }
 
-  .navbar-link.active::after {
+  .navbar-sliding-indicator {
     display: none;
   }
 }

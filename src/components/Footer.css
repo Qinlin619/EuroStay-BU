@@ -1,5 +1,5 @@
 .footer {
-  background-color: #F5F5F5;
+  background-color: #FFFEFA;
   padding: 6rem 2rem 4rem;
   width: 100%;
 }
@@ -167,14 +167,42 @@
   pointer-events: none;
 }
 
-.qr-corner-star-tl { top: -0.6rem; left: -0.6rem; animation-delay: 0s; }
-.qr-corner-star-tr { top: -0.6rem; right: -0.6rem; animation-delay: 0.3s; }
-.qr-corner-star-bl { bottom: -0.6rem; left: -0.6rem; animation-delay: 0.6s; }
-.qr-corner-star-br { bottom: -0.6rem; right: -0.6rem; animation-delay: 0.9s; }
+.qr-corner-star-tl {
+  top: -0.6rem;
+  left: -0.6rem;
+  animation-delay: 0s;
+}
+
+.qr-corner-star-tr {
+  top: -0.6rem;
+  right: -0.6rem;
+  animation-delay: 0.3s;
+}
+
+.qr-corner-star-bl {
+  bottom: -0.6rem;
+  left: -0.6rem;
+  animation-delay: 0.6s;
+}
+
+.qr-corner-star-br {
+  bottom: -0.6rem;
+  right: -0.6rem;
+  animation-delay: 0.9s;
+}
 
 @keyframes qr-corner-star-pulse {
-  0%, 100% { opacity: 0.7; transform: scale(0.95); }
-  50% { opacity: 1; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
 
 .qr-code-placeholder {

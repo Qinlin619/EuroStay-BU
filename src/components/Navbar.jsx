@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
@@ -9,6 +9,8 @@ const Navbar = () => {
   const navigate = useNavigate()
   const { language, toggleLanguage } = useLanguage()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 })
+  const navRefs = useRef({})
   const t = translations[language]
 
   const navItems = [
@@ -20,11 +22,25 @@ const Navbar = () => {
 
   const isActive = (path) => location.pathname === path
 
+  useEffect(() => {
+    const activeItem = navItems.find(item => item.path === location.pathname)
+    if (activeItem && navRefs.current[activeItem.path]) {
+      const el = navRefs.current[activeItem.path]
+      setIndicatorStyle({
+        left: el.offsetLeft,
+        width: el.offsetWidth,
+        opacity: 1
+      })
+    } else {
+      setIndicatorStyle(prev => ({ ...prev, opacity: 0 }))
+    }
+  }, [location.pathname, language])
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/navbar.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
+          <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/icon.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
         </Link>
         <button
           className="navbar-toggle"
@@ -36,10 +52,19 @@ const Navbar = () => {
           <span></span>
         </button>
         <ul className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
+          <div
+            className="navbar-sliding-indicator"
+            style={{
+              left: `${indicatorStyle.left}px`,
+              width: `${indicatorStyle.width}px`,
+              opacity: indicatorStyle.opacity
+            }}
+          />
           {navItems.map((item) => (
             <li key={item.path}>
               <Link
                 to={item.path}
+                ref={el => navRefs.current[item.path] = el}
                 className={`navbar-link ${isActive(item.path) ? 'active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >

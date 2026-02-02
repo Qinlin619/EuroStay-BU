@@ -25,6 +25,8 @@
   margin: 0 auto;
   padding: 6.0rem 2.0rem 0 0.5rem;
   background-color: var(--color-white);
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .hero-main {
@@ -65,14 +67,12 @@
   transform: translateY(0.5rem);
   transition: opacity 0.65s ease-out 0.28s, transform 0.65s ease-out 0.28s;
   /* 渐变文字 + 轻微流动动效 */
-  background: linear-gradient(
-    105deg,
-    var(--color-purple-secondary) 0%,
-    #a78bfa 25%,
-    var(--color-purple-secondary) 50%,
-    #c4b5fd 75%,
-    var(--color-purple-secondary) 100%
-  );
+  background: linear-gradient(105deg,
+      var(--color-purple-secondary) 0%,
+      #a78bfa 25%,
+      var(--color-purple-secondary) 50%,
+      #c4b5fd 75%,
+      var(--color-purple-secondary) 100%);
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
@@ -86,8 +86,15 @@
 }
 
 @keyframes slogan-shimmer {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 100% center; }
+
+  0%,
+  100% {
+    background-position: 0% center;
+  }
+
+  50% {
+    background-position: 100% center;
+  }
 }
 
 .hero-title-line {
@@ -129,14 +136,12 @@
   height: 0.5rem;
   margin-top: -0.25rem;
   will-change: transform;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.5) 15%,
-    rgba(255, 255, 255, 1) 50%,
-    rgba(255, 255, 255, 0.5) 85%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.5) 15%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.5) 85%,
+      transparent 100%);
   box-shadow: 0 0 1.2rem rgba(255, 255, 255, 0.9), 0 0 2.5rem rgba(255, 255, 255, 0.6);
   transform: rotate(-28deg) translateX(-120%);
   transform-origin: center center;
@@ -158,21 +163,65 @@
 }
 
 @keyframes logo-shine-sweep {
-  0% { transform: rotate(-28deg) translateX(-120%); opacity: 0; }
-  3% { transform: rotate(-28deg) translateX(-118%); opacity: 1; }
-  18% { transform: rotate(-28deg) translateX(140%); opacity: 1; }
-  20% { opacity: 0; }
-  20.01%, 100% { transform: rotate(-28deg) translateX(140%); opacity: 0; }
+  0% {
+    transform: rotate(-28deg) translateX(-120%);
+    opacity: 0;
+  }
+
+  3% {
+    transform: rotate(-28deg) translateX(-118%);
+    opacity: 1;
+  }
+
+  18% {
+    transform: rotate(-28deg) translateX(140%);
+    opacity: 1;
+  }
+
+  20% {
+    opacity: 0;
+  }
+
+  20.01%,
+  100% {
+    transform: rotate(-28deg) translateX(140%);
+    opacity: 0;
+  }
 }
 
 /* 白线结束后 50ms 接黄星，黄星后 3s 空档接紫星，紫星消失后 100ms 接白线（10s 循环） */
 @keyframes logo-shine-star {
-  0%, 20.4% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
-  20.5% { opacity: 0.5; transform: scale(0.65) rotate(-90deg); }
-  23.5% { opacity: 1; transform: scale(1) rotate(0deg); }
-  52% { opacity: 1; transform: scale(1.15) rotate(0deg); }
-  55% { opacity: 0; transform: scale(1.2) rotate(0deg); }
-  55.01%, 100% { opacity: 0; }
+
+  0%,
+  20.4% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+  }
+
+  20.5% {
+    opacity: 0.5;
+    transform: scale(0.65) rotate(-90deg);
+  }
+
+  23.5% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  52% {
+    opacity: 1;
+    transform: scale(1.15) rotate(0deg);
+  }
+
+  55% {
+    opacity: 0;
+    transform: scale(1.2) rotate(0deg);
+  }
+
+  55.01%,
+  100% {
+    opacity: 0;
+  }
 }
 
 /* S 左下角同款浅紫色星星 */
@@ -192,12 +241,37 @@
 }
 
 @keyframes s-star-pulse {
-  0%, 84% { opacity: 0; transform: scale(0.3) rotate(-180deg); }
-  85% { opacity: 0.5; transform: scale(0.65) rotate(-90deg); }
-  88% { opacity: 1; transform: scale(1) rotate(0deg); }
-  97% { opacity: 1; transform: scale(1.1) rotate(0deg); }
-  98.89% { opacity: 0; transform: scale(1.15) rotate(0deg); }
-  98.9%, 100% { opacity: 0; }
+
+  0%,
+  84% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+  }
+
+  85% {
+    opacity: 0.5;
+    transform: scale(0.65) rotate(-90deg);
+  }
+
+  88% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  97% {
+    opacity: 1;
+    transform: scale(1.1) rotate(0deg);
+  }
+
+  98.89% {
+    opacity: 0;
+    transform: scale(1.15) rotate(0deg);
+  }
+
+  98.9%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .hero-title-image {
@@ -330,8 +404,15 @@
 }
 
 @keyframes link-arrow-move {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(0.35em); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(0.35em);
+  }
 }
 
 .hero-image {
@@ -426,6 +507,7 @@
   padding-bottom: 1.5rem;
   letter-spacing: 0.08em;
 }
+
 .steps-title::after {
   content: '';
   position: absolute;
@@ -433,13 +515,13 @@
   left: 0;
   right: 0;
   height: 0.3rem;
-  background: linear-gradient(90deg, 
-    var(--color-yellow-primary) 0%, 
-    var(--color-yellow-primary) 50%, 
-    var(--color-yellow-secondary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-yellow-primary) 0%,
+      var(--color-yellow-primary) 50%,
+      var(--color-yellow-secondary) 100%);
   clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
 }
+
 .steps-title::before {
   content: '★';
   position: absolute;
@@ -496,7 +578,8 @@
 .guide-module:hover {
   box-shadow: 0 0.6rem 2.0rem rgba(122, 99, 199, 0.14), 0 0 0 0.1rem rgba(255, 255, 255, 0.9) inset;
   border-color: rgba(122, 99, 199, 0.2);
-  transform: translateY(-0.2rem);
+  transform: translateY(-0.2rem) translateZ(0);
+  will-change: transform;
 }
 
 .guide-module-image-wrap {
@@ -581,11 +664,10 @@
   left: 8%;
   right: 8%;
   height: 0.3rem;
-  background: linear-gradient(90deg, 
-    var(--color-yellow-primary) 0%, 
-    var(--color-purple-secondary) 50%,
-    var(--color-yellow-primary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-yellow-primary) 0%,
+      var(--color-purple-secondary) 50%,
+      var(--color-yellow-primary) 100%);
   border-radius: 0.2rem;
   z-index: 0;
 }
@@ -685,7 +767,7 @@
   text-align: center;
 }
 
-.product-info > p {
+.product-info>p {
   font-size: 1.8rem;
   color: var(--color-text-unselected);
   line-height: 1.8;
@@ -793,6 +875,7 @@
   padding-bottom: 1.5rem;
   letter-spacing: 0.08em;
 }
+
 .features .section-title::after {
   content: '';
   position: absolute;
@@ -800,13 +883,13 @@
   left: 0;
   right: 0;
   height: 0.3rem;
-  background: linear-gradient(90deg, 
-    var(--color-yellow-primary) 0%, 
-    var(--color-yellow-primary) 50%, 
-    var(--color-yellow-secondary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-yellow-primary) 0%,
+      var(--color-yellow-primary) 50%,
+      var(--color-yellow-secondary) 100%);
   clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
 }
+
 .features .section-title::before {
   content: '★';
   position: absolute;
@@ -816,6 +899,7 @@
   color: var(--color-yellow-primary);
   transform: rotate(15deg);
 }
+
 .features .container {
   text-align: center;
 }
@@ -922,6 +1006,7 @@
     opacity: 0;
     transform: translate(-11.0rem, -13.0rem) rotate(-5deg) scale(0.7);
   }
+
   100% {
     opacity: 1;
     transform: translate(-11.0rem, -13.0rem) rotate(-5deg) scale(1);
@@ -933,6 +1018,7 @@
     opacity: 0;
     transform: translate(11.0rem, -9.0rem) rotate(4deg) scale(0.7);
   }
+
   100% {
     opacity: 1;
     transform: translate(11.0rem, -9.0rem) rotate(4deg) scale(1);
@@ -944,6 +1030,7 @@
     opacity: 0;
     transform: translate(-13.0rem, 12.0rem) rotate(3deg) scale(0.7);
   }
+
   100% {
     opacity: 1;
     transform: translate(-13.0rem, 12.0rem) rotate(3deg) scale(1);
@@ -955,6 +1042,7 @@
     opacity: 0;
     transform: translate(12.0rem, 14.0rem) rotate(-4deg) scale(0.7);
   }
+
   100% {
     opacity: 1;
     transform: translate(12.0rem, 14.0rem) rotate(-4deg) scale(1);
@@ -1074,6 +1162,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -1095,6 +1184,7 @@
     transform: translateY(3.0rem);
     opacity: 0;
   }
+
   to {
     transform: translateY(0);
     opacity: 1;
@@ -1202,8 +1292,10 @@
   -ms-overflow-style: none;
   height: 100%;
   position: relative;
-  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  background: transparent;
+  /* 移除蒙版以确保不会遮挡旁边的文字，如果需要保留请调低其影响范围 */
+  mask-image: none;
+  -webkit-mask-image: none;
 }
 
 .community-gallery-scroll::-webkit-scrollbar {
@@ -1217,8 +1309,10 @@
   width: max-content;
   align-items: center;
   padding: 0;
-  padding-left: calc((100% - 36.0rem) / 2); /* 居中第一张图片 */
-  padding-right: calc((100% - 36.0rem) / 2); /* 居中最后一张图片 */
+  padding-left: calc((100% - 36.0rem) / 2);
+  /* 居中第一张图片 */
+  padding-right: calc((100% - 36.0rem) / 2);
+  /* 居中最后一张图片 */
   box-sizing: border-box;
   justify-content: flex-start;
 }
@@ -1323,10 +1417,10 @@
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  width: 72.0rem;
+  width: 68.0rem;
   height: 68.0rem;
   margin-top: -30px;
-  min-width: 72.0rem;
+  min-width: 68.0rem;
   padding: 3.0rem;
   background: radial-gradient(ellipse at center, rgba(210, 200, 253, 0.6) 0%, rgba(210, 200, 253, 0.35) 30%, rgba(210, 200, 253, 0.12) 50%, rgba(255, 255, 255, 0) 65%);
   overflow: visible;
@@ -1370,9 +1464,11 @@
   padding: 0.32rem;
   box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.2);
   transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform: scale(1);
+  transform: scale(1) translateZ(0);
   opacity: 0.7;
   position: relative;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .phone-screen-mockup {
@@ -1472,6 +1568,12 @@
   flex: 1;
   text-align: right;
   min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.feature-card:nth-child(3) .feature-card-content {
+  z-index: 100 !important;
 }
 
 /* 第一个卡片：文字区域带星星背景 */
@@ -1482,35 +1584,54 @@
 
 .feature-card:first-child .feature-card-content {
   text-align: right;
+  flex: 0 1 45%;
+  max-width: 54.0rem;
+  min-width: 32.0rem;
 }
 
 .feature-card:first-child .feature-card-text-wrap h3,
 .feature-card:first-child .feature-card-text-wrap .feature-card-subtitle,
 .feature-card:first-child .feature-card-text-wrap .feature-card-desc-small {
   position: relative;
-  z-index: 1;
+  z-index: 10;
 }
 
 /* 星星背景动效（基准旋转由 --star-rotate 控制，每颗星随机） */
 @keyframes star-float {
-  0%, 100% { transform: translateY(0) rotate(var(--star-rotate, 0deg)); }
-  50% { transform: translateY(-0.4rem) rotate(calc(var(--star-rotate, 0deg) + 3deg)); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--star-rotate, 0deg));
+  }
+
+  50% {
+    transform: translateY(-0.4rem) rotate(calc(var(--star-rotate, 0deg) + 3deg));
+  }
 }
 
 @keyframes star-float-alt {
-  0%, 100% { transform: translateY(0) rotate(var(--star-rotate, 0deg)); }
-  50% { transform: translateY(0.35rem) rotate(calc(var(--star-rotate, 0deg) - 2deg)); }
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--star-rotate, 0deg));
+  }
+
+  50% {
+    transform: translateY(0.35rem) rotate(calc(var(--star-rotate, 0deg) - 2deg));
+  }
 }
 
 .feature-card-star-bg {
   position: absolute;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   opacity: 0.85;
   object-fit: contain;
   animation-duration: 4s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .feature-card-star-bg--1 {
@@ -1547,10 +1668,12 @@
   top: -1rem;
   right: 2rem;
 }
+
 .feature-card:first-child .feature-card-star-bg--2 {
   top: 8rem;
   left: -1rem;
 }
+
 .feature-card:first-child .feature-card-star-bg--3 {
   bottom: 3rem;
   right: -0.5rem;
@@ -1564,12 +1687,14 @@
   left: auto;
   right: calc(0.5rem - 10px);
 }
+
 .feature-card:nth-child(2) .feature-card-star-bg--2 {
   width: 2.6rem;
   height: 2.6rem;
   top: 6rem;
   left: -1rem;
 }
+
 .feature-card:nth-child(2) .feature-card-star-bg--3 {
   width: 3.4rem;
   height: 3.4rem;
@@ -1587,6 +1712,7 @@
   left: 5.5rem;
   right: auto;
 }
+
 .feature-card:nth-child(3) .feature-card-star-bg--2 {
   width: 2.8rem;
   height: 2.8rem;
@@ -1594,6 +1720,7 @@
   left: auto;
   right: 0.5rem;
 }
+
 .feature-card:nth-child(3) .feature-card-star-bg--3 {
   width: 3.2rem;
   height: 3.2rem;
@@ -1617,13 +1744,13 @@
 
 /* 换宿社群：轮播占更多宽度展示1.5张图，左边文字挤窄 */
 .feature-card:nth-child(3) .feature-card-content {
-  flex: 0 1 32%;
-  max-width: 38.0rem;
-  min-width: 28.0rem;
+  flex: 0 1 45%;
+  max-width: 54.0rem;
+  min-width: 32.0rem;
 }
 
 .feature-card:nth-child(3) .feature-community-gallery {
-  flex: 1 1 65%;
+  flex: 1 1 58%;
 }
 
 .feature-icon.purple {
@@ -1650,8 +1777,9 @@
 .feature-card:first-child .feature-card-content h3 .feature-title-line1 {
   font-size: 6.5rem;
   display: block;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: -2.5rem;
+  padding-bottom: 1.0rem;
   letter-spacing: 0.06em;
   background: linear-gradient(180deg, #C4B6F5 0%, #B4A4E8 30%, #A898E0 55%, #8B7BC7 100%);
   -webkit-background-clip: text;
@@ -1660,15 +1788,23 @@
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
   filter: drop-shadow(0 0.05rem 0.08rem rgba(122, 99, 199, 0.25));
+  overflow: visible;
 }
 
-/* 世界各地的换宿伙伴：纯紫色 */
+/* 第一张卡片：描述文字允许更宽 */
+.feature-card:first-child .feature-card-desc-small,
+.feature-card:first-child .feature-card-content p.feature-card-desc-small {
+  margin-left: auto;
+  max-width: 100%;
+}
+
 .feature-card:first-child .feature-card-content h3 .feature-title-line2 {
   font-weight: 600;
   font-size: 4.4rem;
   margin-top: -2.5rem;
   display: block;
   letter-spacing: 0.08em;
+  padding-bottom: 0.5rem;
   color: var(--color-purple-primary);
   -webkit-text-fill-color: var(--color-purple-primary);
 }
@@ -1694,7 +1830,7 @@
 
 .feature-card:nth-child(3) .feature-card-desc-small,
 .feature-card:nth-child(3) .feature-card-content p.feature-card-desc-small {
-  max-width: calc(85% + 20px);
+  max-width: 100%;
 }
 
 .feature-card:nth-child(2) .feature-card-text-wrap h3,
@@ -1704,15 +1840,16 @@
 .feature-card:nth-child(3) .feature-card-text-wrap .feature-card-subtitle,
 .feature-card:nth-child(3) .feature-card-text-wrap .feature-card-desc-small {
   position: relative;
-  z-index: 1;
+  z-index: 110 !important;
 }
 
 /* 第二张卡片标题「换宿安全」：与「快速链接」同款渐变 + 字间距 */
 .feature-card:nth-child(2) .feature-card-text-wrap h3 .feature-title-line1 {
   font-size: 6.5rem;
   display: block;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: -2.5rem;
+  padding-bottom: 1.0rem;
   letter-spacing: 0.12em;
   background: linear-gradient(180deg, #8B7BC7 0%, #A898E0 40%, #C4B6F5 100%);
   -webkit-background-clip: text;
@@ -1720,14 +1857,16 @@
   background-clip: text;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
+  overflow: visible;
 }
 
 /* 第三张卡片：与「快速链接」同款格式——渐变、字间距、两行间距 */
 .feature-card:nth-child(3) .feature-card-text-wrap h3 .feature-title-line1 {
   font-size: 6.5rem;
   display: block;
-  line-height: 1.1;
+  line-height: 1.2;
   margin-bottom: -2.5rem;
+  padding-bottom: 1.0rem;
   letter-spacing: 0.12em;
   background: linear-gradient(135deg, #8B7BC7 0%, #A898E0 25%, #C4B6F5 50%, #A898E0 75%, #8B7BC7 100%);
   -webkit-background-clip: text;
@@ -1735,6 +1874,7 @@
   background-clip: text;
   -webkit-font-smoothing: antialiased;
   font-smoothing: antialiased;
+  overflow: visible;
 }
 
 /* 第二张卡片「通过安全机制增强」：与「世界各地的换宿伙伴」同款字间距，与「换宿安全」间距加大 10px */
@@ -1754,6 +1894,7 @@
   margin-top: calc(-2.5rem + 20px);
   display: block;
   letter-spacing: 0.08em;
+  padding-bottom: 0.5rem;
   color: var(--color-purple-primary);
   -webkit-text-fill-color: var(--color-purple-primary);
 }
@@ -1770,6 +1911,10 @@
 .feature-card-content p.feature-card-subtitle {
   color: var(--color-purple-primary);
   font-size: 1.9rem;
+}
+
+.feature-card:nth-child(3) .feature-card-subtitle {
+  max-width: 100%;
 }
 
 .feature-card-content p {
@@ -1813,6 +1958,8 @@
   margin-left: 0;
   box-sizing: border-box;
   overflow: visible;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .home-stats-below-globe {
@@ -2085,7 +2232,7 @@
   color: var(--color-text-unselected);
   filter: blur(0.2rem);
   background-image: linear-gradient(45deg, #f0f0f0 25%, transparent 25%, transparent 75%, #f0f0f0 75%, #f0f0f0),
-                    linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 25%, #e0e0e0 75%, #f0f0f0 75%, #f0f0f0);
+    linear-gradient(45deg, #f0f0f0 25%, #e0e0e0 25%, #e0e0e0 75%, #f0f0f0 75%, #f0f0f0);
   background-size: 2.0rem 2.0rem;
   background-position: 0 0, 1.0rem 1.0rem;
 }
@@ -2142,6 +2289,7 @@
   padding-bottom: 1.5rem;
   letter-spacing: 0.08em;
 }
+
 .vision-title-primary::after {
   content: '';
   position: absolute;
@@ -2149,13 +2297,13 @@
   left: 0;
   right: 0;
   height: 0.3rem;
-  background: linear-gradient(90deg, 
-    var(--color-yellow-primary) 0%, 
-    var(--color-yellow-primary) 50%, 
-    var(--color-yellow-secondary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-yellow-primary) 0%,
+      var(--color-yellow-primary) 50%,
+      var(--color-yellow-secondary) 100%);
   clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
 }
+
 .vision-title-primary::before {
   content: '★';
   position: absolute;
@@ -2308,11 +2456,14 @@
   text-align: center;
 }
 
-.vision-cta p {
-  font-size: 1.6rem;
-  color: var(--color-purple-secondary);
+.vision-cta p.join-community-text {
+  font-size: 2.4rem;
+  color: var(--color-purple-primary);
   margin-bottom: 2.0rem;
+  margin-top: 6.0rem;
   text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .btn-copy-wechat {
@@ -2336,42 +2487,39 @@
 }
 
 /* 紫色简约弹窗：已复制微信号 */
-.copy-toast-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.35);
-  animation: copy-toast-fade-in 0.2s ease-out;
-}
-
+/* 紫色简约弹窗：已复制微信号 */
 .copy-toast {
-  background: linear-gradient(135deg, var(--color-purple-primary) 0%, var(--color-purple-secondary) 100%);
-  color: var(--color-white);
-  padding: 2.4rem 3.6rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  background: var(--color-purple-primary);
+  color: white;
+  padding: 1.4rem 3.2rem;
   border-radius: 1.2rem;
+  box-shadow: 0 1.2rem 3.0rem rgba(122, 99, 199, 0.4);
+  white-space: nowrap;
+  animation: toastFadeIn 0.3s ease-out forwards;
+}
+
+.copy-toast p {
   font-size: 1.7rem;
+  margin: 0;
   font-weight: 500;
-  box-shadow: 0 0.8rem 3.2rem rgba(122, 99, 199, 0.35);
-  animation: copy-toast-scale-in 0.25s ease-out;
-  min-width: 24.0rem;
-  text-align: center;
+  color: white;
 }
 
-.copy-toast-text {
-  letter-spacing: 0.02em;
-}
+@keyframes toastFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
 
-@keyframes copy-toast-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes copy-toast-scale-in {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .reviews-section {
@@ -2393,6 +2541,7 @@
   padding-bottom: 1.5rem;
   letter-spacing: 0.08em;
 }
+
 .reviews-title::after {
   content: '';
   position: absolute;
@@ -2400,13 +2549,13 @@
   left: 0;
   right: 0;
   height: 0.3rem;
-  background: linear-gradient(90deg, 
-    var(--color-yellow-primary) 0%, 
-    var(--color-yellow-primary) 50%, 
-    var(--color-yellow-secondary) 100%
-  );
+  background: linear-gradient(90deg,
+      var(--color-yellow-primary) 0%,
+      var(--color-yellow-primary) 50%,
+      var(--color-yellow-secondary) 100%);
   clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
 }
+
 .reviews-title::before {
   content: '★';
   position: absolute;
@@ -2602,7 +2751,7 @@
     font-size: 3.2rem;
   }
 
-  .product-info > p {
+  .product-info>p {
     font-size: 1.6rem;
   }
 

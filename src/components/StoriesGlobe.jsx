@@ -3,7 +3,35 @@ import { createPortal } from 'react-dom'
 import Globe from 'globe.gl'
 import * as THREE from 'three'
 import { translations } from '../translations'
+import { COUNTRY_CAPITAL, ISO_A3_TO_A2 } from '../data/countries'
 import './Globe3D.css'
+
+const getGeoCentroid = (feature) => {
+  if (!feature || !feature.geometry) return null
+  const { type, coordinates } = feature.geometry
+  let points = []
+  if (type === 'Polygon') {
+    points = coordinates[0]
+  } else if (type === 'MultiPolygon') {
+    let maxLen = 0
+    coordinates.forEach(poly => {
+      if (poly[0].length > maxLen) {
+        maxLen = poly[0].length
+        points = poly[0]
+      }
+    })
+  } else {
+    return null
+  }
+  if (!points.length) return null
+
+  let latSum = 0, lngSum = 0
+  points.forEach(([lng, lat]) => {
+    latSum += lat
+    lngSum += lng
+  })
+  return { lat: latSum / points.length, lng: lngSum / points.length }
+}
 
 // 故事地点 -> 国家 ISO_A2，用于点击国家时跳转/弹窗
 const LOCATION_TO_COUNTRY = {
@@ -17,67 +45,33 @@ const LOCATION_TO_COUNTRY = {
   '维也纳, 奥地利': 'AT', 'Vienna, Austria': 'AT', '维也纳': 'AT', 'Vienna': 'AT',
 }
 
-// 无故事国家点击时用于旋转地球的近似中心（lat, lng）
-const COUNTRY_CENTER = {
-  FR: { lat: 46.2, lng: 2.2 }, ES: { lat: 40.4, lng: -3.7 }, NL: { lat: 52.13, lng: 5.29 },
-  IT: { lat: 41.9, lng: 12.5 }, DE: { lat: 51.2, lng: 10.5 }, GB: { lat: 54.0, lng: -2.5 },
-  PT: { lat: 39.5, lng: -8.0 }, AT: { lat: 47.5, lng: 13.3 }, PL: { lat: 52.0, lng: 19.4 },
-  UA: { lat: 49.0, lng: 32.0 }, SE: { lat: 62.0, lng: 15.6 }, NO: { lat: 62.0, lng: 10.0 },
-  FI: { lat: 64.0, lng: 26.0 }, IE: { lat: 53.4, lng: -8.2 }, BE: { lat: 50.5, lng: 4.5 },
-  CH: { lat: 46.8, lng: 8.2 }, CZ: { lat: 49.8, lng: 15.5 }, GR: { lat: 39.1, lng: 21.8 },
-  RO: { lat: 46.0, lng: 25.0 }, HU: { lat: 47.2, lng: 19.5 }, RU: { lat: 60.0, lng: 100.0 },
-  US: { lat: 38.0, lng: -97.0 }, CN: { lat: 35.9, lng: 104.2 }, JP: { lat: 36.2, lng: 138.3 },
-  IN: { lat: 20.6, lng: 78.9 }, BR: { lat: -14.2, lng: -51.9 }, AU: { lat: -25.3, lng: 133.8 },
-  CA: { lat: 56.0, lng: -106.0 }, MX: { lat: 23.6, lng: -102.5 }, TR: { lat: 39.0, lng: 35.0 },
-  KR: { lat: 35.9, lng: 127.8 }, DK: { lat: 56.3, lng: 9.5 }, SK: { lat: 48.7, lng: 19.7 },
-}
-
-// 各国首都坐标（lat, lng），用于“固定相机、旋转地球”时把首都转到画面中心
-const COUNTRY_CAPITAL = {
-  FR: { lat: 48.8566, lng: 2.3522 },   // Paris
-  ES: { lat: 40.4168, lng: -3.7038 },   // Madrid
-  NL: { lat: 52.3676, lng: 4.9041 },   // Amsterdam
-  IT: { lat: 41.9028, lng: 12.4964 },   // Rome
-  DE: { lat: 52.52, lng: 13.405 },      // Berlin
-  GB: { lat: 51.5074, lng: -0.1278 },   // London
-  PT: { lat: 38.7223, lng: -9.1393 },   // Lisbon
-  AT: { lat: 48.2082, lng: 16.3738 },   // Vienna
-  PL: { lat: 52.2297, lng: 21.0122 },   // Warsaw
-  UA: { lat: 50.4501, lng: 30.5234 },   // Kyiv
-  SE: { lat: 59.3293, lng: 18.0686 },  // Stockholm
-  NO: { lat: 59.9139, lng: 10.7522 },  // Oslo
-  FI: { lat: 60.1699, lng: 24.9384 },   // Helsinki
-  IE: { lat: 53.3498, lng: -6.2603 },   // Dublin
-  BE: { lat: 50.8503, lng: 4.3517 },    // Brussels
-  CH: { lat: 46.948, lng: 7.4474 },    // Bern
-  CZ: { lat: 50.0755, lng: 14.4378 },  // Prague
-  GR: { lat: 37.9838, lng: 23.7275 },  // Athens
-  RO: { lat: 44.4268, lng: 26.1025 },  // Bucharest
-  HU: { lat: 47.4979, lng: 19.0402 },  // Budapest
-  RU: { lat: 55.7558, lng: 37.6173 },  // Moscow
-  US: { lat: 38.9072, lng: -77.0369 }, // Washington
-  CN: { lat: 39.9042, lng: 116.4074 }, // Beijing
-  JP: { lat: 35.6762, lng: 139.6503 }, // Tokyo
-  IN: { lat: 28.6139, lng: 77.209 },   // New Delhi
-  BR: { lat: -15.7939, lng: -47.8828 }, // Brasília
-  AU: { lat: -35.2809, lng: 149.1300 },// Canberra
-  CA: { lat: 45.4215, lng: -75.6972 },  // Ottawa
-  MX: { lat: 19.4326, lng: -99.1332 },  // Mexico City
-  TR: { lat: 39.9334, lng: 32.8597 },   // Ankara
-  KR: { lat: 37.5665, lng: 126.978 },  // Seoul
-  DK: { lat: 55.6761, lng: 12.5683 },  // Copenhagen
-  SK: { lat: 48.1486, lng: 17.1077 },  // Bratislava
-}
-
-const ISO_A3_TO_A2 = { USA: 'US', GBR: 'GB', TWN: 'TW', HKG: 'HK', MAC: 'MO', PRK: 'KP', RUS: 'RU', BOL: 'BO', VEN: 'VE', TLS: 'TL', PSE: 'PS', COD: 'CD', COG: 'CG', TZA: 'TZ', SYR: 'SY', LBY: 'LY', IRQ: 'IQ', IRN: 'IR', VNM: 'VN', KOR: 'KR', MKD: 'MK', FSM: 'FM', MDA: 'MD', LAO: 'LA' }
+// 无故事国家点击时用于旋转地球的近似中心（lat, lng） - 已废弃，使用 COUNTRY_CAPITAL 或 getGeoCentroid
+const COUNTRY_CENTER = {}
 const getIso2FromProps = (p) => {
   if (!p) return null
-  if (p.ISO_A2) return p.ISO_A2
-  const a3 = (p.ISO_A3 || p.ADM0_A3 || '').toUpperCase()
-  return ISO_A3_TO_A2[a3] || a3.slice(0, 2) || null
+  // Strict check: Must be 2 letters.
+  if (p.ISO_A2 && /^[a-zA-Z]{2}$/.test(p.ISO_A2)) return p.ISO_A2
+
+  // Helper to ignore garbage
+  const clean = (s) => (s && s !== '-99' && s !== '-9') ? s : null
+
+  // 2. Try ISO_A3/ADM0_A3/SOV_A3
+  const a3 = (clean(p.ISO_A3) || clean(p.ADM0_A3) || clean(p.SOV_A3) || '').toUpperCase()
+  // Map lookup
+  const mapped = ISO_A3_TO_A2[a3]
+  if (mapped) return mapped
+
+  // 2-letter code in A3 field?
+  if (a3.length === 2 && /^[a-zA-Z]{2}$/.test(a3)) return a3
+
+  // Slicing fallback: Only if result is 2 letters
+  const sliced = a3.slice(0, 2)
+  if (/^[a-zA-Z]{2}$/.test(sliced)) return sliced
+
+  return null
 }
 
-const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rotationTransitionMs = 0, onMarkerClick, onCountryClick, onCountryHighlight, hoveredMarker, onMarkerHover, countryUserCounts = {}, language = 'zh', showCountryTooltip = true }) => {
+const StoriesGlobe = ({ stories = [], currentIndex = 0, highlightCountry = null, rotationTransitionMs = 0, onMarkerClick, onCountryClick, onCountryHighlight, hoveredMarker, onMarkerHover, countryUserCounts = {}, language = 'zh', showCountryTooltip = true }) => {
   const globeEl = useRef(null)
   const [activeCard, setActiveCard] = useState(null)
   const [hoveredCountry, setHoveredCountry] = useState(null)
@@ -89,9 +83,10 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
   const globeRef = useRef(null)
   const countryUserCountsRef = useRef(countryUserCounts)
   const languageRef = useRef(language)
-  const selectedCountryRef = useRef(null)
-  const selectedFeatureRef = useRef(null) // 点击的那一块多边形（仅这块变黄，避免同国多块如法国本土+海外都变黄）
-  const hoveredFeatureRef = useRef(null) // 当前悬浮的多边形，用于鼠标离开时重置
+  const selectedCountryRef = useRef(null) // 点击高亮的国家 ISO_A2
+  const selectedFeatureRef = useRef(null) // 点击的那一块多边形
+  const hoveredFeatureRef = useRef(null) // 当前悬浮的多边形
+  const isMouseInContainerRef = useRef(false) // Track mouse presence to prevent race conditions
   const countriesWithStoriesRef = useRef(new Set())
   const countryToStoryIndicesRef = useRef({})
 
@@ -216,15 +211,53 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
 
   useEffect(() => {
     if (!globeEl.current) {
-      console.error('Globe3D: globeEl.current is null')
+      console.error('StoriesGlobe: globeEl.current is null')
       return
     }
 
-    // 查看日志：按 F12 打开开发者工具 → 点 Console（控制台）面板，刷新页面即可看到 Globe3D 的日志
-    console.log('%c[Globe3D] 查看日志：F12 → Console 面板', 'color: #7A63C7; font-weight: bold')
+    // 查看日志：按 F12 打开开发者工具 → 点 Console（控制台）面板，刷新页面即可看到 StoriesGlobe 的日志
+    console.log('%c[StoriesGlobe] 查看日志：F12 → Console 面板', 'color: #7A63C7; font-weight: bold')
 
     // Initialize Globe - following choropleth-countries example structure
     let world
+
+    // --- LIFTED COLOR LOGIC START ---
+    // Generate varied colors for countries to create depth/hierarchy
+    // Countries with stories get purple shades, others get varied gray/blue tones
+    const generateCountryColor = (isoCode, hasStories) => {
+      if (hasStories) {
+        // Countries with stories: use purple shades
+        return purplePrimary
+      }
+
+      // Generate a hash from ISO code to create consistent color variations
+      let hash = 0
+      for (let i = 0; i < isoCode.length; i++) {
+        hash = isoCode.charCodeAt(i) + ((hash << 5) - hash)
+      }
+
+      // Create color variations with different lightness
+      const lightness = 60 + (Math.abs(hash) % 30) // Vary between 60-90
+      const saturation = 15 + (Math.abs(hash >> 8) % 15) // Vary between 15-30
+
+      // Use blue-gray tones with variation
+      return `hsl(240, ${saturation}%, ${lightness}%)`
+    }
+
+    const getIso2 = getIso2FromProps
+    const colorScale = (feat) => {
+      const iso2 = getIso2(feat?.properties)
+      if (!iso2) return 'hsl(240, 15%, 75%)'
+      // Check BOTH element ref and ISO code ref for persistence
+      if ((selectedFeatureRef.current && feat === selectedFeatureRef.current) ||
+        (iso2 && iso2 === selectedCountryRef.current)) {
+        return yellowPrimary
+      }
+      const hasStories = countriesWithStoriesRef.current.has(iso2)
+      return generateCountryColor(iso2, hasStories)
+    }
+    // --- LIFTED COLOR LOGIC END ---
+
     try {
       world = Globe()(globeEl.current)
       console.log('Globe3D: Globe instance created')
@@ -434,37 +467,7 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
           console.error('Globe3D: Could not apply light purple color:', err)
         }
       }, 300)
-      // Generate varied colors for countries to create depth/hierarchy
-      // Countries with stories get purple shades, others get varied gray/blue tones
-      const generateCountryColor = (isoCode, hasStories) => {
-        if (hasStories) {
-          // Countries with stories: use purple shades
-          return purplePrimary
-        }
 
-        // Generate a hash from ISO code to create consistent color variations
-        let hash = 0
-        for (let i = 0; i < isoCode.length; i++) {
-          hash = isoCode.charCodeAt(i) + ((hash << 5) - hash)
-        }
-
-        // Create color variations with different lightness
-        const lightness = 60 + (Math.abs(hash) % 30) // Vary between 60-90
-        const saturation = 15 + (Math.abs(hash >> 8) % 15) // Vary between 15-30
-
-        // Use blue-gray tones with variation
-        return `hsl(240, ${saturation}%, ${lightness}%)`
-      }
-
-      const getIso2 = getIso2FromProps
-      const colorScale = (feat) => {
-        const iso2 = getIso2(feat?.properties)
-        if (!iso2) return 'hsl(240, 15%, 75%)'
-        // Only highlight the exact clicked polygon, not all polygons with same country code
-        if (selectedFeatureRef.current && feat === selectedFeatureRef.current) return yellowPrimary
-        const hasStories = countriesWithStories.has(iso2)
-        return generateCountryColor(iso2, hasStories)
-      }
 
       // 过滤掉南极洲；其余国家保留（含仅 ISO_A3 的块）
       const countriesData = countries.features.filter(d => getIso2(d?.properties) !== 'AQ' && (d?.properties?.ISO_A2 || d?.properties?.ISO_A3 || d?.properties?.ADMIN || d?.properties?.NAME))
@@ -483,18 +486,26 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
         .polygonCapCurvatureResolution(5)
         .onPolygonClick((clickedFeat) => {
           if (!clickedFeat?.properties) return
-          const iso2 = getIso2(clickedFeat.properties)
+          const iso2 = getIso2FromProps(clickedFeat.properties)
+
           if (!iso2) return
+
+          // 1. Highlight & Center Immediately
           selectedFeatureRef.current = clickedFeat
           setSelectedCountry(iso2)
           onCountryHighlight?.(iso2)
+
           const indices = countryToStoryIndicesRef.current[iso2]
-          // Use translated country name based on language
           const lang = languageRef.current || 'zh'
           const p = clickedFeat.properties
-          const isoDisplay = p.ISO_A2 || p.ISO_A3 || p.ADM0_A3 || iso2
+
+          // Ignore -99 which is an invalid ISO code in ne_110m
+          const validIso2 = (p.ISO_A2 && p.ISO_A2 !== '-99') ? p.ISO_A2 : null
+          const isoDisplay = validIso2 || p.ISO_A3 || p.ADM0_A3 || p.SOV_A3 || iso2
           const translatedName = translations[lang]?.globeTooltip?.countryNames?.[iso2] || translations[lang]?.globeTooltip?.countryNames?.[isoDisplay]
           const name = translatedName || p.ADMIN || p.NAME || iso2
+
+          // 2. Immediate Action (Stories.jsx handles modal delay)
           if (indices && indices.length > 0) {
             onMarkerClick?.(indices[0])
           } else {
@@ -502,6 +513,9 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
           }
         })
         .onPolygonHover((hoverD, prevHoverD) => {
+          // Guard: If mouse is not in container, ignore hover updates (except clearing)
+          if (!isMouseInContainerRef.current && hoverD !== null) return
+
           // Track the currently hovered feature
           hoveredFeatureRef.current = hoverD
 
@@ -510,9 +524,13 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
             world.polygonCapColor(d => d === hoverD ? yellowPrimary : colorScale(d))
             world.polygonSideColor(d => {
               if (d === hoverD) return 'rgba(255, 211, 94, 0.5)'
-              if (selectedFeatureRef.current && d === selectedFeatureRef.current) return 'rgba(255, 211, 94, 0.5)'
               const iso2 = getIso2(d?.properties)
-              return iso2 && countriesWithStories.has(iso2) ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
+              if ((selectedFeatureRef.current && d === selectedFeatureRef.current) ||
+                (iso2 && iso2 === selectedCountryRef.current)) {
+                return 'rgba(255, 211, 94, 0.5)'
+              }
+              const hasStories = iso2 ? countriesWithStories.has(iso2) : false
+              return hasStories ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
             })
           }
           // 弹窗:板块变黄就显示,变回就消失,与高亮完全同步;存 iso2 供按语言显示国家名
@@ -530,7 +548,7 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
             setHoveredCountry(null)
           }
         })
-        .polygonsTransitionDuration(120) // 缩短过渡时间，悬停反馈更跟手
+        .polygonsTransitionDuration(300) // 增加过渡时间，使高亮切换更丝滑
     })
       .then(() => {
         // 陆地与球体分离：陆地只设 renderOrder=1（后画），绝不改材质
@@ -548,6 +566,7 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
             })
           }
         }, 100)
+        setIsLoading(false)
       })
       .catch(err => {
         console.error('Globe3D: All GeoJSON sources failed:', err)
@@ -816,41 +835,32 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
     const handleGlobeContainerLeave = () => {
       setIsMouseOverGlobe(false)
       setHoveredCountry(null)
+      isMouseInContainerRef.current = false
 
       // Reset all hover effects when mouse leaves the globe
-      // Simulate a hover event with null to trigger the reset logic
       if (globeRef.current && hoveredFeatureRef.current) {
-        // Store the world reference to access inside the callback
         const world = globeRef.current
         const lastHovered = hoveredFeatureRef.current
         hoveredFeatureRef.current = null
 
-        // Manually reset the visual state
+        // Manually reset the visual state (Sync with main useEffect logic)
         world.polygonAltitude(d => d === lastHovered ? 0.18 : 0.18)
-        world.polygonCapColor(d => {
-          const iso2 = getIso2FromProps(d?.properties)
-          if (!iso2) return 'hsl(240, 15%, 75%)'
-          if (selectedFeatureRef.current && d === selectedFeatureRef.current) return yellowPrimary
-          const hasStories = countriesWithStoriesRef.current.has(iso2)
-          // Generate color based on whether country has stories
-          if (hasStories) return purplePrimary
-          let hash = 0
-          for (let i = 0; i < iso2.length; i++) {
-            hash = iso2.charCodeAt(i) + ((hash << 5) - hash)
-          }
-          const lightness = 60 + (Math.abs(hash) % 30)
-          const saturation = 15 + (Math.abs(hash >> 8) % 15)
-          return `hsl(240, ${saturation}%, ${lightness}%)`
-        })
+        world.polygonCapColor(d => colorScale(d))
         world.polygonSideColor(d => {
-          if (selectedFeatureRef.current && d === selectedFeatureRef.current) return 'rgba(255, 211, 94, 0.5)'
           const iso2 = getIso2FromProps(d?.properties)
+          if ((selectedFeatureRef.current && d === selectedFeatureRef.current) ||
+            (iso2 && iso2 === selectedCountryRef.current)) {
+            return 'rgba(255, 211, 94, 0.5)'
+          }
           const hasStories = iso2 ? countriesWithStoriesRef.current.has(iso2) : false
           return hasStories ? 'rgba(122, 99, 199, 0.4)' : 'rgba(150, 150, 180, 0.25)'
         })
       }
     }
-    const handleGlobeContainerEnter = () => setIsMouseOverGlobe(true)
+    const handleGlobeContainerEnter = () => {
+      setIsMouseOverGlobe(true)
+      isMouseInContainerRef.current = true
+    }
     const handleGlobeContainerMove = (e) => setCardPosition({ x: e.clientX, y: e.clientY })
     if (container) {
       container.addEventListener('mouseenter', handleGlobeContainerEnter)
@@ -860,18 +870,57 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
 
     // Cleanup
     return () => {
+      console.log('Globe3D: Cleaning up globe resources...')
       if (container) {
         container.removeEventListener('mouseenter', handleGlobeContainerEnter)
         container.removeEventListener('mouseleave', handleGlobeContainerLeave)
         container.removeEventListener('mousemove', handleGlobeContainerMove)
       }
       // Clear the force purple interval
-      if (world._forcePurpleInterval) {
+      if (world && world._forcePurpleInterval) {
         clearInterval(world._forcePurpleInterval)
         world._forcePurpleInterval = null
       }
-      if (globeRef.current && globeRef.current._destructor) {
-        globeRef.current._destructor()
+
+      // Explicitly dispose of WebGL context to prevent leaks
+      try {
+        if (world) {
+          // Standard globe.gl internal destructor
+          if (typeof world._destructor === 'function') {
+            world._destructor()
+          }
+
+          // Manually dispose of Three.js renderer
+          const renderer = typeof world.renderer === 'function' ? world.renderer() : null
+          if (renderer && typeof renderer.dispose === 'function') {
+            renderer.dispose()
+            // Force context loss is the most reliable way to free the WebGL context
+            if (typeof renderer.forceContextLoss === 'function') {
+              renderer.forceContextLoss()
+            }
+          }
+
+          // Cleanup scene objects
+          const scene = typeof world.scene === 'function' ? world.scene() : null
+          if (scene) {
+            scene.traverse(obj => {
+              if (obj.geometry) obj.geometry.dispose()
+              if (obj.material) {
+                if (Array.isArray(obj.material)) {
+                  obj.material.forEach(m => m.dispose())
+                } else {
+                  obj.material.dispose()
+                }
+              }
+            })
+          }
+        }
+      } catch (err) {
+        console.warn('Globe3D: Error during resource cleanup:', err)
+      }
+
+      if (globeRef.current === world) {
+        globeRef.current = null
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -911,57 +960,48 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
     })
   }, [selectedCountry])
 
-  // 固定相机不动；选择国家时旋转地球，使该国首都转到画面中心（与初始 pointOfView 的 lat:50 lng:10 对齐）
-  const VIEW_CENTER_LAT = 50
-  const VIEW_CENTER_LNG = 10
-
+  // Move camera to selected country instead of rotating the globe mesh
+  // Move camera to selected country instead of rotating the globe mesh
   useEffect(() => {
     if (highlightCountry) {
       setSelectedCountry(highlightCountry)
       selectedFeatureRef.current = null
     }
+
+    if (!highlightCountry) return
     const world = globeRef.current
-    if (!world || typeof world.scene !== 'function' || typeof world.getCoords !== 'function') return
+    if (!world) return
 
-    const scene = world.scene()
-    const globeObj = scene?.children?.find(c => typeof c.getCoords === 'function')
-    if (!globeObj) return
+    // Priority: Capital -> Story -> GeoCentroid
+    let coord = COUNTRY_CAPITAL[highlightCountry]
 
-    if (!highlightCountry) {
-      globeObj.quaternion.identity()
-      return
+    if (!coord) {
+      const story = stories.find(s => LOCATION_TO_COUNTRY[s.location] === highlightCountry)
+      if (story) coord = convertToLatLng(story)
     }
 
-    // 优先用首都坐标，其次故事地点，再国家中心
-    const capital = COUNTRY_CAPITAL[highlightCountry]
-    const story = stories.find(s => LOCATION_TO_COUNTRY[s.location] === highlightCountry)
-    const coord = capital || (story ? convertToLatLng(story) : null) || COUNTRY_CENTER[highlightCountry]
-    if (!coord) return
-
-    const c0 = world.getCoords(coord.lat, coord.lng, 0)
-    const c1 = world.getCoords(VIEW_CENTER_LAT, VIEW_CENTER_LNG, 0)
-    const fromVec = new THREE.Vector3(c0.x, c0.y, c0.z).normalize()
-    const toVec = new THREE.Vector3(c1.x, c1.y, c1.z).normalize()
-
-    const targetQuat = new THREE.Quaternion().setFromUnitVectors(fromVec, toVec)
-    const transitionMs = typeof rotationTransitionMs === 'number' ? Math.max(0, rotationTransitionMs) : 0
-
-    if (transitionMs <= 0) {
-      globeObj.quaternion.copy(targetQuat)
-      return
+    if (!coord && world.polygonsData) {
+      // Try to calculate geometric centroid from polygon data
+      // This ensures even small countries without capital data working
+      const features = world.polygonsData()
+      // Note: This search might be expensive if many features, but usually ok (approx 200)
+      const feature = features.find(f => getIso2FromProps(f.properties) === highlightCountry)
+      if (feature) {
+        coord = getGeoCentroid(feature)
+        // console.log('[StoriesGlobe] Calculated generic centroid for:', highlightCountry, coord)
+      }
     }
 
-    const startQuat = globeObj.quaternion.clone()
-    const startTime = Date.now()
-    let rafId = null
+    if (coord) {
+      // Use pointOfView to move camera safely
+      const currentPov = world.pointOfView()
 
-    const tick = () => {
-      const t = Math.min((Date.now() - startTime) / transitionMs, 1)
-      globeObj.quaternion.slerpQuaternions(startQuat, targetQuat, t)
-      if (t < 1) rafId = requestAnimationFrame(tick)
+      world.pointOfView({
+        lat: coord.lat,
+        lng: coord.lng,
+        altitude: Math.max(0.6, Math.min(currentPov.altitude, 2.5))
+      }, rotationTransitionMs || 1000)
     }
-    rafId = requestAnimationFrame(tick)
-    return () => { if (rafId != null) cancelAnimationFrame(rafId) }
   }, [highlightCountry, stories, rotationTransitionMs])
 
   // Update card position on mouse move
@@ -1106,4 +1146,4 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
   )
 }
 
-export default Globe3D
+export default StoriesGlobe

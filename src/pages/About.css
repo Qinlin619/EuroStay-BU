@@ -8,9 +8,23 @@
   overflow: hidden;
 }
 
-.banner-image {
+.banner-images-grid {
   width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   position: relative;
+}
+
+.banner-images-grid.hero-single-image {
+  grid-template-columns: 1fr;
+}
+
+.hero-grid-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .banner-overlay {
@@ -23,27 +37,9 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
+  background: transparent;
 }
 
-.banner-placeholder {
-  width: 100%;
-  height: 50.0rem;
-  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-yellow-primary));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-white);
-  font-size: 2.4rem;
-  font-weight: 500;
-  opacity: 0.3;
-}
-
-.banner-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
 .page-title {
   font-size: 4.8rem;
@@ -98,23 +94,13 @@
   margin-bottom: 2.0rem;
 }
 
-.about-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.image-placeholder {
+.about-story-img {
   width: 100%;
   max-width: 50.0rem;
   height: 40.0rem;
-  background: linear-gradient(135deg, var(--color-purple-secondary), var(--color-yellow-secondary));
+  object-fit: cover;
   border-radius: 1.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-default);
-  font-size: 2.0rem;
+  box-shadow: 0 0.8rem 2.4rem rgba(0, 0, 0, 0.12);
 }
 
 .mission-section {
@@ -434,7 +420,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 2.0rem;
   }
-  
+
   @media (max-width: 48.0rem) {
     .team-grid {
       grid-template-columns: 1fr;

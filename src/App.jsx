@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import { LanguageProvider } from './contexts/LanguageContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -10,10 +10,29 @@ import Stories from './pages/Stories'
 import About from './pages/About'
 import './App.css'
 
+function AppContent() {
+  const location = useLocation()
+
+  return (
+    <div className="app">
+      <Navbar />
+      <main className="main-content" key={location.pathname}>
+        <Routes location={location}>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/stories" element={<Stories />} />
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  )
+}
+
 function App() {
   // 获取 base 路径，用于 GitHub Pages
   const basename = import.meta.env.BASE_URL || '/'
-  
+
   // 禁用页面缩放
   useEffect(() => {
     // 禁用 Ctrl/Cmd + 滚轮缩放
@@ -59,28 +78,17 @@ function App() {
       window.removeEventListener('touchmove', handleTouchMove)
     }
   }, [])
-  
+
   return (
     <LanguageProvider>
-      <Router 
+      <Router
         basename={basename}
         future={{
           v7_relativeSplatPath: true
         }}
       >
         <ScrollToTop />
-        <div className="app">
-          <Navbar />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/stories" element={<Stories />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
+        <AppContent />
       </Router>
     </LanguageProvider>
   )
