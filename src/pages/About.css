@@ -218,6 +218,10 @@
   align-items: start;
 }
 
+.brand-story-text-content {
+  max-width: 66.0rem;
+}
+
 .story-node {
   margin-bottom: 5.0rem;
 }
@@ -240,15 +244,7 @@
   /* 确保渐变只覆盖文字宽度 */
 }
 
-.story-node h3::before {
-  content: '';
-  display: inline-block;
-  width: 0.6rem;
-  height: 2.4rem;
-  background: var(--color-purple-primary);
-  margin-right: 1.5rem;
-  border-radius: 0.3rem;
-}
+
 
 .story-node p {
   font-size: 1.7rem;

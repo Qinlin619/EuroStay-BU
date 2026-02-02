@@ -20,7 +20,7 @@ const Footer = () => {
   }
 
   return (
-    <footer className="footer">
+    <footer id="site-footer" className="footer">
       <div className="footer-top">
         <div className="footer-section footer-left">
           <div className="footer-logo-container">

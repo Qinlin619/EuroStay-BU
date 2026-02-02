@@ -77,14 +77,14 @@ const Navbar = () => {
               className="navbar-tip-btn"
               onClick={() => {
                 setIsMenuOpen(false)
-                const scrollToBottom = () => {
-                  window.scrollTo({
-                    top: document.documentElement.scrollHeight - window.innerHeight,
-                    left: 0,
-                    behavior: 'smooth'
-                  })
+                if (location.pathname === '/about') {
+                  const footer = document.getElementById('footer-likes')
+                  if (footer) {
+                    footer.scrollIntoView({ behavior: 'smooth' })
+                  }
+                } else {
+                  navigate('/about#footer-likes')
                 }
-                requestAnimationFrame(() => requestAnimationFrame(scrollToBottom))
               }}
               aria-label="Tip"
             >

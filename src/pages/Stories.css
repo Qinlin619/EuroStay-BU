@@ -66,6 +66,7 @@
   max-width: 52.0rem;
   margin-left: -2rem;
   border: 0.1rem solid rgba(255, 255, 255, 0.12);
+  text-align: justify;
 }
 
 /* 英文：缩小字体、向右拉长玻璃框、文字两行 */
@@ -108,16 +109,17 @@
   background-color: #FFF8E7;
   padding: 3.0rem 2.0rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 0;
   flex-wrap: wrap;
 }
 
 .stat-column {
   text-align: center;
-  flex: 0 0 auto;
-  padding: 0 12.0rem;
+  flex: 1;
+  padding: 0;
   position: relative;
+  max-width: 24rem;
 }
 
 .stat-column:not(:last-child)::after {
@@ -757,209 +759,283 @@
 }
 
 
-/* --- 活动历史 2.0 (Storyboard / Photo Wall) --- */
+/* --- 活动历史 3.0 (Polaroid Photo Wall - Cute Edition) --- */
 .activities-section {
-  padding: 8.0rem 2.0rem;
-  background: #fcfbff;
+  padding: 12.0rem 2.0rem 16.0rem;
+  background: #fdfcff;
   position: relative;
   overflow: hidden;
 }
 
-.storyboard-container {
-  position: relative;
-  max-width: 140.0rem;
-  margin: 0 auto;
-  padding: 2.0rem 0;
-  z-index: 1;
-}
-
 .activity-history-intro {
-  margin: 1.5rem 0 0;
-  font-size: 1.9rem;
-  font-weight: 400;
+  margin: 2rem auto 10.0rem;
+  font-size: 2.1rem;
+  font-weight: 500;
   color: var(--color-purple-primary);
   line-height: 1.6;
   text-align: center;
+  max-width: 90rem;
+  opacity: 0.9;
 }
 
-/* Z字形光路背景 */
-.z-path-bg {
+.photo-wall-container {
+  position: relative;
+  max-width: 130.rem;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.photo-wall {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6.0rem;
+  padding: 2.0rem 3.0rem;
+}
+
+.polaroid-card {
+  position: relative;
+  background: #ffffff !important;
+  padding: 1.8rem 1.8rem 6.0rem;
+  box-shadow:
+    0 1.2rem 4.0rem rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(122, 99, 199, 0.05);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 0.2rem;
+}
+
+.polaroid-decorations {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.washi-tape {
+  position: absolute;
+  top: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 10.0rem;
+  height: 3.2rem;
+  background: rgba(122, 99, 199, 0.25);
+  backdrop-filter: blur(0.2rem);
+  box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.05);
+  border-left: 2px dashed rgba(255, 255, 255, 0.3);
+  border-right: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+.polaroid-star {
+  position: absolute;
+  font-size: 2.0rem;
+  color: var(--color-purple-primary);
+  opacity: 0.6;
+}
+
+.polaroid-star-1 {
+  top: 1.2rem;
+  left: 1.2rem;
+  transform: rotate(-15deg);
+}
+
+.polaroid-star-2 {
+  bottom: 5.5rem;
+  right: 1.2rem;
+  transform: rotate(15deg);
+}
+
+/* 装饰多样化 - 胶带颜色 */
+.polaroid-card:nth-child(3n+1) .washi-tape {
+  background: rgba(122, 99, 199, 0.3);
+}
+
+/* 紫色 */
+.polaroid-card:nth-child(3n+2) .washi-tape {
+  background: rgba(255, 211, 94, 0.35);
+}
+
+/* 黄色 */
+.polaroid-card:nth-child(3n) .washi-tape {
+  background: rgba(196, 174, 255, 0.4);
+}
+
+/* 浅紫色 */
+.polaroid-card:nth-child(4n) .washi-tape {
+  background: rgba(255, 154, 158, 0.3);
+}
+
+/* 粉色 */
+
+/* 装饰多样化 - 星星颜色与位置 */
+.polaroid-card:nth-child(even) .polaroid-star {
+  color: #f2c94c;
+  opacity: 0.8;
+}
+
+/* 黄星 */
+.polaroid-card:nth-child(3n+1) .polaroid-star-1 {
+  top: auto;
+  bottom: 6.5rem;
+  left: 1rem;
+}
+
+/* 星星位置变换 */
+.polaroid-card:nth-child(odd) .polaroid-star-2 {
+  display: none;
+}
+
+/* 有些卡片只有一颗星 */
+.polaroid-card:nth-child(3n) .polaroid-star-1 {
+  transform: scale(1.5) rotate(20deg);
+}
+
+/* 星星大小变换 */
+
+
+.polaroid-inner {
+  display: flex;
+  flex-direction: column;
+  background: transparent !important;
+}
+
+.polaroid-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #f8f8f8;
+  margin-bottom: 2.8rem;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.polaroid-img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-.z-path-bg svg {
-  width: 100%;
-  height: 100%;
-}
-
-.storyboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3.0rem;
-  position: relative;
-  z-index: 2;
-  padding-top: 4.0rem;
-  margin-top: -4.0rem;
-  transform: scale(0.9);
-  /* 等比缩小 */
-  transform-origin: center center;
-}
-
-.storyboard-card {
-  position: relative;
-  height: 42.0rem;
-  border-radius: 3.2rem;
-  /* 明显的圆角 */
-  overflow: hidden;
-  box-shadow:
-    0 1.5rem 3.5rem rgba(122, 99, 199, 0.1),
-    0 0 0 0.1rem rgba(0, 0, 0, 0.05);
-  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  background: var(--color-white);
-}
-
-/* 最后一个元素跨列或居中对齐处理（如果有 4 个） */
-.storyboard-card:nth-child(4) {
-  grid-column: 2;
-}
-
-.storyboard-media {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: transform 0.8s ease;
-}
-
-.storyboard-img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
-  transition: filter 0.6s ease, transform 0.6s ease;
+  transition: transform 0.8s ease;
+  display: block;
 }
 
-.storyboard-emoji-badge {
+.polaroid-caption {
+  text-align: left;
+  background: transparent !important;
+  padding: 0 0.5rem;
+}
+
+.polaroid-date {
+  font-family: 'Comfortaa', cursive, sans-serif;
+  font-size: 1.3rem;
+  color: #bbb;
+  margin-bottom: 1.0rem;
+  font-weight: 500;
+}
+
+.polaroid-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--color-purple-primary);
+  margin-bottom: 1.0rem;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.polaroid-location {
+  font-size: 1.4rem;
+  color: #777;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.polaroid-overlay {
   position: absolute;
-  top: 2.4rem;
-  right: 2.4rem;
-  width: 5.6rem;
-  height: 5.6rem;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(0.8rem);
-  border-radius: 50%;
+  inset: 0;
+  background: rgba(122, 99, 199, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.8rem;
-  box-shadow: 0 0.8rem 2.0rem rgba(0, 0, 0, 0.1);
-  z-index: 3;
-  transition: all 0.4s ease;
-}
-
-.storyboard-gradient-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
-  z-index: 2;
-  opacity: 0.6;
-  transition: opacity 0.5s ease;
-}
-
-/* 悬浮时的内容遮罩 */
-.storyboard-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(122, 99, 199, 0.4);
-  backdrop-filter: blur(1.2rem);
-  -webkit-backdrop-filter: blur(1.2rem);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4.0rem;
+  padding: 3.5rem;
   opacity: 0;
   visibility: hidden;
-  z-index: 4;
-  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: all 0.4s ease;
+  z-index: 10;
+  border-radius: 0.2rem;
 }
 
-.storyboard-content {
+.polaroid-overlay-content {
+  color: white;
   text-align: center;
-  transform: translateY(2.0rem);
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.storyboard-date {
-  color: #FFD35E;
-  font-weight: 700;
-  font-size: 1.4rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  margin-bottom: 1.2rem;
-}
-
-.storyboard-title {
-  color: var(--color-white);
-  font-size: 3.0rem;
-  font-weight: 800;
-  margin-bottom: 1.6rem;
-  line-height: 1.2;
-}
-
-.storyboard-location {
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.4rem;
-  margin-bottom: 2.4rem;
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 0.4rem 1.2rem;
-  border-radius: 2.0rem;
-}
-
-.storyboard-desc {
-  color: rgba(255, 255, 255, 0.85);
+.polaroid-desc {
   font-size: 1.6rem;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-/* 悬浮交互 */
-.storyboard-card:hover {
-  transform: translateY(-1.2rem) scale(1.02);
-  box-shadow: 0 3.0rem 6.0rem rgba(122, 99, 199, 0.2);
+.polaroid-card:hover {
+  transform: scale(1.06) translateY(-2.0rem) rotate(0deg) !important;
+  z-index: 20;
+  box-shadow: 0 3rem 6rem rgba(122, 99, 199, 0.25);
 }
 
-.storyboard-card:hover .storyboard-img {
-  transform: scale(1.1);
-  filter: grayscale(0.2);
-}
-
-.storyboard-card:hover .storyboard-overlay {
+.polaroid-card:hover .polaroid-overlay {
   opacity: 1;
   visibility: visible;
 }
 
-.storyboard-card:hover .storyboard-content {
-  transform: translateY(0);
+.polaroid-card:hover .polaroid-img {
+  transform: scale(1.1);
 }
 
-.storyboard-card:hover .storyboard-emoji-badge {
-  transform: scale(0.8) translateY(-1.0rem);
-  opacity: 0;
+.polaroid-card:hover .washi-tape {
+  background: rgba(122, 99, 199, 0.4);
+  transform: translateX(-50%) rotate(0deg) scale(1.1);
 }
 
-/* 响应式适配 */
-@media (max-width: 102.4rem) {
-  .storyboard-grid {
+/* 循环旋转效果 - 模拟照片墙的有机感 */
+.polaroid-card:nth-child(3n+1) {
+  transform: rotate(-4deg) translateY(2rem);
+}
+
+.polaroid-card:nth-child(3n+2) {
+  transform: rotate(3deg) translateY(-1rem);
+}
+
+.polaroid-card:nth-child(3n) {
+  transform: rotate(-2deg) translateY(1.5rem);
+}
+
+/* 为每 6 个循环增加更精细的变化，让 18 张图看起来更随机 */
+.polaroid-card:nth-child(6n+1) {
+  transform: rotate(-3deg) translateY(1rem);
+}
+
+.polaroid-card:nth-child(6n+4) {
+  transform: rotate(4deg) translateY(1.5rem);
+}
+
+@media (max-width: 90.0rem) {
+  .photo-wall {
     grid-template-columns: repeat(2, 1fr);
+    gap: 4.0rem;
+  }
+}
+
+@media (max-width: 64.0rem) {
+  .photo-wall {
+    grid-template-columns: 1fr;
+    max-width: 45rem;
+    margin: 0 auto;
   }
 
-  .storyboard-card:nth-child(4) {
-    grid-column: auto;
+  .polaroid-card {
+    transform: rotate(0deg) !important;
+    margin-bottom: 4rem;
   }
 }
 
