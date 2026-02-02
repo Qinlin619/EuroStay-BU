@@ -15,57 +15,40 @@ const About = () => {
           <img src={`${import.meta.env.BASE_URL}images/aboutus/2.jpg`} alt="About EuroStay" className="hero-grid-img" />
         </div>
         <div className="banner-overlay">
+          <div className="hero-content-box">
+            <h1 className="hero-main-title">{t.storyTitle}</h1>
+            <p className="hero-intro-text">{t.storyIntro}</p>
+          </div>
         </div>
       </section>
 
-      <FadeSection as="section" className="about-section">
+      <FadeSection as="section" className="about-brand-story">
         <div className="container">
-          <div className="about-content">
-            <div className="about-text">
-              <h2>{t.storyTitle}</h2>
-              <p>{t.story1}</p>
-              <p>{t.story2}</p>
+          <div className="brand-story-grid">
+            <div className="brand-story-text-content">
+              <div className="story-node">
+                <h3>{t.whyExistTitle}</h3>
+                <p>{t.whyExistDesc}</p>
+              </div>
+              <div className="story-node">
+                <h3>{t.whatWeDoTitle}</h3>
+                <p>{t.whatWeDoDesc}</p>
+              </div>
+              <div className="story-node">
+                <h3>{t.communityTitle}</h3>
+                <p>{t.communityDesc}</p>
+              </div>
+              <div className="story-footer">
+                <p className="join-cta-text">{t.joinCta}</p>
+              </div>
             </div>
-            <div className="about-image">
-              <img src={`${import.meta.env.BASE_URL}images/aboutus/1.jpg`} alt="Our Story" className="about-story-img" />
+            <div className="brand-story-visual">
+              <img src={`${import.meta.env.BASE_URL}images/aboutus/1.jpg`} alt="EuroStay Story" className="story-featured-img" />
             </div>
           </div>
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="mission-section">
-        <div className="container">
-          <div className="page-hero-title-wrapper">
-            <div className="page-hero-title-line">
-              <h2 className="page-hero-title-main">{t.missionTitle}</h2>
-              <span className="page-hero-title-star" aria-hidden="true">★</span>
-            </div>
-          </div>
-          <div className="mission-cards">
-            <div className="mission-card">
-              <div className="mission-icon purple">
-                <span>🌍</span>
-              </div>
-              <h3>{t.mission1Title}</h3>
-              <p>{t.mission1Desc}</p>
-            </div>
-            <div className="mission-card">
-              <div className="mission-icon yellow">
-                <span>💚</span>
-              </div>
-              <h3>{t.mission2Title}</h3>
-              <p>{t.mission2Desc}</p>
-            </div>
-            <div className="mission-card">
-              <div className="mission-icon purple">
-                <span>🤝</span>
-              </div>
-              <h3>{t.mission3Title}</h3>
-              <p>{t.mission3Desc}</p>
-            </div>
-          </div>
-        </div>
-      </FadeSection>
 
       <FadeSection as="section" className="values-section">
         <div className="container">
@@ -75,64 +58,39 @@ const About = () => {
               <span className="page-hero-title-star" aria-hidden="true">★</span>
             </div>
           </div>
-          <div className="values-list">
-            <div className="value-item">
-              <div className="value-icon">🙏</div>
-              <h4>{t.value1Title}</h4>
+          <div className="values-cards">
+            <div className="value-card-modern">
+              <div className="value-icon-circle purple-light">
+                <span>🚀</span>
+              </div>
+              <h3>{t.value1Title}</h3>
               <p>{t.value1Desc}</p>
             </div>
-            <div className="value-item">
-              <div className="value-icon">🤝</div>
-              <h4>{t.value2Title}</h4>
+            <div className="value-card-modern">
+              <div className="value-icon-circle yellow-light">
+                <span>🍀</span>
+              </div>
+              <h3>{t.value2Title}</h3>
               <p>{t.value2Desc}</p>
             </div>
-            <div className="value-item">
-              <div className="value-icon">🔗</div>
-              <h4>{t.value3Title}</h4>
+            <div className="value-card-modern">
+              <div className="value-icon-circle purple-light">
+                <span>🔭</span>
+              </div>
+              <h3>{t.value3Title}</h3>
               <p>{t.value3Desc}</p>
             </div>
-            <div className="value-item">
-              <div className="value-icon">✨</div>
-              <h4>{t.value4Title}</h4>
+            <div className="value-card-modern">
+              <div className="value-icon-circle yellow-light">
+                <span>🎡</span>
+              </div>
+              <h3>{t.value4Title}</h3>
               <p>{t.value4Desc}</p>
             </div>
           </div>
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="contact-section">
-        <div className="container">
-          <div className="page-hero-title-wrapper">
-            <div className="page-hero-title-line">
-              <h2 className="page-hero-title-main">{t.contactTitle}</h2>
-              <span className="page-hero-title-star" aria-hidden="true">★</span>
-            </div>
-          </div>
-          <div className="contact-info">
-            <div className="contact-item">
-              <div className="contact-icon">📧</div>
-              <div>
-                <h4>{t.email}</h4>
-                <p>contact@eurostay.com</p>
-              </div>
-            </div>
-            <div className="contact-item">
-              <div className="contact-icon">📱</div>
-              <div>
-                <h4>{t.phone}</h4>
-                <p>400-888-8888</p>
-              </div>
-            </div>
-            <div className="contact-item">
-              <div className="contact-icon">📍</div>
-              <div>
-                <h4>{t.address}</h4>
-                <p>{language === 'zh' ? '北京市朝阳区xxx路xxx号' : 'Chaoyang District, Beijing, China'}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </FadeSection>
 
       <FadeSection as="section" className="team-section">
         <div className="container">

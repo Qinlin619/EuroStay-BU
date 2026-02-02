@@ -15,9 +15,9 @@ const Footer = () => {
       <div className="footer-top">
         <div className="footer-section footer-left">
           <div className="footer-logo-container">
-            <img 
-              src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/0.png`} 
-              alt="EuroStay Logo" 
+            <img
+              src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/footage/0.png`}
+              alt="EuroStay Logo"
               className="footer-logo-image"
               loading="lazy"
               decoding="async"
@@ -113,8 +113,14 @@ const Footer = () => {
               <p className="qr-code-label">{footer.douyin}</p>
             </div>
           </div>
-          <div className="thumbs-up-icon">
-            👍
+          <div className="support-section">
+            <div className="support-tooltip">
+              <p className="support-title">{footer.supportUs}</p>
+              <p className="support-message">{footer.supportDesc}</p>
+            </div>
+            <div className="support-heart">
+              ❤️
+            </div>
           </div>
         </div>
       </div>
