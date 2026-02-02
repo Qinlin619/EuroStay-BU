@@ -186,7 +186,7 @@ const Products = () => {
               <span className="membership-crown">👑</span>
               <div className="membership-header">
                 <div className="membership-type-title">
-                  <h3><span className="gold-star">⭐</span> {t.membershipProTitle}</h3>
+                  <h3>{t.membershipProTitle}</h3>
                 </div>
               </div>
               <div className="membership-pro-items">

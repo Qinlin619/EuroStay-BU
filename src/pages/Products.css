@@ -46,7 +46,7 @@
 
 .product-info>p {
   font-size: 1.8rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.8;
   font-weight: 300;
   margin-bottom: 6.0rem;
@@ -82,7 +82,7 @@
   padding: 3.0rem;
   padding-left: 7.0rem;
   font-size: 1.6rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.8;
   position: relative;
   transition: all 0.3s ease;
@@ -126,7 +126,7 @@
 
 .feature-list li span {
   display: block;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   font-size: 1.6rem;
   line-height: 1.7;
 }
@@ -139,7 +139,6 @@
 .membership-section {
   padding: 10.0rem 2.0rem;
   background-color: var(--color-white);
-  border-top: 0.1rem solid var(--color-bg-base);
 }
 
 .membership-grid {
@@ -241,7 +240,7 @@
 
 .membership-type-subtitle {
   font-size: 1.6rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   display: block;
   margin-top: 0.5rem;
   font-weight: 300;
@@ -261,7 +260,7 @@
   align-items: center;
   gap: 1.5rem;
   font-size: 1.8rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   font-weight: 300;
 }
 
@@ -289,12 +288,30 @@
   font-size: 2.0rem;
   color: var(--color-purple-primary);
   margin-bottom: 1.0rem;
-  font-weight: 600;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 1.0rem;
+}
+
+.membership-pro-item h4::before {
+  content: '✓';
+  width: 2.8rem;
+  height: 2.8rem;
+  background-color: var(--color-purple-secondary);
+  color: var(--color-purple-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.6rem;
+  flex-shrink: 0;
 }
 
 .membership-pro-item p {
   font-size: 1.6rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.6;
   margin: 0;
   font-weight: 300;
@@ -558,7 +575,7 @@
 .qa-answer p,
 .qa-answer-content {
   font-size: 1.6rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.8;
   margin: 0;
   font-weight: 300;
@@ -579,7 +596,6 @@
 .guidelines-section {
   background-color: var(--color-white);
   padding: 8.0rem 2.0rem;
-  border-top: 0.1rem solid var(--color-bg-base);
 }
 
 .products-page>section.tips-section.guidelines-section {
@@ -637,7 +653,7 @@
 
 .guideline-desc {
   font-size: 1.7rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.8;
   margin: 0;
   font-weight: 300;
@@ -757,7 +773,7 @@
 
 .step-info p {
   font-size: 1.7rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.6;
   margin: 0;
   font-weight: 300;
@@ -792,7 +808,7 @@
 
 .tip-card p {
   font-size: 1.6rem;
-  color: var(--color-text-unselected);
+  color: var(--color-text-default);
   line-height: 1.6;
   font-weight: 300;
 }

@@ -42,20 +42,47 @@
 }
 
 .hero-content-box {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.75);
   /* 提高透明度，增强通透感 */
   border: 1px solid rgba(255, 255, 255, 0.3);
   /* 添加微弱亮边框增强质感 */
   backdrop-filter: blur(1.5rem);
   /* 玻璃拟态效果 */
   -webkit-backdrop-filter: blur(1.5rem);
-  padding: 6.0rem 8.0rem;
+  padding: 7.2rem 8.0rem;
+  /* 加大内外边距，更透气 */
   border-radius: 3.2rem;
-  max-width: 90.0rem;
+  max-width: 110.0rem;
   width: 90%;
   text-align: center;
   box-shadow: 0 4.0rem 10.0rem rgba(0, 0, 0, 0.15);
   animation: heroBoxFadeUp 1s ease-out forwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content-box::before {
+  content: '';
+  position: absolute;
+  top: -10rem;
+  right: -10rem;
+  width: 25rem;
+  height: 25rem;
+  background: radial-gradient(circle, rgba(122, 99, 199, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-content-box::after {
+  content: '· · ·';
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-purple-primary);
+  opacity: 0.3;
+  letter-spacing: 1rem;
+  font-size: 2rem;
 }
 
 @keyframes heroBoxFadeUp {
@@ -70,19 +97,77 @@
   }
 }
 
-.hero-main-title {
-  font-size: 5.6rem;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin-bottom: 3.0rem;
-  letter-spacing: -0.15rem;
+.hero-title-graphic {
+  margin-top: 0;
+  /* 移除额外的顶部边距，通过 padding 统一控制 */
+  margin-bottom: 4.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2.5rem;
+  /* 为星星预留距离 */
+}
+
+.title-img {
+  max-width: 22rem;
+  /* 进一步缩小图片，更精致 */
+  height: auto;
+  object-fit: contain;
+  animation: titleImgFadeUp 0.8s ease-out forwards;
+}
+
+.title-star {
+  font-size: 2.8rem;
+  color: var(--color-purple-primary);
+  opacity: 0.6;
+  filter: drop-shadow(0 0 1rem rgba(122, 99, 199, 0.3));
+  animation: starBlink 2s ease-in-out infinite alternate;
+}
+
+@keyframes starBlink {
+  from {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes titleImgFadeUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.hero-box-tag {
+  display: inline-block;
+  padding: 0.6rem 2.0rem;
+  background: rgba(122, 99, 199, 0.1);
+  color: var(--color-purple-primary);
+  border-radius: 5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgba(122, 99, 199, 0.1);
 }
 
 .hero-intro-text {
   font-size: 2.0rem;
-  color: #4a4a4a;
+  color: #222222;
   line-height: 1.8;
   font-weight: 500;
+  margin-bottom: 1.5rem;
+  /* 为底部的装饰点点预留点空间，保持重心平衡 */
 }
 
 .brand-story-header {
@@ -138,12 +223,21 @@
 }
 
 .story-node h3 {
-  font-size: 2.6rem;
-  font-weight: bold;
+  font-size: 2.8rem;
+  font-weight: 900;
+  /* 更粗 */
+  background: linear-gradient(90deg, #7A63C7 0%, #C4AEFF 100%);
+  /* 紫色 -> 浅紫色 */
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: var(--color-purple-primary);
+  /* 降级兼容 */
   margin-bottom: 2.0rem;
   display: flex;
   align-items: center;
+  width: fit-content;
+  /* 确保渐变只覆盖文字宽度 */
 }
 
 .story-node h3::before {
@@ -158,8 +252,14 @@
 
 .story-node p {
   font-size: 1.7rem;
-  color: var(--color-text-unselected);
+  color: #333;
+  /* 加深灰色文字 */
   line-height: 1.8;
+}
+
+.highlight-purple {
+  font-weight: bold;
+  color: var(--color-purple-primary);
 }
 
 .story-footer {
@@ -169,21 +269,203 @@
 }
 
 .join-cta-text {
-  font-size: 2.0rem;
-  font-weight: 600;
-  color: var(--color-purple-primary);
-  background: linear-gradient(135deg, var(--color-purple-primary), var(--color-yellow-primary));
+  font-size: 2.8rem;
+  font-weight: 700;
+  /* 动态流光渐变：紫色 -> 粉色 -> 紫色 */
+  background: linear-gradient(90deg, #7A63C7, #FF9A9E, #7A63C7);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  position: relative;
+  display: inline-block;
+  animation: textGradientFlow 3s linear infinite;
+  /* 颜色流动动画 */
 }
 
-.story-featured-img {
+@keyframes textGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* 流星特效 */
+/* 流星特效（3D旋转图标） */
+.join-cta-text::after {
+  content: '🌹';
+  display: inline-block;
+  position: relative;
+  top: 0;
+  right: auto;
+  margin-left: 1.0rem;
+  font-size: 2.8rem;
+  animation: roseWave 3s ease-in-out infinite;
+  transform-origin: bottom center;
+  -webkit-text-fill-color: initial;
+}
+
+@keyframes roseWave {
+
+  0%,
+  100% {
+    transform: rotate(-8deg);
+  }
+
+  50% {
+    transform: rotate(8deg);
+  }
+}
+
+/* Polaroid Wall Styles */
+/* Polaroid Wall Styles */
+.polaroid-wall {
+  position: relative;
+  height: 60rem;
   width: 100%;
-  border-radius: 2.4rem;
-  box-shadow: 0 2.0rem 6.0rem rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 10rem;
+  margin-top: 5rem;
+  margin-right: 0;
+  zoom: 0.95;
+}
+
+.polaroid-item {
+  position: absolute;
+  width: 28rem;
+  background: white;
+  padding: 1.2rem 1.2rem 4rem 1.2rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.polaroid-item:hover {
+  transform: translateY(-1rem) scale(1.05) rotate(0deg) !important;
+  box-shadow: 0 2.5rem 6rem rgba(0, 0, 0, 0.2);
+  z-index: 100 !important;
+  /* 悬浮置顶 */
+}
+
+/* 拍立得框上的星星装饰 */
+/* 拍立得框上的星星与虚线装饰 */
+
+/* P1: 右下角星星组合 + 顶部点点 */
+.polaroid-item::after {
+  content: '✦ ⋆';
+  position: absolute;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  font-size: 2.2rem;
+  color: #D2C8FD;
+  /* 浅紫色 */
+  pointer-events: none;
+  letter-spacing: -0.5rem;
+  transform: rotate(-10deg);
+}
+
+.polaroid-item::before {
+  content: '...';
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  line-height: 0.5;
+  color: #eee;
+  pointer-events: none;
+  letter-spacing: 0.5rem;
+}
+
+/* P2: 左下角星星 + 右上角波浪线 */
+.polaroid-item:nth-child(2)::after {
+  content: '★ ✦';
+  font-size: 2rem;
+  right: auto;
+  left: 1.5rem;
+  bottom: 1.5rem;
+  letter-spacing: 0.2rem;
+  transform: rotate(-5deg);
+  color: #FFEDBE;
+  /* 浅黄色 */
+}
+
+.polaroid-item:nth-child(2)::before {
+  content: '~~~~';
+  position: absolute;
+  top: 0.8rem;
+  right: 1.5rem;
+  left: auto;
+  font-size: 1.6rem;
+  color: #FFEDBE;
+  transform: rotate(5deg);
+  font-weight: bold;
+}
+
+/* P3: 右下角大星星 + 底部圆点装饰 */
+.polaroid-item:nth-child(3)::after {
+  content: '✦';
+  font-size: 3rem;
+  right: 1.5rem;
+  bottom: 1.0rem;
+  transform: rotate(15deg);
+  color: #D2C8FD;
+}
+
+.polaroid-item:nth-child(3)::before {
+  content: '· · ·';
+  position: absolute;
+  bottom: 1.8rem;
+  left: 2rem;
+  font-size: 3rem;
+  line-height: 1;
+  color: #E9E9E9;
+  font-weight: bold;
+}
+
+.polaroid-inner {
+  width: 100%;
+  overflow: hidden;
+  background: #eee;
+}
+
+.polaroid-inner img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Individual Polaroid Positions - 左右拉开 */
+.polaroid-item.p1 {
+  top: 0;
+  left: 0;
+  transform: rotate(-6deg);
+  z-index: 2;
+  width: 38rem;
+  /* 图1变大 */
+}
+
+.polaroid-item.p2 {
+  top: 15rem;
+  left: 30rem;
+  /* 稍微往右移一点 */
+  transform: rotate(4deg);
+  z-index: 3;
+  width: 28rem;
+  /* 图2恢复默认大小 */
+}
+
+.polaroid-item.p3 {
+  top: 25rem;
+  /* 往下移 20rem */
+  left: auto;
+  right: 10rem;
+  /* 往左移 10rem */
+  transform: rotate(-3deg);
+  z-index: 4;
 }
 
 @media (max-width: 1024px) {
@@ -199,7 +481,7 @@
 
 
 .values-section {
-  padding: 8.0rem 2.0rem;
+  padding: 10.0rem 2.0rem;
   background-color: var(--color-white);
 }
 
@@ -208,7 +490,8 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 4.0rem;
   max-width: 120.0rem;
-  margin: 6.0rem auto 0;
+  margin: 10.0rem auto 0;
+  /* 增加与标题的间距 */
 }
 
 .value-card-modern {
@@ -236,13 +519,13 @@
 }
 
 .value-icon-circle.purple-light {
-  background-color: #D2C8FD;
-  /* 截图中的浅紫色 */
+  background-color: transparent;
+  box-shadow: 0 0.8rem 2rem rgba(122, 99, 199, 0.2);
 }
 
 .value-icon-circle.yellow-light {
-  background-color: #FFEF82;
-  /* 截图中的浅黄色 */
+  background-color: transparent;
+  box-shadow: 0 0.8rem 2rem rgba(255, 211, 94, 0.25);
 }
 
 .value-card-modern h3 {
@@ -254,7 +537,8 @@
 
 .value-card-modern p {
   font-size: 1.6rem;
-  color: #666;
+  color: #333;
+  /* 加深灰色文字 */
   line-height: 1.6;
   max-width: 24rem;
 }
@@ -274,7 +558,8 @@
 
 .team-section {
   background-color: var(--color-white);
-  padding: 8.0rem 2.0rem;
+  padding: 10.0rem 2.0rem 16.0rem 2.0rem;
+  /* 增加底部间距 */
 }
 
 .team-grid {
@@ -302,22 +587,32 @@
 }
 
 .team-member-avatar {
-  width: 12.0rem;
-  height: 12.0rem;
+  width: 15.0rem;
+  /* 放大头像 */
+  height: 15.0rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-purple-secondary), var(--color-yellow-secondary));
-  margin: 0 auto 2.0rem;
+  background: white;
+  margin: 0 auto 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 4.8rem;
   overflow: hidden;
+  border: 0.4rem solid #fff;
+  /* 白边 */
+  box-shadow: 0 0 0 0.2rem #D2C8FD, 0 1rem 2rem rgba(122, 99, 199, 0.2);
+  /* 紫色外框 + 投影 */
 }
 
 .team-member img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.team-member:hover img {
+  transform: scale(1.1);
 }
 
 .team-member-name {
@@ -328,15 +623,21 @@
 }
 
 .team-member-role {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: var(--color-purple-primary);
   margin-bottom: 1.5rem;
-  font-weight: 500;
+  font-weight: 600;
+  background-color: rgba(122, 99, 199, 0.1);
+  /* 浅紫色标签背景 */
+  padding: 0.4rem 1.2rem;
+  border-radius: 2rem;
+  display: inline-block;
 }
 
 .team-member-desc {
   font-size: 1.5rem;
-  color: var(--color-text-unselected);
+  color: #333;
+  /* 加深灰色文字 */
   line-height: 1.6;
 }
 

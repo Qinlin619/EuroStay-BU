@@ -160,7 +160,7 @@ const Stories = () => {
           </div>
           <div className="stat-column">
             <div className="stat-number">
-              <CountUpNumber value={400} duration={2000} />
+              <CountUpNumber value="400+" duration={2000} />
             </div>
             <div className="stat-label">{t.stat3Label}</div>
           </div>

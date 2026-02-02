@@ -16,7 +16,11 @@ const About = () => {
         </div>
         <div className="banner-overlay">
           <div className="hero-content-box">
-            <h1 className="hero-main-title">{t.storyTitle}</h1>
+            <div className="hero-title-graphic">
+              <span className="title-star" aria-hidden="true">✦</span>
+              <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt={t.storyTitle} className="title-img" />
+              <span className="title-star" aria-hidden="true">✦</span>
+            </div>
             <p className="hero-intro-text">{t.storyIntro}</p>
           </div>
         </div>
@@ -36,14 +40,41 @@ const About = () => {
               </div>
               <div className="story-node">
                 <h3>{t.communityTitle}</h3>
-                <p>{t.communityDesc}</p>
+                <p>{(() => {
+                  const targetPhrase = "愿意尊重彼此、认真交换、并对世界保持好奇的人";
+                  if (t.communityDesc && t.communityDesc.includes(targetPhrase)) {
+                    const parts = t.communityDesc.split(targetPhrase);
+                    return (
+                      <>
+                        {parts[0]}
+                        <span className="highlight-purple">{targetPhrase}</span>
+                        {parts[1]}
+                      </>
+                    );
+                  }
+                  return t.communityDesc;
+                })()}</p>
               </div>
               <div className="story-footer">
                 <p className="join-cta-text">{t.joinCta}</p>
               </div>
             </div>
-            <div className="brand-story-visual">
-              <img src={`${import.meta.env.BASE_URL}images/aboutus/1.jpg`} alt="EuroStay Story" className="story-featured-img" />
+            <div className="brand-story-visual polaroid-wall">
+              <div className="polaroid-item p1">
+                <div className="polaroid-inner">
+                  <img src={`${import.meta.env.BASE_URL}images/aboutus/1.jpg`} alt="Moment 1" />
+                </div>
+              </div>
+              <div className="polaroid-item p2">
+                <div className="polaroid-inner">
+                  <img src={`${import.meta.env.BASE_URL}images/aboutus/3.jpg`} alt="Moment 2" />
+                </div>
+              </div>
+              <div className="polaroid-item p3">
+                <div className="polaroid-inner">
+                  <img src={`${import.meta.env.BASE_URL}images/aboutus/4.jpg`} alt="Moment 3" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -103,7 +134,7 @@ const About = () => {
           <div className="team-grid">
             <div className="team-member">
               <div className="team-member-avatar">
-                <span>👤</span>
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/1.png`} alt={t.teamMember1Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember1Name}</h3>
               <p className="team-member-role">{t.teamMember1Role}</p>
@@ -111,7 +142,7 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <span>👤</span>
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/2.jpg`} alt={t.teamMember2Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember2Name}</h3>
               <p className="team-member-role">{t.teamMember2Role}</p>
@@ -119,19 +150,19 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <span>👤</span>
-              </div>
-              <h3 className="team-member-name">{t.teamMember3Name}</h3>
-              <p className="team-member-role">{t.teamMember3Role}</p>
-              <p className="team-member-desc">{t.teamMember3Desc}</p>
-            </div>
-            <div className="team-member">
-              <div className="team-member-avatar">
-                <span>👤</span>
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/3.jpg`} alt={t.teamMember4Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember4Name}</h3>
               <p className="team-member-role">{t.teamMember4Role}</p>
               <p className="team-member-desc">{t.teamMember4Desc}</p>
+            </div>
+            <div className="team-member">
+              <div className="team-member-avatar">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/4.jpg`} alt={t.teamMember3Name} />
+              </div>
+              <h3 className="team-member-name">{t.teamMember3Name}</h3>
+              <p className="team-member-role">{t.teamMember3Role}</p>
+              <p className="team-member-desc">{t.teamMember3Desc}</p>
             </div>
           </div>
         </div>

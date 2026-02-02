@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
@@ -6,9 +6,18 @@ import './Footer.css'
 
 const Footer = () => {
   const { language } = useLanguage()
+  const [showDonateModal, setShowDonateModal] = useState(false)
   const t = translations[language]
   const nav = t.nav
   const footer = t.footer
+
+  const handleDonateClick = () => {
+    setShowDonateModal(true)
+  }
+
+  const closeDonateModal = () => {
+    setShowDonateModal(false)
+  }
 
   return (
     <footer className="footer">
@@ -118,12 +127,29 @@ const Footer = () => {
               <p className="support-title">{footer.supportUs}</p>
               <p className="support-message">{footer.supportDesc}</p>
             </div>
-            <div className="support-heart">
+            <div className="support-heart" onClick={handleDonateClick}>
               ❤️
             </div>
+            <p className="support-label" onClick={handleDonateClick}>{t.nav.tip}</p>
           </div>
         </div>
       </div>
+
+      {showDonateModal && (
+        <div className="donate-modal-overlay" onClick={closeDonateModal}>
+          <div className="donate-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="donate-modal-close" onClick={closeDonateModal}>×</button>
+            <div className="donate-image-container">
+              <img
+                src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/icon.png`}
+                alt="Donation QR Code"
+                className="donate-image"
+              />
+            </div>
+            <p className="donate-text">{footer.donateThankYou} ❤️</p>
+          </div>
+        </div>
+      )}
     </footer>
   )
 }
