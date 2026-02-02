@@ -493,7 +493,19 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
           const lang = languageRef.current || 'zh'
           const p = clickedFeat.properties
           const isoDisplay = p.ISO_A2 || p.ISO_A3 || p.ADM0_A3 || iso2
-          const translatedName = translations[lang]?.globeTooltip?.countryNames?.[iso2] || translations[lang]?.globeTooltip?.countryNames?.[isoDisplay]
+          let translatedName = translations[lang]?.globeTooltip?.countryNames?.[iso2] || translations[lang]?.globeTooltip?.countryNames?.[isoDisplay]
+
+          // 硬编码修复:确保这些国家在中文模式下显示中文
+          if (lang === 'zh' && !translatedName) {
+            const hardcodedNames = {
+              'FR': '法国', 'FRA': '法国', 'France': '法国',
+              'NO': '挪威', 'NOR': '挪威', 'Norway': '挪威',
+              'CY': '塞浦路斯', 'CYP': '塞浦路斯', 'Cyprus': '塞浦路斯',
+              'NC': '北塞浦路斯', 'Northern Cyprus': '北塞浦路斯', 'N. Cyprus': '北塞浦路斯'
+            }
+            translatedName = hardcodedNames[iso2] || hardcodedNames[isoDisplay] || hardcodedNames[p.ADMIN] || hardcodedNames[p.NAME]
+          }
+
           const name = translatedName || p.ADMIN || p.NAME || iso2
           if (indices && indices.length > 0) {
             onMarkerClick?.(indices[0])
@@ -522,7 +534,19 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
             const isoDisplay = p.ISO_A2 || p.ISO_A3 || p.ADM0_A3 || iso2 || '—'
             // Use translated country name based on language
             const lang = languageRef.current || 'zh'
-            const translatedName = iso2 ? (translations[lang]?.globeTooltip?.countryNames?.[iso2] || translations[lang]?.globeTooltip?.countryNames?.[isoDisplay]) : null
+            let translatedName = iso2 ? (translations[lang]?.globeTooltip?.countryNames?.[iso2] || translations[lang]?.globeTooltip?.countryNames?.[isoDisplay]) : null
+
+            // 硬编码修复:确保这些国家在中文模式下显示中文
+            if (lang === 'zh' && !translatedName) {
+              const hardcodedNames = {
+                'FR': '法国', 'FRA': '法国', 'France': '法国',
+                'NO': '挪威', 'NOR': '挪威', 'Norway': '挪威',
+                'CY': '塞浦路斯', 'CYP': '塞浦路斯', 'Cyprus': '塞浦路斯',
+                'NC': '北塞浦路斯', 'Northern Cyprus': '北塞浦路斯', 'N. Cyprus': '北塞浦路斯'
+              }
+              translatedName = hardcodedNames[iso2] || hardcodedNames[isoDisplay] || hardcodedNames[p.ADMIN] || hardcodedNames[p.NAME]
+            }
+
             const name = translatedName || p.ADMIN || p.NAME || isoDisplay || '—'
             const userCount = iso2 ? (countryUserCountsRef.current[iso2] || 0) : 0
             setHoveredCountry({ isoCode: isoDisplay, iso2, name, userCount })
@@ -1073,10 +1097,8 @@ const Globe3D = ({ stories = [], currentIndex = 0, highlightCountry = null, rota
       )}
       {showCountryTooltip && hoveredCountry !== null && isMouseOverGlobe && (() => {
         const t = translations[language]?.globeTooltip || {}
-        const countryNames = t.countryNames || {}
-        const keyA2 = hoveredCountry.iso2 ? String(hoveredCountry.iso2).toUpperCase() : ''
-        const keyA3 = hoveredCountry.isoCode ? String(hoveredCountry.isoCode).toUpperCase() : ''
-        const displayName = (keyA2 && countryNames[keyA2]) ? countryNames[keyA2] : (keyA3 && countryNames[keyA3]) ? countryNames[keyA3] : hoveredCountry.name
+        // hoveredCountry.name 已经在 setHoveredCountry 时被翻译过了,直接使用
+        const displayName = hoveredCountry.name
         return createPortal(
           <div
             className="globe-country-tooltip"
