@@ -72,7 +72,7 @@ const About = () => {
               </div>
               <div className="polaroid-item p3">
                 <div className="polaroid-inner">
-                  <img src={`${import.meta.env.BASE_URL}images/aboutus/4.jpg`} alt="Moment 3" />
+                  <img src={`${import.meta.env.BASE_URL}images/aboutus/4.png`} alt="Moment 3" />
                 </div>
               </div>
             </div>
