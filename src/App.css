@@ -148,3 +148,14 @@
   color: #e9dfff;
   text-shadow: 0 0 1rem rgba(255, 255, 255, 0.6), 0 0 2rem rgba(233, 223, 255, 0.5);
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 76.8rem) {
+  .page-hero-title-main {
+    font-size: 3.2rem;
+  }
+
+  .page-hero-title-slogan {
+    font-size: 1.6rem;
+  }
+}

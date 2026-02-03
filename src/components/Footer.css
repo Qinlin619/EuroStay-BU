@@ -153,12 +153,12 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   filter: drop-shadow(0 0.5rem 1.5rem rgba(122, 99, 199, 0.3));
   position: relative;
-  transform: translate(-30px, -20px);
+  /* Remove hardcoded translate */
   animation: heartPulse 2.5s ease-in-out infinite;
 }
 
 .support-heart:hover {
-  transform: translate(-30px, -20px) scale(1.1);
+  transform: scale(1.1);
   filter: drop-shadow(0 0.8rem 2.5rem rgba(122, 99, 199, 0.5));
 }
 
@@ -171,38 +171,37 @@
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
-  transform: translateX(-30px);
   letter-spacing: 0.1rem;
 }
 
 .support-label:hover {
   opacity: 0.8;
-  transform: translateX(-30px) translateY(-2px);
+  transform: translateY(-2px);
 }
 
 @keyframes heartPulse {
   0% {
-    transform: translate(-30px, -20px) scale(1);
+    transform: scale(1);
   }
 
   15% {
-    transform: translate(-30px, -20px) scale(1.15);
+    transform: scale(1.15);
   }
 
   30% {
-    transform: translate(-30px, -20px) scale(1);
+    transform: scale(1);
   }
 
   45% {
-    transform: translate(-30px, -20px) scale(1.1);
+    transform: scale(1.1);
   }
 
   60% {
-    transform: translate(-30px, -20px) scale(1);
+    transform: scale(1);
   }
 
   100% {
-    transform: translate(-30px, -20px) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -379,6 +378,9 @@
   .footer-top {
     flex-direction: column !important;
     gap: 4rem;
+    align-items: center;
+    /* 居中对齐所有 section */
+    text-align: center;
   }
 
   .footer-left,
@@ -386,6 +388,24 @@
   .footer-contact {
     width: 100%;
     max-width: 100%;
+    align-items: center;
+    /* 居中内容 */
+  }
+
+  .footer-logo-container {
+    justify-content: center;
+  }
+
+  .footer-description {
+    margin: 0 auto;
+  }
+
+  .footer-links {
+    align-items: center;
+  }
+
+  .footer-contact-item {
+    justify-content: center;
   }
 
   .footer-bottom-container {
@@ -406,7 +426,13 @@
 
   .support-heart {
     font-size: 7.5rem;
-    transform: translate(-30px, -20px);
+    transform: translate(0, 0);
+    /* 移除偏移 */
+  }
+
+  .support-label {
+    transform: translateX(0);
+    /* 移除偏移 */
   }
 }
 
@@ -444,11 +470,38 @@
 
   .support-heart {
     font-size: 6rem;
-    transform: translate(-20px, -10px);
+    transform: translate(0, 0);
   }
 
   .support-tooltip {
     display: none;
+  }
+}
+
+@keyframes heartPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  /* ... rest of the pulse remains but without translations ... */
+  15% {
+    transform: scale(1.15);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.1);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 

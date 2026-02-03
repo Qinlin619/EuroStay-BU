@@ -13,6 +13,16 @@ const Navbar = () => {
   const navRefs = useRef({})
   const t = translations[language]
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [isMenuOpen])
+
   const navItems = [
     { path: '/', label: t.nav.home },
     { path: '/products', label: t.nav.products },
@@ -21,8 +31,16 @@ const Navbar = () => {
   ]
 
   const [hoverStyle, setHoverStyle] = useState(null)
+  const [expandedMobileItem, setExpandedMobileItem] = useState(null)
 
   const isActive = (path) => location.pathname === path
+
+  const toggleMobileSubmenu = (path, e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      setExpandedMobileItem(expandedMobileItem === path ? null : path);
+    }
+  };
 
   useEffect(() => {
     // Exact match for the indicator position
@@ -48,7 +66,7 @@ const Navbar = () => {
           <img src={`${(import.meta.env.BASE_URL || '').replace(/\/$/, '')}/images/globe/icon.png`} alt="EuroStay Logo" className="navbar-logo-img" decoding="async" />
         </Link>
         <button
-          className="navbar-toggle"
+          className={`navbar-toggle ${isMenuOpen ? 'active' : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -69,7 +87,10 @@ const Navbar = () => {
             <li
               key={item.path}
               ref={el => navRefs.current[item.path] = el}
-              className={(item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') ? 'navbar-item-with-dropdown' : ''}
+              className={`
+                ${(item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') ? 'navbar-item-with-dropdown' : ''}
+                ${expandedMobileItem === item.path ? 'mobile-expanded' : ''}
+              `}
               onMouseEnter={() => {
                 const el = navRefs.current[item.path];
                 if (el) {
@@ -85,12 +106,18 @@ const Navbar = () => {
               <Link
                 to={item.path}
                 className={`navbar-link ${isActive(item.path) ? 'active' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                  if (item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') {
+                    toggleMobileSubmenu(item.path, e);
+                  } else {
+                    setIsMenuOpen(false);
+                  }
+                }}
               >
                 {item.label}
               </Link>
               {item.path === '/' && (
-                <ul className="navbar-dropdown">
+                <ul className={`navbar-dropdown ${expandedMobileItem === '/' ? 'show' : ''}`}>
                   <li>
                     <Link
                       to="/#home-guide"
@@ -150,7 +177,7 @@ const Navbar = () => {
                 </ul>
               )}
               {item.path === '/products' && (
-                <ul className="navbar-dropdown">
+                <ul className={`navbar-dropdown ${expandedMobileItem === '/products' ? 'show' : ''}`}>
                   <li>
                     <Link
                       to="/products#products-tips"
@@ -224,7 +251,7 @@ const Navbar = () => {
                 </ul>
               )}
               {item.path === '/stories' && (
-                <ul className="navbar-dropdown">
+                <ul className={`navbar-dropdown ${expandedMobileItem === '/stories' ? 'show' : ''}`}>
                   <li>
                     <Link
                       to="/stories#stories-map"
@@ -256,7 +283,7 @@ const Navbar = () => {
                 </ul>
               )}
               {item.path === '/about' && (
-                <ul className="navbar-dropdown">
+                <ul className={`navbar-dropdown ${expandedMobileItem === '/about' ? 'show' : ''}`}>
                   <li>
                     <Link
                       to="/about#about-brand-story"

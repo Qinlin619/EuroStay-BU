@@ -2675,12 +2675,46 @@
 
 @media (max-width: 76.8rem) {
   .hero {
-    padding: 4.0rem 2.0rem 1.5rem 0.5rem;
+    padding: 4.0rem 2.0rem 1.5rem 2.0rem;
   }
 
   .hero-main {
     grid-template-columns: 1fr;
     gap: 4.0rem;
+  }
+
+  .hero-content {
+    margin-left: 0;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-title-wrapper {
+    align-items: center;
+  }
+
+  .hero-title-line {
+    justify-content: center;
+  }
+
+  .hero-title-images {
+    align-items: center;
+  }
+
+  .hero-title-tag {
+    transform: translate(0, 20px);
+  }
+
+  .hero-subtitle {
+    text-align: center;
+  }
+
+  .hero-links {
+    justify-content: center;
+  }
+
+  .hero-buttons-wrapper {
+    justify-content: center;
   }
 
   .advantages-title {
