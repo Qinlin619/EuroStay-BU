@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import { useCountUp } from '../hooks/useCountUp'
@@ -85,14 +86,11 @@ const Stories = () => {
   }
 
   // 弹窗显示 1.5 秒后自动关闭
-  // 移除自动关闭，由用户点击关闭
-  /*
   useEffect(() => {
     if (!showNoStoryModal) return
     const timer = setTimeout(() => setShowNoStoryModal(false), 1500)
     return () => clearTimeout(timer)
   }, [showNoStoryModal])
-  */
 
   const scrollGallery = (direction) => {
     const nextIndex =
@@ -107,165 +105,105 @@ const Stories = () => {
   const activities = [
     {
       id: 1,
-      title: language === 'zh' ? '新春饺子会' : 'CNY Dumpling Party',
-      date: '2025.01',
-      location: '🇳🇱 Amsterdam',
-      description: language === 'zh' ? '在阿姆斯特丹举行的华人新年聚会，大家一起包饺子迎接新春。' : 'CNY party in Amsterdam, making dumplings together.',
-      emoji: '🥟',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC01532.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹.jpg`
     },
     {
       id: 2,
-      title: language === 'zh' ? '社群桌游之夜' : 'Board Game Night',
-      date: '2025.01',
+      date: '2024',
       location: '🇳🇱 Rotterdam',
-      description: language === 'zh' ? '周末的社群小聚，在欢声笑语中增进彼此的了解。' : 'Weekend community gathering with board games and laughter.',
-      emoji: '🎲',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC01534.jpg`
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹2.jpg`
     },
     {
       id: 3,
-      title: language === 'zh' ? '开发者面基' : 'Dev Meetup',
-      date: '2025.01',
-      location: '🇳🇱 Delft',
-      description: language === 'zh' ? 'EuroStay 幕后团队与热心用户的线下交流会。' : 'Offline exchange between EuroStay team and active users.',
-      emoji: '💻',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC01615.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹3.jpg`
     },
     {
       id: 4,
-      title: language === 'zh' ? '海牙海滩漫步' : 'The Hague Beach Walk',
-      date: '2025.01',
-      location: '🇳🇱 The Hague',
-      description: language === 'zh' ? '呼吸海边的新鲜空气，分享各自的换宿故事。' : 'Walking by the sea and sharing homestay stories.',
-      emoji: '🌊',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC01653.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹4.jpg`
     },
     {
       id: 5,
-      title: language === 'zh' ? '换宿友友集锦' : 'Homestay Friends',
-      date: '2025.02',
-      location: '🇪🇸 Barcelona',
-      description: language === 'zh' ? '在巴塞罗那的阳光下，见证跨越国界的友谊。' : 'Sunlight in Barcelona, witnessing cross-border friendships.',
-      emoji: '☀️',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC02046.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹5.jpg`
     },
     {
       id: 6,
-      title: language === 'zh' ? '伦敦艺术之旅' : 'London Art Tour',
-      date: '2025.02',
-      location: '🇬🇧 London',
-      description: language === 'zh' ? '一起打卡大英博物馆，探索艺术的奥秘。' : 'Visiting the British Museum and exploring art wonders together.',
-      emoji: '🎨',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC02416.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹6.jpg`
     },
     {
       id: 7,
-      title: language === 'zh' ? '巴黎浪漫邂逅' : 'Paris Rendezvous',
-      date: '2025.02',
-      location: '🇫🇷 Paris',
-      description: language === 'zh' ? '塞纳河畔的下午茶，聊聊未来的旅行计划。' : 'Afternoon tea by the Seine, chatting about future travel plans.',
-      emoji: '☕',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC02451.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹7.jpg`
     },
     {
       id: 8,
-      title: language === 'zh' ? '柏林墙下的分享' : 'Berlin Wall Sharing',
-      date: '2025.01',
-      location: 'DE Berlin',
-      description: language === 'zh' ? '在历史遗迹前，感悟跨越隔阂的连接。' : 'Thinking about connections in front of historical sites.',
-      emoji: '🧱',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_3687.jpg`
+      date: '2024',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹13.jpg`
     },
     {
       id: 9,
-      title: language === 'zh' ? '米兰时尚之约' : 'Milan Fashion Date',
-      date: '2025.01',
-      location: '🇮🇹 Milan',
-      description: language === 'zh' ? '在时尚之都，寻找那些独特的换宿体验。' : 'Finding unique homestay experiences in the city of fashion.',
-      emoji: '👠',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4083.jpg`
+      date: '2024',
+      location: '🇳🇱 Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024阿姆斯特丹.jpg`
     },
     {
       id: 10,
-      title: language === 'zh' ? '换宿经验分享' : 'Homestay Tips Sync',
-      date: '2025.01',
-      location: '🇬🇧 London',
-      description: language === 'zh' ? '资深 Host 分享如何打造一个温馨的家。' : 'Experienced hosts sharing how to create a welcoming home.',
-      emoji: '📒',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4356.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹.jpg`
     },
     {
       id: 11,
-      title: language === 'zh' ? '里斯本的阳光' : 'Lisbon Sun',
-      date: '2025.01',
-      location: '🇵🇹 Lisbon',
-      description: language === 'zh' ? '体验南欧的热情，感受大航海时代的遗风。' : 'Experiencing Southern European passion and maritime history.',
-      emoji: '⛵',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4378.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹8.jpg`
     },
     {
       id: 12,
-      title: language === 'zh' ? '苏黎世湖畔小聚' : 'Lake Zurich Meetup',
-      date: '2025.01',
-      location: '🇨🇭 Zurich',
-      description: language === 'zh' ? '在湖光山色中，开启一段全新的旅程。' : 'Starting a new journey amidst lake and mountain views.',
-      emoji: '🏔️',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4388.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹9.jpg`
     },
     {
       id: 13,
-      title: language === 'zh' ? '维也纳音乐夜' : 'Vienna Music Night',
-      date: '2025.01',
-      location: '🇦🇹 Vienna',
-      description: language === 'zh' ? '聆听城市的律动，感受音乐之都的魅力。' : 'Listening to the rhythm of the city of music.',
-      emoji: '🎶',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4391.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹10.jpg`
     },
     {
       id: 14,
-      title: language === 'zh' ? '社群成员集照' : 'Community Portrait',
-      date: '2025.01',
-      location: '🇨🇳 Beijing',
-      description: language === 'zh' ? 'EuroStay 的大家庭，让世界不再孤独。' : 'The EuroStay family making the world a smaller place.',
-      emoji: '👨‍👩‍👧‍👦',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250125_133519506_iOS.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹11.jpg`
     },
     {
       id: 15,
-      title: language === 'zh' ? '户外徒步活动' : 'Outdoor Hiking',
-      date: '2025.01',
-      location: '🇳🇱 Utrecht',
-      description: language === 'zh' ? '在大自然中结识新朋友，探索未知的足迹。' : 'Making new friends and exploring unknown paths in nature.',
-      emoji: '🥾',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250128_205808399_iOS.jpg`
+      date: '2025',
+      location: '🇳🇱 Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹12.jpg`
     },
     {
       id: 16,
-      title: language === 'zh' ? '元宵节特别活动' : 'Lantern Festival',
-      date: '2025.02',
-      location: '🇳🇱 Rotterdam',
-      description: language === 'zh' ? '吃元宵、赏花灯，身在海外也能感受家乡年味。' : 'Traditional lantern festival vibes even overseas.',
-      emoji: '🏮',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250223_111331000_iOS.jpg`
+      date: '2025',
+      location: '🇳🇱 Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025阿姆斯特丹.jpg`
     },
     {
       id: 17,
-      title: language === 'zh' ? '社群分享会' : 'Stories sharing Night',
-      date: '2026.02',
-      location: 'Global',
-      description: language === 'zh' ? '在 EuroStay 社交平台上分享你的换宿精彩瞬间。' : 'Share your brilliant homestay moments on EuroStay social platforms.',
-      emoji: '📸',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260203060054.jpg`
-    },
-    {
-      id: 18,
-      title: language === 'zh' ? '全球换宿地图' : 'Global Homestay Map',
-      date: '2026.02',
-      location: 'Global',
-      description: language === 'zh' ? '连接全球有趣的灵魂，开启无限生活维度。' : 'Connecting interesting souls worldwide.',
-      emoji: '🗺️',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260203060445.jpg`
+      date: '2026',
+      location: '🇳🇱 Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2026阿姆斯特丹2.jpg`
     }
   ]
 
@@ -451,16 +389,11 @@ const Stories = () => {
                       <img src={activity.image} alt={activity.title} className="polaroid-img" loading="lazy" />
                     </div>
                     <div className="polaroid-caption">
-                      <div className="polaroid-date">{activity.date}</div>
-                      <h3 className="polaroid-title">{activity.title}</h3>
                       <div className="polaroid-location">📍 {activity.location}</div>
+                      <div className="polaroid-date">{activity.date}</div>
                     </div>
                   </div>
-                  <div className="polaroid-overlay">
-                    <div className="polaroid-overlay-content">
-                      <p className="polaroid-desc">{activity.description}</p>
-                    </div>
-                  </div>
+
                 </div>
               ))}
             </div>
@@ -468,7 +401,7 @@ const Stories = () => {
         </div>
       </FadeSection>
 
-      {showNoStoryModal && (
+      {showNoStoryModal && createPortal(
         <div
           className="stories-no-story-modal-overlay"
           onClick={() => setShowNoStoryModal(false)}
@@ -482,7 +415,8 @@ const Stories = () => {
               {t.noStoryModalMessage}
             </p>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )

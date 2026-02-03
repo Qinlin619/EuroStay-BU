@@ -1,0 +1,124 @@
+.experience-page {
+    width: 100%;
+    padding-bottom: 10rem;
+}
+
+.experience-hero {
+    padding: 12rem 2rem 6rem;
+    background: linear-gradient(to bottom, rgba(122, 99, 199, 0.05), transparent);
+    text-align: center;
+}
+
+.experience-hero-desc {
+    max-width: 80rem;
+    margin: 2rem auto 0;
+    font-size: 2rem;
+    color: var(--color-purple-primary);
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.experience-features {
+    padding: 6rem 2rem;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 4rem;
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.experience-card {
+    background: var(--color-white);
+    padding: 4rem;
+    border-radius: 2.4rem;
+    box-shadow: 0 1rem 3rem rgba(122, 99, 199, 0.08);
+    border: 1px solid rgba(122, 99, 199, 0.05);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.experience-card:hover {
+    transform: translateY(-1rem);
+    box-shadow: 0 2rem 5rem rgba(122, 99, 199, 0.15);
+}
+
+.experience-icon {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    display: block;
+}
+
+.experience-card h3 {
+    font-size: 2.4rem;
+    color: var(--color-purple-primary);
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+}
+
+.experience-card p {
+    font-size: 1.6rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.experience-cta {
+    padding: 8rem 2rem;
+}
+
+.cta-box {
+    background: linear-gradient(135deg, var(--color-purple-primary), #a78bfa);
+    padding: 6rem 4rem;
+    border-radius: 3rem;
+    text-align: center;
+    color: var(--color-white);
+    max-width: 100rem;
+    margin: 0 auto;
+    box-shadow: 0 2rem 6rem rgba(122, 99, 199, 0.3);
+}
+
+.cta-box h2 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+}
+
+.cta-box p {
+    font-size: 2rem;
+    margin-bottom: 4rem;
+    opacity: 0.9;
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-btn {
+    background: var(--color-yellow-primary);
+    color: var(--color-purple-primary);
+    border: none;
+    padding: 1.8rem 4.8rem;
+    border-radius: 1.5rem;
+    font-size: 2rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.cta-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.2);
+    filter: brightness(1.1);
+}
+
+@media (max-width: 768px) {
+    .cta-box h2 {
+        font-size: 3rem;
+    }
+
+    .cta-box p {
+        font-size: 1.6rem;
+    }
+}

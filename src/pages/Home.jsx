@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo, lazy, Suspense } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
@@ -951,20 +952,21 @@ const Home = () => {
         </div>
       )}
 
-      {/* Android 弹窗 */}
-      {showAndroidModal && (
+      {/* Android 弹窗 - 使用 Portal 确保在视口中央 */}
+      {showAndroidModal && createPortal(
         <div className="android-modal-overlay" onClick={() => setShowAndroidModal(false)}>
           <div className="android-modal" onClick={(e) => e.stopPropagation()}>
             <button className="android-modal-close" onClick={() => setShowAndroidModal(false)}>×</button>
             <div className="android-modal-content">
-              <h3>{language === 'zh' ? '暂未上线 Android 版本' : 'Android Version Not Available Yet'}</h3>
-              <p>{language === 'zh' ? '目前 EuroStay 仅支持 iOS 系统，建议购入苹果设备以获得最佳体验！' : 'EuroStay currently only supports iOS. We recommend getting an Apple device for the best experience!'}</p>
+              <h3>{t.androidModalTitle}</h3>
+              <p>{t.androidModalDesc}</p>
               <button className="android-modal-btn" onClick={() => setShowAndroidModal(false)}>
-                {language === 'zh' ? '我知道了' : 'Got it'}
+                {t.androidModalBtn}
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
     </div>

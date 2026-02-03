@@ -226,6 +226,46 @@ const Products = () => {
         </div>
       </FadeSection>
 
+      <FadeSection as="section" className="experience-section">
+        <div className="container">
+          <div className="page-hero-title-wrapper">
+            <div className="page-hero-title-line">
+              <h2 className="page-hero-title-main">{t.experienceTitle}</h2>
+              <span className="page-hero-title-star" aria-hidden="true">★</span>
+            </div>
+          </div>
+          <p className="experience-hero-desc">{t.experienceHeroDesc}</p>
+
+          <div className="experience-grid">
+            <div className="experience-card">
+              <div className="experience-icon">📱</div>
+              <h3>{t.experienceFeature1Title}</h3>
+              <p>{t.experienceFeature1Desc}</p>
+            </div>
+
+            <div className="experience-card">
+              <div className="experience-icon">🤖</div>
+              <h3>{t.experienceFeature2Title}</h3>
+              <p>{t.experienceFeature2Desc}</p>
+            </div>
+
+            <div className="experience-card">
+              <div className="experience-icon">🧪</div>
+              <h3>{t.experienceFeature3Title}</h3>
+              <p>{t.experienceFeature3Desc}</p>
+            </div>
+          </div>
+
+          <div className="experience-cta-simple">
+            <h3>{t.experienceCtaTitle}</h3>
+            <p>{t.experienceCtaDesc}</p>
+            <Link to="/" className="cta-btn-simple">
+              {t.experienceCtaBtn}
+            </Link>
+          </div>
+        </div>
+      </FadeSection>
+
       <FadeSection as="section" id="qa-section" className="qa-section">
         <div className="container">
           <div className="page-hero-title-wrapper">

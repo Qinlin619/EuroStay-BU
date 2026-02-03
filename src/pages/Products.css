@@ -918,3 +918,123 @@
     font-size: 1.4rem;
   }
 }
+
+/* Experience Section Styles */
+.experience-section {
+  padding: 10rem 2rem;
+  background: linear-gradient(to bottom, rgba(122, 99, 199, 0.03), transparent);
+}
+
+.experience-hero-desc {
+  max-width: 80rem;
+  margin: 3rem auto 6rem;
+  font-size: 1.8rem;
+  color: #666;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.experience-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  gap: 4rem;
+  max-width: 110rem;
+  margin: 0 auto;
+}
+
+.experience-card {
+  background: var(--color-white);
+  padding: 4rem 3rem;
+  border-radius: 2.4rem;
+  box-shadow: 0 1rem 3rem rgba(122, 99, 199, 0.06);
+  border: 1px solid rgba(122, 99, 199, 0.08);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  text-align: center;
+}
+
+.experience-card:hover {
+  transform: translateY(-0.8rem);
+  box-shadow: 0 2rem 5rem rgba(122, 99, 199, 0.12);
+  border-color: var(--color-purple-secondary);
+}
+
+.experience-icon {
+  font-size: 4.8rem;
+  margin-bottom: 2.4rem;
+  display: block;
+}
+
+.experience-card h3 {
+  font-size: 2.4rem;
+  color: var(--color-text-default);
+  margin-bottom: 1.6rem;
+  font-weight: 700;
+}
+
+.experience-card p {
+  font-size: 1.6rem;
+  color: #666;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.experience-cta-simple {
+  margin-top: 8rem;
+  background: linear-gradient(135deg, var(--color-purple-primary), #a78bfa);
+  padding: 6rem 4rem;
+  border-radius: 3rem;
+  text-align: center;
+  color: var(--color-white);
+  max-width: 90rem;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 2rem 5rem rgba(122, 99, 199, 0.2);
+}
+
+.experience-cta-simple h3 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin-bottom: 1.6rem;
+  color: white !important;
+}
+
+.experience-cta-simple p {
+  font-size: 1.8rem;
+  margin-bottom: 3.2rem;
+  opacity: 0.9;
+}
+
+.cta-btn-simple {
+  display: inline-block;
+  background: var(--color-yellow-primary);
+  color: var(--color-purple-primary);
+  padding: 1.6rem 4rem;
+  border-radius: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.cta-btn-simple:hover {
+  transform: scale(1.05);
+  box-shadow: 0 1.5rem 3rem rgba(0, 0, 0, 0.15);
+  filter: brightness(1.1);
+  color: var(--color-purple-primary);
+}
+
+@media (max-width: 768px) {
+  .experience-cta-simple h3 {
+    font-size: 2.6rem;
+  }
+
+  .experience-cta-simple p {
+    font-size: 1.6rem;
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}

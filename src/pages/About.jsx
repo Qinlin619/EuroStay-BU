@@ -134,7 +134,7 @@ const About = () => {
           <div className="team-grid">
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/1.png`} alt={t.teamMember1Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/qx.png`} alt={t.teamMember1Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember1Name}</h3>
               <p className="team-member-role">{t.teamMember1Role}</p>
@@ -142,7 +142,7 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/2.jpg`} alt={t.teamMember2Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/pj.png`} alt={t.teamMember2Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember2Name}</h3>
               <p className="team-member-role">{t.teamMember2Role}</p>
@@ -150,7 +150,7 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/3.jpg`} alt={t.teamMember4Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/sherry.png`} alt={t.teamMember4Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember4Name}</h3>
               <p className="team-member-role">{t.teamMember4Role}</p>
@@ -158,7 +158,7 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/4.jpg`} alt={t.teamMember3Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/sansan.png`} alt={t.teamMember3Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember3Name}</h3>
               <p className="team-member-role">{t.teamMember3Role}</p>
