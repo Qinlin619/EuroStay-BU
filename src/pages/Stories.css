@@ -582,9 +582,9 @@
   overflow: hidden;
   padding: 4.0rem 0;
   margin-top: -4.0rem;
-  /* 渐隐边缘掩模 */
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  /* 只保留右边的渐变淡出效果 */
+  mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
   transform: scale(0.9);
   /* 等比缩小 */
   transform-origin: center center;
@@ -761,14 +761,14 @@
 
 /* --- 活动历史 3.0 (Polaroid Photo Wall - Cute Edition) --- */
 .activities-section {
-  padding: 12.0rem 2.0rem 16.0rem;
+  padding: 6.0rem 2.0rem 16.0rem;
   background: #fdfcff;
   position: relative;
   overflow: hidden;
 }
 
 .activity-history-intro {
-  margin: 2rem auto 10.0rem;
+  margin: 1rem auto 10.0rem;
   font-size: 2.1rem;
   font-weight: 500;
   color: var(--color-purple-primary);
@@ -991,6 +991,429 @@
   transform: rotate(4deg) translateY(1.5rem);
 }
 
+/* 响应式优化 - 地图和画廊布局 */
+
+/* 小桌面 - 优化间距 */
+@media (max-width: 1280px) {
+  .stories-map-gallery-layout {
+    gap: 3.0rem;
+    padding: 0 1.5rem;
+  }
+
+  .stories-map-container,
+  .stories-gallery-wrapper {
+    min-height: 45rem;
+    height: 45rem;
+  }
+}
+
+/* 平板 - 上下排列 */
+@media (max-width: 1024px) {
+  .stories-map-gallery-layout {
+    flex-direction: column;
+    gap: 4.0rem;
+    margin-top: 4.0rem;
+  }
+
+  .stories-map-container {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    min-height: 50rem;
+    height: 50rem;
+  }
+
+  .stories-gallery-wrapper {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    min-height: 45rem;
+    height: 45rem;
+  }
+
+  .story-card {
+    flex: 0 0 85%;
+  }
+}
+
+/* 大手机 - 进一步优化 */
+@media (max-width: 768px) {
+  .stories-hero {
+    min-height: 85vh;
+    padding-top: 10.0rem;
+  }
+
+  .stories-hero-background {
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .stories-hero-content {
+    padding: 18.0rem 1.5rem 3.0rem;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .stories-hero-text-box {
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 2.4rem 3.0rem;
+    border-radius: 0.8rem;
+    text-align: left;
+  }
+
+  .stories-hero-en .stories-hero-text-box {
+    max-width: 100%;
+    width: 100%;
+    padding: 2.2rem 3.5rem;
+  }
+
+  .stories-hero-line1,
+  .stories-hero-line2 {
+    font-size: 1.7rem;
+    line-height: 1.6;
+  }
+
+  .stories-hero-en .stories-hero-line1,
+  .stories-hero-en .stories-hero-line2 {
+    font-size: 1.4rem;
+    white-space: normal;
+    line-height: 1.6;
+  }
+
+  .stories-hero-stats {
+    padding: 2.5rem 1.5rem;
+    gap: 1.0rem;
+    flex-wrap: nowrap;
+  }
+
+  .stat-column {
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  .stat-column .stat-number {
+    font-size: 4.5rem;
+  }
+
+  .stat-column .stat-label {
+    font-size: 1.5rem;
+  }
+
+  .stat-column:not(:last-child)::after {
+    height: 60%;
+  }
+
+  .stories-main-title {
+    font-size: 3.2rem;
+    margin: 3.0rem 1.5rem 2.5rem;
+    padding: 1.5rem;
+  }
+
+  .stories-tagline {
+    font-size: 1.6rem;
+    margin: -1.5rem auto 3.5rem;
+  }
+
+  .stories-map-gallery-layout {
+    gap: 3.5rem;
+    margin-top: 3.0rem;
+    padding: 0 1.0rem;
+  }
+
+  .stories-map-container {
+    max-width: 100%;
+    min-height: 45rem;
+    height: 45rem;
+  }
+
+  .stories-gallery-wrapper {
+    max-width: 100%;
+    min-height: 40rem;
+    height: 40rem;
+  }
+
+  .story-card {
+    flex: 0 0 90%;
+  }
+
+  .story-info-bar {
+    padding: 1.5rem 2.0rem;
+  }
+
+  .story-author {
+    font-size: 1.6rem;
+  }
+
+  .story-date {
+    font-size: 1.2rem;
+  }
+
+  .story-location-badge {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.0rem;
+  }
+}
+
+/* 移动端 - 完全优化 */
+@media (max-width: 640px) {
+  .stories-hero {
+    min-height: 70vh;
+    padding-top: 10.0rem;
+  }
+
+  .stories-hero-content {
+    padding: 16.0rem 1.0rem 2.5rem;
+    min-height: 35.0rem;
+  }
+
+  .stories-hero-text-box {
+    padding: 2.0rem 2.5rem;
+    border-radius: 0.8rem;
+  }
+
+  .stories-hero-en .stories-hero-text-box {
+    padding: 1.8rem 3.0rem;
+  }
+
+  .stories-hero-line1,
+  .stories-hero-line2 {
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .stories-hero-en .stories-hero-line1,
+  .stories-hero-en .stories-hero-line2 {
+    font-size: 1.3rem;
+  }
+
+  /* 统计数据优化 - 美观的卡片式布局 */
+  .stories-hero-stats {
+    padding: 3.0rem 2.0rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.0rem;
+    background: linear-gradient(135deg, #FFF8E7 0%, #FFEDBE 100%);
+  }
+
+  .stat-column {
+    padding: 2.0rem 1.5rem;
+    width: 100%;
+    max-width: none;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 1.6rem;
+    box-shadow: 0 0.4rem 1.2rem rgba(122, 99, 199, 0.1);
+    transition: all 0.3s ease;
+    border: 0.1rem solid rgba(122, 99, 199, 0.08);
+  }
+
+  .stat-column:hover {
+    transform: translateY(-0.3rem);
+    box-shadow: 0 0.6rem 1.8rem rgba(122, 99, 199, 0.15);
+  }
+
+  /* 让最后一个统计项跨两列居中 */
+  .stat-column:last-child {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+  }
+
+  /* 移除分隔线 */
+  .stat-column:not(:last-child)::after {
+    display: none;
+  }
+
+  .stat-column .stat-number {
+    font-size: 4.2rem;
+    margin-bottom: 0.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-purple-primary) 0%, var(--color-purple-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-column .stat-label {
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 500;
+  }
+
+  .stories-main-title {
+    font-size: 2.8rem;
+    margin: 2.5rem 1.0rem 2.0rem;
+    padding: 1.2rem;
+  }
+
+  .stories-tagline {
+    font-size: 1.5rem;
+    margin: -1.0rem auto 3.0rem;
+    padding: 0 1.0rem;
+  }
+
+  .stories-map-gallery-layout {
+    gap: 3.0rem;
+    margin-top: 2.5rem;
+    margin-bottom: 4.0rem;
+    padding: 0 0.5rem;
+  }
+
+  .stories-map-container {
+    min-height: 40rem;
+    height: 40rem;
+    border-radius: 1.0rem;
+  }
+
+  .stories-gallery-wrapper {
+    min-height: 38rem;
+    height: 38rem;
+  }
+
+  .stories-gallery {
+    padding: 3.0rem 0;
+    margin-top: -3.0rem;
+  }
+
+  .story-card {
+    flex: 0 0 95%;
+    margin-right: 1.5rem;
+    border-radius: 2.0rem;
+  }
+
+  .story-info-bar {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .story-author {
+    font-size: 1.5rem;
+  }
+
+  .story-date {
+    font-size: 1.1rem;
+  }
+
+  .story-location-badge {
+    font-size: 1.1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .story-hover-overlay {
+    padding: 2.5rem;
+  }
+
+  .story-hover-title {
+    font-size: 2.0rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .story-hover-desc {
+    font-size: 1.4rem;
+  }
+
+  .gallery-footer {
+    margin-top: 2.0rem;
+    gap: 2.5rem;
+  }
+
+  .gallery-nav-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 2.0rem;
+  }
+}
+
+/* 小手机优化 */
+@media (max-width: 480px) {
+  .stories-hero {
+    min-height: 60vh;
+  }
+
+  .stories-hero-content {
+    padding: 14.0rem 0.8rem 2.0rem;
+  }
+
+  .stories-hero-text-box {
+    padding: 1.8rem 2.0rem;
+  }
+
+  .stories-hero-line1,
+  .stories-hero-line2 {
+    font-size: 1.4rem;
+  }
+
+  .stories-hero-en .stories-hero-line1,
+  .stories-hero-en .stories-hero-line2 {
+    font-size: 1.2rem;
+  }
+
+  /* 统计数据卡片式布局 - 小手机 */
+  .stories-hero-stats {
+    padding: 2.5rem 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .stat-column {
+    padding: 1.8rem 1.2rem;
+    border-radius: 1.4rem;
+  }
+
+  .stat-column:last-child {
+    max-width: 55%;
+  }
+
+  .stat-column .stat-number {
+    font-size: 3.8rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-column .stat-label {
+    font-size: 1.4rem;
+  }
+
+  .stories-main-title {
+    font-size: 2.4rem;
+  }
+
+  .stories-tagline {
+    font-size: 1.4rem;
+  }
+
+  .stories-map-container {
+    min-height: 35rem;
+    height: 35rem;
+  }
+
+  .stories-gallery-wrapper {
+    min-height: 35rem;
+    height: 35rem;
+  }
+
+  .story-card {
+    flex: 0 0 100%;
+  }
+}
+
+/* 活动历史照片墙响应式 */
+@media (max-width: 1280px) {
+  .activities-section {
+    padding: 5.0rem 2.0rem 14.0rem;
+  }
+
+  .activity-history-intro {
+    font-size: 1.9rem;
+    margin-bottom: 8.0rem;
+  }
+
+  .photo-wall {
+    gap: 5.0rem;
+  }
+}
+
 @media (max-width: 90.0rem) {
   .photo-wall {
     grid-template-columns: repeat(2, 1fr);
@@ -999,6 +1422,15 @@
 }
 
 @media (max-width: 64.0rem) {
+  .activities-section {
+    padding: 4.0rem 1.5rem 12.0rem;
+  }
+
+  .activity-history-intro {
+    font-size: 1.8rem;
+    margin: 0.5rem auto 6.0rem;
+  }
+
   .photo-wall {
     grid-template-columns: 1fr;
     max-width: 45rem;

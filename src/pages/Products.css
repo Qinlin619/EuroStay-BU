@@ -1185,7 +1185,179 @@
   color: var(--color-purple-primary);
 }
 
+/* ========== 响应式优化 ========== */
+
+/* 小桌面 - 1280px */
+@media (max-width: 1280px) {
+  .feature-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+
+  .guide-steps-grid {
+    gap: 3.5rem;
+  }
+
+  .membership-grid {
+    gap: 3.0rem;
+  }
+}
+
+/* 平板 - 1024px */
+@media (max-width: 1024px) {
+  .products-hero {
+    padding: 6.0rem 2.0rem;
+  }
+
+  .page-title {
+    font-size: 4.0rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.8rem;
+  }
+
+  .product-section {
+    padding: 6.0rem 2.0rem;
+  }
+
+  .product-info h2 {
+    font-size: 4.0rem;
+  }
+
+  .product-info h3 {
+    font-size: 2.8rem;
+  }
+
+  .feature-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.0rem;
+  }
+
+  .guide-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 3.0rem;
+  }
+
+  .membership-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .tips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* 大手机 - 768px */
 @media (max-width: 768px) {
+  .products-hero {
+    padding: 5.0rem 1.5rem;
+  }
+
+  .page-title {
+    font-size: 3.2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.6rem;
+  }
+
+  .product-section {
+    padding: 5.0rem 1.5rem;
+  }
+
+  .product-info h2 {
+    font-size: 3.2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .product-info p {
+    font-size: 1.6rem;
+    margin-bottom: 4.0rem;
+  }
+
+  .product-info h3 {
+    font-size: 2.4rem;
+    margin-top: 4.0rem;
+    margin-bottom: 3.0rem;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .feature-list li {
+    padding: 2.5rem;
+    padding-left: 6.0rem;
+    min-height: auto;
+  }
+
+  .guide-module {
+    padding: 3.0rem 2.5rem;
+  }
+
+  .guide-module h4 {
+    font-size: 2.0rem;
+  }
+
+  .guide-module p {
+    font-size: 1.5rem;
+  }
+
+  .guide-step {
+    padding: 3.0rem 2.5rem;
+  }
+
+  .guide-step-number {
+    width: 5.0rem;
+    height: 5.0rem;
+    font-size: 2.0rem;
+  }
+
+  .guide-step h4 {
+    font-size: 2.0rem;
+  }
+
+  .guide-step p {
+    font-size: 1.5rem;
+  }
+
+  .membership-card {
+    padding: 3.0rem 2.5rem;
+  }
+
+  .membership-card h4 {
+    font-size: 2.0rem;
+  }
+
+  .membership-card p {
+    font-size: 1.5rem;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+    gap: 2.0rem;
+  }
+
+  .tip-card {
+    padding: 2.5rem;
+  }
+
+  .tip-card h4 {
+    font-size: 2.0rem;
+  }
+
+  .tip-card p {
+    font-size: 1.5rem;
+  }
+
   .experience-cta-simple h3 {
     font-size: 2.6rem;
   }
@@ -1194,8 +1366,228 @@
     font-size: 1.6rem;
   }
 
-  .experience-grid {
-    grid-template-columns: 1fr;
+  .qa-item {
+    padding: 2.5rem;
+  }
+
+  .qa-question {
+    font-size: 1.8rem;
+  }
+
+  .qa-answer {
+    font-size: 1.5rem;
+  }
+}
+
+/* 移动端 - 640px */
+@media (max-width: 640px) {
+  .products-hero {
+    padding: 4.0rem 1.0rem;
+  }
+
+  .page-title {
+    font-size: 2.8rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .product-section {
+    padding: 4.0rem 1.0rem;
+  }
+
+  .product-info h2 {
+    font-size: 2.8rem;
+    margin-bottom: 2.0rem;
+  }
+
+  .product-info p {
+    font-size: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .product-info h3 {
+    font-size: 2.2rem;
+    margin-top: 3.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-list li {
+    padding: 2.0rem;
+    padding-left: 5.5rem;
+    font-size: 1.5rem;
+  }
+
+  .feature-list li::before {
+    left: 2.0rem;
+    top: 2.0rem;
+    font-size: 1.8rem;
+  }
+
+  .guide-module {
+    padding: 2.5rem 2.0rem;
+    margin-bottom: 2.0rem;
+  }
+
+  .guide-module h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-module p {
+    font-size: 1.4rem;
+  }
+
+  .guide-steps-grid {
     gap: 2.5rem;
+  }
+
+  .guide-step {
+    padding: 2.5rem 2.0rem;
+  }
+
+  .guide-step-number {
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 1.8rem;
+    top: 2.0rem;
+    right: 2.0rem;
+  }
+
+  .guide-step h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-step p {
+    font-size: 1.4rem;
+  }
+
+  .membership-card {
+    padding: 2.5rem 2.0rem;
+  }
+
+  .membership-card h4 {
+    font-size: 1.8rem;
+  }
+
+  .membership-card h5 {
+    font-size: 1.4rem;
+  }
+
+  .membership-card p,
+  .membership-card li {
+    font-size: 1.4rem;
+  }
+
+  .tip-card {
+    padding: 2.0rem;
+  }
+
+  .tip-card h4 {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .tip-card p {
+    font-size: 1.4rem;
+  }
+
+  .experience-cta-simple {
+    padding: 3.0rem 2.0rem;
+  }
+
+  .experience-cta-simple h3 {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .experience-cta-simple p {
+    font-size: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-btn-simple {
+    padding: 1.4rem 3.0rem;
+    font-size: 1.6rem;
+  }
+
+  .qa-item {
+    padding: 2.0rem;
+  }
+
+  .qa-question {
+    font-size: 1.6rem;
+    padding-right: 3.0rem;
+  }
+
+  .qa-answer {
+    font-size: 1.4rem;
+    padding-top: 1.5rem;
+  }
+
+  .qa-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 2.0rem;
+  }
+}
+
+/* 小手机 - 480px */
+@media (max-width: 480px) {
+  .products-hero {
+    padding: 3.5rem 1.0rem;
+  }
+
+  .page-title {
+    font-size: 2.4rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.4rem;
+  }
+
+  .product-section {
+    padding: 3.5rem 1.0rem;
+  }
+
+  .product-info h2 {
+    font-size: 2.4rem;
+  }
+
+  .product-info h3 {
+    font-size: 2.0rem;
+  }
+
+  .feature-list li {
+    padding: 1.8rem;
+    padding-left: 5.0rem;
+    font-size: 1.4rem;
+  }
+
+  .guide-module h4 {
+    font-size: 1.7rem;
+  }
+
+  .guide-step h4 {
+    font-size: 1.7rem;
+  }
+
+  .membership-card h4 {
+    font-size: 1.7rem;
+  }
+
+  .tip-card h4 {
+    font-size: 1.7rem;
+  }
+
+  .experience-cta-simple h3 {
+    font-size: 2.0rem;
+  }
+
+  .cta-btn-simple {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.5rem;
   }
 }

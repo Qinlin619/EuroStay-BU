@@ -464,6 +464,18 @@
   z-index: 4;
 }
 
+/* 平板横屏 - 优化品牌故事布局 */
+@media (max-width: 1280px) {
+  .brand-story-grid {
+    gap: 6.0rem;
+  }
+
+  .polaroid-wall {
+    zoom: 0.85;
+  }
+}
+
+/* 平板竖屏 - 单列布局 */
 @media (max-width: 1024px) {
   .brand-story-grid {
     grid-template-columns: 1fr;
@@ -473,7 +485,14 @@
   .brand-story-visual {
     order: -1;
   }
+
+  .polaroid-wall {
+    zoom: 0.9;
+    max-width: 60rem;
+    margin: 0 auto;
+  }
 }
+
 
 
 .values-section {
@@ -543,16 +562,54 @@
   max-width: 24rem;
 }
 
-@media (max-width: 1024px) {
+/* 小桌面 - 3列 */
+@media (max-width: 1280px) {
   .values-cards {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3.5rem;
   }
 }
 
-@media (max-width: 600px) {
+/* 平板 - 2列 */
+@media (max-width: 1024px) {
+  .values-section {
+    padding: 6.0rem 2.0rem;
+  }
+
+  .values-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3.0rem;
+    margin: 6.0rem auto 0;
+  }
+
+  .value-card-modern h3 {
+    font-size: 2.0rem;
+  }
+
+  .value-card-modern p {
+    font-size: 1.5rem;
+  }
+}
+
+/* 大手机 - 1列 */
+@media (max-width: 640px) {
+  .values-section {
+    padding: 5.0rem 1.5rem;
+  }
+
   .values-cards {
     grid-template-columns: 1fr;
-    gap: 5.0rem;
+    gap: 4.0rem;
+    max-width: 40rem;
+  }
+
+  .value-card-modern h3 {
+    font-size: 2.2rem;
+  }
+
+  .value-card-modern p {
+    font-size: 1.6rem;
+    max-width: 100%;
   }
 }
 
@@ -645,8 +702,88 @@
   line-height: 1.6;
 }
 
+/* 小桌面 - 3列 */
+@media (max-width: 1280px) {
+  .team-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3.0rem;
+  }
+}
 
-@media (max-width: 76.8rem) {
+/* 平板 - 2列 */
+@media (max-width: 1024px) {
+  .team-section {
+    padding: 5.0rem 2.0rem 12.0rem 2.0rem;
+  }
+
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    margin-top: 6.0rem;
+  }
+
+  .team-member {
+    padding: 3.5rem 2.5rem;
+  }
+
+  .team-member-avatar {
+    width: 13.0rem;
+    height: 13.0rem;
+  }
+
+  .team-member-name {
+    font-size: 2.0rem;
+  }
+
+  .team-member-desc {
+    font-size: 1.4rem;
+  }
+}
+
+/* 大手机 - 1列 */
+@media (max-width: 640px) {
+  .team-section {
+    padding: 4.0rem 1.5rem 10.0rem 1.5rem;
+  }
+
+  .team-grid {
+    grid-template-columns: 1fr;
+    gap: 3.0rem;
+    max-width: 40rem;
+    margin: 5.0rem auto 0;
+  }
+
+  .team-member {
+    padding: 3.0rem 2.0rem;
+  }
+
+  .team-member-avatar {
+    width: 12.0rem;
+    height: 12.0rem;
+  }
+}
+
+/* 响应式优化 - Hero Banner 和通用样式 */
+@media (max-width: 1024px) {
+  .about-hero-banner {
+    min-height: 60vh;
+  }
+
+  .hero-content-box {
+    padding: 5.0rem 4.0rem;
+    max-width: 90%;
+  }
+
+  .title-img {
+    max-width: 18rem;
+  }
+
+  .hero-intro-text {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
   .page-title {
     font-size: 3.6rem;
   }
@@ -695,20 +832,52 @@
     font-size: 1.6rem;
   }
 
-  .team-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.0rem;
-  }
-
-  @media (max-width: 48.0rem) {
-    .team-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
   .about-hero-banner {
-    min-height: 40.0rem;
-    height: 80vh;
+    min-height: 50vh;
+    height: 70vh;
+  }
+
+  .hero-content-box {
+    padding: 3.5rem 2.5rem;
+    width: 95%;
+    border-radius: 2.4rem;
+  }
+
+  .title-img {
+    max-width: 16rem;
+  }
+
+  .hero-intro-text {
+    font-size: 1.7rem;
+    line-height: 1.7;
+  }
+
+  .brand-story-grid {
+    gap: 5.0rem;
+  }
+
+  .story-node h3 {
+    font-size: 2.4rem;
+  }
+
+  .story-node p {
+    font-size: 1.6rem;
+  }
+
+  .join-cta-text {
+    font-size: 2.4rem;
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 640px) {
+  .about-hero-banner {
+    min-height: 40vh;
+    height: 60vh;
+  }
+
+  .banner-images-grid {
+    grid-template-columns: 1fr;
   }
 
   .hero-content-box {
@@ -717,9 +886,8 @@
     border-radius: 2.0rem;
   }
 
-  .hero-main-title {
-    font-size: 3.2rem;
-    margin-bottom: 1.5rem;
+  .title-img {
+    max-width: 14rem;
   }
 
   .hero-intro-text {
@@ -727,4 +895,60 @@
     line-height: 1.6;
   }
 
+  .about-brand-story {
+    padding: 6.0rem 1.5rem;
+  }
+
+  .brand-story-grid {
+    gap: 4.0rem;
+  }
+
+  .story-node {
+    margin-bottom: 3.5rem;
+  }
+
+  .story-node h3 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .story-node p {
+    font-size: 1.5rem;
+  }
+
+  .join-cta-text {
+    font-size: 2.2rem;
+  }
+
+  .polaroid-wall {
+    zoom: 0.75;
+    max-width: 100%;
+  }
+}
+
+/* 小手机优化 */
+@media (max-width: 480px) {
+  .hero-content-box {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .title-img {
+    max-width: 12rem;
+  }
+
+  .hero-intro-text {
+    font-size: 1.5rem;
+  }
+
+  .story-node h3 {
+    font-size: 2.0rem;
+  }
+
+  .story-node p {
+    font-size: 1.4rem;
+  }
+
+  .join-cta-text {
+    font-size: 2.0rem;
+  }
 }

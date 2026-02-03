@@ -126,6 +126,11 @@ const Navbar = () => {
                         if (location.pathname === '/') {
                           e.preventDefault();
                           document.getElementById('home-guide')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          // 从其他页面跳转时，先跳转到首页顶部
+                          e.preventDefault();
+                          navigate('/');
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                         }
                       }}
                     >
@@ -186,6 +191,11 @@ const Navbar = () => {
                         if (location.pathname === '/products') {
                           e.preventDefault();
                           document.getElementById('products-tips')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          // 从其他页面跳转时，先跳转到产品页顶部
+                          e.preventDefault();
+                          navigate('/products');
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                         }
                       }}
                     >
@@ -260,6 +270,11 @@ const Navbar = () => {
                         if (location.pathname === '/stories') {
                           e.preventDefault();
                           document.getElementById('stories-map')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          // 从其他页面跳转时，先跳转到故事页顶部
+                          e.preventDefault();
+                          navigate('/stories');
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                         }
                       }}
                     >
@@ -292,6 +307,11 @@ const Navbar = () => {
                         if (location.pathname === '/about') {
                           e.preventDefault();
                           document.getElementById('about-brand-story')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          // 从其他页面跳转时，先跳转到关于我们页顶部
+                          e.preventDefault();
+                          navigate('/about');
+                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                         }
                       }}
                     >
