@@ -20,21 +20,26 @@ const Navbar = () => {
     { path: '/about', label: t.nav.about },
   ]
 
+  const [hoverStyle, setHoverStyle] = useState(null)
+
   const isActive = (path) => location.pathname === path
 
   useEffect(() => {
+    // Exact match for the indicator position
     const activeItem = navItems.find(item => item.path === location.pathname)
     if (activeItem && navRefs.current[activeItem.path]) {
       const el = navRefs.current[activeItem.path]
       setIndicatorStyle({
-        left: el.offsetLeft,
-        width: el.offsetWidth,
+        left: el.offsetLeft + (el.offsetWidth - 40) / 2, // Center a 40px line
+        width: 40,
         opacity: 1
       })
     } else {
       setIndicatorStyle(prev => ({ ...prev, opacity: 0 }))
     }
   }, [location.pathname, language])
+
+  const currentIndicatorStyle = hoverStyle || indicatorStyle;
 
   return (
     <nav className="navbar">
@@ -55,19 +60,30 @@ const Navbar = () => {
           <div
             className="navbar-sliding-indicator"
             style={{
-              left: `${indicatorStyle.left}px`,
-              width: `${indicatorStyle.width}px`,
-              opacity: indicatorStyle.opacity
+              left: `${currentIndicatorStyle.left}px`,
+              width: `${currentIndicatorStyle.width}px`,
+              opacity: currentIndicatorStyle.opacity
             }}
           />
           {navItems.map((item) => (
             <li
               key={item.path}
+              ref={el => navRefs.current[item.path] = el}
               className={(item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') ? 'navbar-item-with-dropdown' : ''}
+              onMouseEnter={() => {
+                const el = navRefs.current[item.path];
+                if (el) {
+                  setHoverStyle({
+                    left: el.offsetLeft + (el.offsetWidth - 40) / 2,
+                    width: 40,
+                    opacity: 1
+                  });
+                }
+              }}
+              onMouseLeave={() => setHoverStyle(null)}
             >
               <Link
                 to={item.path}
-                ref={el => navRefs.current[item.path] = el}
                 className={`navbar-link ${isActive(item.path) ? 'active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
