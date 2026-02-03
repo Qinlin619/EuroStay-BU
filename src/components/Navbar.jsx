@@ -61,7 +61,10 @@ const Navbar = () => {
             }}
           />
           {navItems.map((item) => (
-            <li key={item.path}>
+            <li
+              key={item.path}
+              className={(item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') ? 'navbar-item-with-dropdown' : ''}
+            >
               <Link
                 to={item.path}
                 ref={el => navRefs.current[item.path] = el}
@@ -70,6 +73,218 @@ const Navbar = () => {
               >
                 {item.label}
               </Link>
+              {item.path === '/' && (
+                <ul className="navbar-dropdown">
+                  <li>
+                    <Link
+                      to="/#home-guide"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/') {
+                          e.preventDefault();
+                          document.getElementById('home-guide')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.guideTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/#home-features"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/') {
+                          e.preventDefault();
+                          document.getElementById('home-features')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {language === 'zh' ? '为什么选择我们' : 'Why Us'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/#home-vision"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/') {
+                          e.preventDefault();
+                          document.getElementById('home-vision')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.home.visionTitlePrimary}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/#home-reviews"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/') {
+                          e.preventDefault();
+                          document.getElementById('home-reviews')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {language === 'zh' ? '友友的评价' : 'User Reviews'}
+                    </Link>
+                  </li>
+                </ul>
+              )}
+              {item.path === '/products' && (
+                <ul className="navbar-dropdown">
+                  <li>
+                    <Link
+                      to="/products#products-tips"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/products') {
+                          e.preventDefault();
+                          document.getElementById('products-tips')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.tipsTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products#products-guide"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/products') {
+                          e.preventDefault();
+                          document.getElementById('products-guide')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.guideTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products#products-membership"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/products') {
+                          e.preventDefault();
+                          document.getElementById('products-membership')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.membershipTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products#products-experience"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/products') {
+                          e.preventDefault();
+                          document.getElementById('products-experience')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.experienceTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/products#qa-section"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/products') {
+                          e.preventDefault();
+                          document.getElementById('qa-section')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.products.qaTitle}
+                    </Link>
+                  </li>
+                </ul>
+              )}
+              {item.path === '/stories' && (
+                <ul className="navbar-dropdown">
+                  <li>
+                    <Link
+                      to="/stories#stories-map"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/stories') {
+                          e.preventDefault();
+                          document.getElementById('stories-map')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.stories.storiesTagline}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/stories#stories-history"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/stories') {
+                          e.preventDefault();
+                          document.getElementById('stories-history')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.stories.activityHistoryTitle}
+                    </Link>
+                  </li>
+                </ul>
+              )}
+              {item.path === '/about' && (
+                <ul className="navbar-dropdown">
+                  <li>
+                    <Link
+                      to="/about#about-brand-story"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/about') {
+                          e.preventDefault();
+                          document.getElementById('about-brand-story')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.about.storyTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/about#about-values"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/about') {
+                          e.preventDefault();
+                          document.getElementById('about-values')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.about.valuesTitle}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/about#about-team"
+                      onClick={(e) => {
+                        setIsMenuOpen(false);
+                        if (location.pathname === '/about') {
+                          e.preventDefault();
+                          document.getElementById('about-team')?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }}
+                    >
+                      {t.about.teamTitle}
+                    </Link>
+                  </li>
+                </ul>
+              )}
             </li>
           ))}
           <li>

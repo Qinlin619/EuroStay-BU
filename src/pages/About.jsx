@@ -26,7 +26,7 @@ const About = () => {
         </div>
       </section>
 
-      <FadeSection as="section" className="about-brand-story">
+      <FadeSection as="section" id="about-brand-story" className="about-brand-story">
         <div className="container">
           <div className="brand-story-grid">
             <div className="brand-story-text-content">
@@ -81,7 +81,7 @@ const About = () => {
       </FadeSection>
 
 
-      <FadeSection as="section" className="values-section">
+      <FadeSection as="section" id="about-values" className="values-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -91,29 +91,29 @@ const About = () => {
           </div>
           <div className="values-cards">
             <div className="value-card-modern">
-              <div className="value-icon-circle purple-light">
-                <span>🚀</span>
+              <div className="value-image-container">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/value/1.png`} alt={t.value1Title} className="value-custom-img" />
               </div>
               <h3>{t.value1Title}</h3>
               <p>{t.value1Desc}</p>
             </div>
             <div className="value-card-modern">
-              <div className="value-icon-circle yellow-light">
-                <span>🍀</span>
+              <div className="value-image-container">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/value/2.png`} alt={t.value2Title} className="value-custom-img" />
               </div>
               <h3>{t.value2Title}</h3>
               <p>{t.value2Desc}</p>
             </div>
             <div className="value-card-modern">
-              <div className="value-icon-circle purple-light">
-                <span>🔭</span>
+              <div className="value-image-container">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/value/3.png`} alt={t.value3Title} className="value-custom-img" />
               </div>
               <h3>{t.value3Title}</h3>
               <p>{t.value3Desc}</p>
             </div>
             <div className="value-card-modern">
-              <div className="value-icon-circle yellow-light">
-                <span>🎡</span>
+              <div className="value-image-container">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/value/4.png`} alt={t.value4Title} className="value-custom-img" />
               </div>
               <h3>{t.value4Title}</h3>
               <p>{t.value4Desc}</p>
@@ -123,7 +123,7 @@ const About = () => {
       </FadeSection>
 
 
-      <FadeSection as="section" className="team-section">
+      <FadeSection as="section" id="about-team" className="team-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -134,7 +134,7 @@ const About = () => {
           <div className="team-grid">
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/qx.png`} alt={t.teamMember1Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/1.png`} alt={t.teamMember1Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember1Name}</h3>
               <p className="team-member-role">{t.teamMember1Role}</p>
@@ -142,7 +142,7 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/pj.png`} alt={t.teamMember2Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/2.jpg`} alt={t.teamMember2Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember2Name}</h3>
               <p className="team-member-role">{t.teamMember2Role}</p>
@@ -150,19 +150,19 @@ const About = () => {
             </div>
             <div className="team-member">
               <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/sherry.png`} alt={t.teamMember4Name} />
-              </div>
-              <h3 className="team-member-name">{t.teamMember4Name}</h3>
-              <p className="team-member-role">{t.teamMember4Role}</p>
-              <p className="team-member-desc">{t.teamMember4Desc}</p>
-            </div>
-            <div className="team-member">
-              <div className="team-member-avatar">
-                <img src={`${import.meta.env.BASE_URL}images/aboutus/avatars/sansan.png`} alt={t.teamMember3Name} />
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/3.jpg`} alt={t.teamMember3Name} />
               </div>
               <h3 className="team-member-name">{t.teamMember3Name}</h3>
               <p className="team-member-role">{t.teamMember3Role}</p>
               <p className="team-member-desc">{t.teamMember3Desc}</p>
+            </div>
+            <div className="team-member">
+              <div className="team-member-avatar">
+                <img src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/4.jpg`} alt={t.teamMember4Name} />
+              </div>
+              <h3 className="team-member-name">{t.teamMember4Name}</h3>
+              <p className="team-member-role">{t.teamMember4Role}</p>
+              <p className="team-member-desc">{t.teamMember4Desc}</p>
             </div>
           </div>
         </div>

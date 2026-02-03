@@ -11,6 +11,7 @@ const Products = () => {
   const t = translations[language].products
   const [expandedQA, setExpandedQA] = useState({})
   const [showCopyToast, setShowCopyToast] = useState(false)
+  const [currentAppImage, setCurrentAppImage] = useState(1)
 
   const handleCopyWeChat = () => {
     navigator.clipboard.writeText('EuroStay').then(() => {
@@ -35,7 +36,7 @@ const Products = () => {
 
   return (
     <div className="products-page">
-      <FadeSection as="section" className="tips-section guidelines-section">
+      <FadeSection as="section" id="products-tips" className="tips-section guidelines-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -84,7 +85,7 @@ const Products = () => {
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="guide-section">
+      <FadeSection as="section" id="products-guide" className="guide-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -146,7 +147,7 @@ const Products = () => {
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="membership-section">
+      <FadeSection as="section" id="products-membership" className="membership-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -226,7 +227,7 @@ const Products = () => {
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="experience-section">
+      <FadeSection as="section" id="products-experience" className="experience-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -236,23 +237,47 @@ const Products = () => {
           </div>
           <p className="experience-hero-desc">{t.experienceHeroDesc}</p>
 
-          <div className="experience-grid">
-            <div className="experience-card">
-              <div className="experience-icon">📱</div>
-              <h3>{t.experienceFeature1Title}</h3>
-              <p>{t.experienceFeature1Desc}</p>
+          <div className="app-showcase-container">
+            <div className="phone-viewer-main">
+              <div className="phone-bezel">
+                <div
+                  className="phone-screen clickable"
+                  onClick={() => setCurrentAppImage(prev => prev === 7 ? 1 : prev + 1)}
+                  title="Click to next page"
+                >
+                  {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                    <img
+                      key={num}
+                      src={`${import.meta.env.BASE_URL}images/product/app/${num}.png`}
+                      alt={`App Screen ${num}`}
+                      className={`app-screen-img ${currentAppImage === num ? 'active' : ''}`}
+                    />
+                  ))}
+                  <div className="phone-notch"></div>
+                  {/* 可选：添加一个提示小标签 */}
+                  <div className="screen-click-hint">Click</div>
+                </div>
+              </div>
             </div>
 
-            <div className="experience-card">
-              <div className="experience-icon">🤖</div>
-              <h3>{t.experienceFeature2Title}</h3>
-              <p>{t.experienceFeature2Desc}</p>
-            </div>
+            <div className="experience-grid">
+              <div className="experience-card">
+                <div className="experience-icon">📱</div>
+                <h3>{t.experienceFeature1Title}</h3>
+                <p>{t.experienceFeature1Desc}</p>
+              </div>
 
-            <div className="experience-card">
-              <div className="experience-icon">🧪</div>
-              <h3>{t.experienceFeature3Title}</h3>
-              <p>{t.experienceFeature3Desc}</p>
+              <div className="experience-card">
+                <div className="experience-icon">🤖</div>
+                <h3>{t.experienceFeature2Title}</h3>
+                <p>{t.experienceFeature2Desc}</p>
+              </div>
+
+              <div className="experience-card">
+                <div className="experience-icon">🧪</div>
+                <h3>{t.experienceFeature3Title}</h3>
+                <p>{t.experienceFeature3Desc}</p>
+              </div>
             </div>
           </div>
 

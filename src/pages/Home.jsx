@@ -399,7 +399,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <section className={`hero section-reveal ${heroRevealed ? 'in-view' : ''}`}>
+      <section id="home-hero" className={`hero section-reveal ${heroRevealed ? 'in-view' : ''}`}>
         <div className="hero-main">
           <div className="hero-content">
             <div className="hero-title-wrapper">
@@ -469,7 +469,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
+      <section id="home-stats" ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
         <div className="stat-column">
           <div className="stat-number">2024</div>
           <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>
@@ -504,7 +504,7 @@ const Home = () => {
         {!productLoaded ? (
           <div className="lazy-section-placeholder" style={{ minHeight: '50vh' }} aria-hidden />
         ) : (
-          <section className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
+          <section id="home-guide" className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
             <div className="container">
               <div className="product-content">
                 <div className="steps-flow" ref={stepsContainerRef}>
@@ -551,7 +551,7 @@ const Home = () => {
         {!featuresLoaded ? (
           <div className="lazy-section-placeholder" style={{ minHeight: '70vh' }} aria-hidden />
         ) : (
-          <section className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
+          <section id="home-features" className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
             <div className="container">
               <h2 className="section-title">{t.featuresTitle}</h2>
               <p className="features-subtitle">{t.featuresSubtitle}</p>
@@ -882,7 +882,7 @@ const Home = () => {
         {!visionLoaded ? (
           <div className="lazy-section-placeholder" style={{ minHeight: '60vh' }} aria-hidden />
         ) : (
-          <section className={`vision section-reveal ${visionRevealed ? 'in-view' : ''}`}>
+          <section id="home-vision" className={`vision section-reveal ${visionRevealed ? 'in-view' : ''}`}>
             <div className="container">
               <div className="vision-header">
                 <h2 className="vision-title-primary">{t.visionTitlePrimary}</h2>
@@ -929,7 +929,7 @@ const Home = () => {
         {!reviewsLoaded ? (
           <div className="lazy-section-placeholder" style={{ minHeight: '55vh' }} aria-hidden />
         ) : (
-          <section className={`reviews-section section-reveal ${reviewsRevealed ? 'in-view' : ''}`}>
+          <section id="home-reviews" className={`reviews-section section-reveal ${reviewsRevealed ? 'in-view' : ''}`}>
             <h2 className="reviews-title">{t.reviewsTitle}</h2>
             <div className="reviews-grid">
               {reviews.map((review, index) => (

@@ -256,7 +256,7 @@ const Stories = () => {
         </div>
       </section>
 
-      <FadeSection as="section" className="stories-section">
+      <FadeSection as="section" id="stories-map" className="stories-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
@@ -366,7 +366,7 @@ const Stories = () => {
         </div>
       </FadeSection>
 
-      <FadeSection as="section" className="activities-section">
+      <FadeSection as="section" id="stories-history" className="activities-section">
         <div className="container">
           <div className="page-hero-title-wrapper">
             <div className="page-hero-title-line">
