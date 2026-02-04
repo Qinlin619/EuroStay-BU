@@ -383,7 +383,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <section id="home-hero" className={`hero section-reveal ${heroRevealed ? 'in-view' : ''}`}>
+      <section id="home-hero" ref={heroRef} className={`hero section-reveal ${heroRevealed ? 'in-view' : ''}`}>
         <div className="hero-main">
           <div className="hero-content">
             <div className="hero-title-wrapper">
@@ -439,7 +439,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="hero-image" ref={heroRef}>
+          <div className="hero-image">
             {heroInView && (
               <Suspense fallback={<div className="globe-placeholder" aria-hidden />}>
                 <Globe3D
