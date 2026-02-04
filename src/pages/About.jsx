@@ -2,6 +2,7 @@ import React from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 import { translations } from '../translations'
 import FadeSection from '../components/FadeSection'
+import AutoTransparentImage from '../components/AutoTransparentImage'
 import './About.css'
 
 const About = () => {
@@ -16,6 +17,11 @@ const About = () => {
         </div>
         <div className="banner-overlay">
           <div className="hero-content-box">
+            <AutoTransparentImage src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/1.png`} className="sticker-corner sticker-tl" tolerance={30} />
+            <AutoTransparentImage src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/2.jpg`} className="sticker-corner sticker-tr" tolerance={30} />
+            <AutoTransparentImage src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/3.jpg`} className="sticker-corner sticker-bl" tolerance={30} />
+            <AutoTransparentImage src={`${import.meta.env.BASE_URL}images/aboutus/WOMAN/4.jpg`} className="sticker-corner sticker-br" tolerance={30} />
+
             <div className="hero-title-graphic">
               <span className="title-star" aria-hidden="true">✦</span>
               <img src={`${import.meta.env.BASE_URL}images/globe/navbar.png`} alt={t.storyTitle} className="title-img" />

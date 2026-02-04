@@ -120,17 +120,19 @@ const Navbar = () => {
                 <ul className={`navbar-dropdown ${expandedMobileItem === '/' ? 'show' : ''}`}>
                   <li>
                     <Link
-                      to="/#home-guide"
+                      to="/"
                       onClick={(e) => {
                         setIsMenuOpen(false);
                         if (location.pathname === '/') {
                           e.preventDefault();
-                          document.getElementById('home-guide')?.scrollIntoView({ behavior: 'smooth' });
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
                         } else {
-                          // 从其他页面跳转时，先跳转到首页顶部
+                          // 从其他页面跳转到首页顶部
                           e.preventDefault();
                           navigate('/');
-                          setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+                          setTimeout(() => {
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                          }, 100);
                         }
                       }}
                     >
@@ -145,6 +147,12 @@ const Navbar = () => {
                         if (location.pathname === '/') {
                           e.preventDefault();
                           document.getElementById('home-features')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          e.preventDefault();
+                          navigate('/');
+                          setTimeout(() => {
+                            document.getElementById('home-features')?.scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
                         }
                       }}
                     >
@@ -159,6 +167,12 @@ const Navbar = () => {
                         if (location.pathname === '/') {
                           e.preventDefault();
                           document.getElementById('home-vision')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          e.preventDefault();
+                          navigate('/');
+                          setTimeout(() => {
+                            document.getElementById('home-vision')?.scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
                         }
                       }}
                     >
@@ -173,6 +187,12 @@ const Navbar = () => {
                         if (location.pathname === '/') {
                           e.preventDefault();
                           document.getElementById('home-reviews')?.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          e.preventDefault();
+                          navigate('/');
+                          setTimeout(() => {
+                            document.getElementById('home-reviews')?.scrollIntoView({ behavior: 'smooth' });
+                          }, 100);
                         }
                       }}
                     >

@@ -58,7 +58,78 @@
   box-shadow: 0 4.0rem 10.0rem rgba(0, 0, 0, 0.15);
   animation: heroBoxFadeUp 1s ease-out forwards;
   position: relative;
-  overflow: hidden;
+  /* 允许贴纸溢出，增加立体感 */
+  overflow: visible;
+}
+
+/* 角落贴纸样式 */
+.sticker-corner {
+  position: absolute;
+  width: 12rem;
+  /* 根据需要调整大小 */
+  height: auto;
+  object-fit: contain;
+  z-index: 10;
+  /* 确保在最上层 */
+  filter: drop-shadow(0 0.5rem 1rem rgba(0, 0, 0, 0.15));
+  /* 加一点阴影增加立体感 */
+  pointer-events: none;
+  /* 不影响文字点击 */
+}
+
+/* 左上角 */
+.sticker-tl {
+  top: -4rem;
+  left: -4rem;
+  transform: rotate(-15deg);
+}
+
+/* 右上角 */
+.sticker-tr {
+  top: -3rem;
+  right: -3rem;
+  transform: rotate(10deg);
+}
+
+/* 左下角 */
+.sticker-bl {
+  bottom: -4rem;
+  left: -2rem;
+  transform: rotate(5deg);
+}
+
+/* 右下角 */
+.sticker-br {
+  bottom: -5rem;
+  right: -3rem;
+  transform: rotate(-8deg);
+}
+
+/* 移动端适配：缩小贴纸 */
+@media (max-width: 640px) {
+  .sticker-corner {
+    width: 8rem;
+  }
+
+  .sticker-tl {
+    top: -2rem;
+    left: -2rem;
+  }
+
+  .sticker-tr {
+    top: -2rem;
+    right: -2rem;
+  }
+
+  .sticker-bl {
+    bottom: -2rem;
+    left: -1rem;
+  }
+
+  .sticker-br {
+    bottom: -3rem;
+    right: -2rem;
+  }
 }
 
 .hero-content-box::before {

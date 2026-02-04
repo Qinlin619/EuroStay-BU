@@ -7,6 +7,7 @@ import { useCountUp } from '../hooks/useCountUp'
 import { useInView } from '../hooks/useInView'
 import FadeSection from '../components/FadeSection'
 import './Home.css'
+import './Home-responsive.css'
 
 const Globe3D = lazy(() => import('../components/Globe3D'))
 
@@ -63,11 +64,7 @@ const Home = () => {
   const [visionRef, visionInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
   const [reviewsRef, reviewsInView] = useInView({ threshold: 0, rootMargin: revealRootMargin, once: true })
 
-  // 懒加载区块：进入视口后挂载并淡入，之后保持可见（不因离开视口而淡出）
-  const [productLoaded, setProductLoaded] = useState(false)
-  const [featuresLoaded, setFeaturesLoaded] = useState(false)
-  const [visionLoaded, setVisionLoaded] = useState(false)
-  const [reviewsLoaded, setReviewsLoaded] = useState(false)
+  // 淡入状态
   const [heroRevealed, setHeroRevealed] = useState(false)
   const [statsRevealed] = useState(true) // 数据条不随滚动淡入，首屏即显示
   const [productRevealed, setProductRevealed] = useState(false)
@@ -77,11 +74,6 @@ const Home = () => {
   const [showCopyToast, setShowCopyToast] = useState(false)
   const [showAndroidModal, setShowAndroidModal] = useState(false)
   const copyToastTimer = useRef(null)
-
-  useEffect(() => { if (productInView) setProductLoaded(true) }, [productInView])
-  useEffect(() => { if (featuresInView) setFeaturesLoaded(true) }, [featuresInView])
-  useEffect(() => { if (visionInView) setVisionLoaded(true) }, [visionInView])
-  useEffect(() => { if (reviewsInView) setReviewsLoaded(true) }, [reviewsInView])
 
   useEffect(() => {
     return () => { if (copyToastTimer.current) clearTimeout(copyToastTimer.current) }
@@ -120,39 +112,31 @@ const Home = () => {
       return () => cancelAnimationFrame(id)
     }
   }, [heroInView])
+
   useEffect(() => {
     if (productInView) {
-      const id = requestAnimationFrame(() => {
-        setProductLoaded(true)
-        setProductRevealed(true)
-      })
+      const id = requestAnimationFrame(() => setProductRevealed(true))
       return () => cancelAnimationFrame(id)
     }
   }, [productInView])
+
   useEffect(() => {
     if (featuresInView) {
-      const id = requestAnimationFrame(() => {
-        setFeaturesLoaded(true)
-        setFeaturesRevealed(true)
-      })
+      const id = requestAnimationFrame(() => setFeaturesRevealed(true))
       return () => cancelAnimationFrame(id)
     }
   }, [featuresInView])
+
   useEffect(() => {
     if (visionInView) {
-      const id = requestAnimationFrame(() => {
-        setVisionLoaded(true)
-        setVisionRevealed(true)
-      })
+      const id = requestAnimationFrame(() => setVisionRevealed(true))
       return () => cancelAnimationFrame(id)
     }
   }, [visionInView])
+
   useEffect(() => {
     if (reviewsInView) {
-      const id = requestAnimationFrame(() => {
-        setReviewsLoaded(true)
-        setReviewsRevealed(true)
-      })
+      const id = requestAnimationFrame(() => setReviewsRevealed(true))
       return () => cancelAnimationFrame(id)
     }
   }, [reviewsInView])
@@ -330,9 +314,9 @@ const Home = () => {
     })
   }
 
-  // 初始化时第一页第一个展示，可循环（features 懒加载后才存在）
+  // 初始化时第一页第一个展示，可循环
   useEffect(() => {
-    if (!featuresLoaded || !phoneGalleryRef.current) return
+    if (!phoneGalleryRef.current) return
     const container = phoneGalleryRef.current
     setTimeout(() => {
       container.scrollLeft = 0
@@ -340,18 +324,18 @@ const Home = () => {
     }, 100)
     container.addEventListener('scroll', updateCenterPhone)
     return () => container.removeEventListener('scroll', updateCenterPhone)
-  }, [featuresLoaded])
+  }, [])
 
-  // 初始化社群 gallery（features 懒加载后才存在）
+  // 初始化社群 gallery
   useEffect(() => {
-    if (!featuresLoaded || !communityGalleryRef.current) return
+    if (!communityGalleryRef.current) return
     const container = communityGalleryRef.current
     setTimeout(() => { container.scrollLeft = 0 }, 100)
-  }, [featuresLoaded])
+  }, [])
 
   // 步骤动画：与整块一致，在「1/3 可见带」内才触发，依次出现（标题→1→2→…→6）
   useEffect(() => {
-    if (!productLoaded || !stepsContainerRef.current) return
+    if (!stepsContainerRef.current) return
     const el = stepsContainerRef.current
     const observer = new IntersectionObserver(
       (entries) => {
@@ -370,7 +354,7 @@ const Home = () => {
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [productLoaded])
+  }, [])
 
   const copyWeChatId = async () => {
     const wechatId = 'EuroStay'
@@ -500,42 +484,38 @@ const Home = () => {
         </div>
       </section>
 
-      <div ref={productRef} className="lazy-section-root">
-        {!productLoaded ? (
-          <div className="lazy-section-placeholder" style={{ minHeight: '50vh' }} aria-hidden />
-        ) : (
-          <section id="home-guide" className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
-            <div className="container">
-              <div className="product-content">
-                <div className="steps-flow" ref={stepsContainerRef}>
-                  <h2 className="steps-title">{translations[language].products.guideTitle}</h2>
-                  <p className="steps-subtitle">{translations[language].products.guideSubtitle}</p>
-                  <div className="guide-modules">
-                    <div className="guide-module guide-module-title-first">
-                      <div className="guide-module-content">
-                        <h3 className="guide-module-title">{translations[language].products.guideModule1Title}</h3>
-                      </div>
-                      <div className="guide-module-image-wrap">
-                        <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/1.jpg)` }} />
-                        <div className="guide-module-image-overlay">
-                          <div className="guide-module-image-overlay-inner">
-                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc1}</span>
-                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc2}</span>
-                          </div>
+      <div id="home-guide" ref={productRef} className="lazy-section-root">
+        <section className={`product-section section-reveal ${productRevealed ? 'in-view' : ''}`}>
+          <div className="container">
+            <div className="product-content">
+              <div className="steps-flow" ref={stepsContainerRef}>
+                <h2 className="steps-title">{translations[language].products.guideTitle}</h2>
+                <p className="steps-subtitle">{translations[language].products.guideSubtitle}</p>
+                <div className="guide-modules">
+                  <div className="guide-module guide-module-title-first">
+                    <div className="guide-module-content">
+                      <h3 className="guide-module-title">{translations[language].products.guideModule1Title}</h3>
+                    </div>
+                    <div className="guide-module-image-wrap">
+                      <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/1.jpg)` }} />
+                      <div className="guide-module-image-overlay">
+                        <div className="guide-module-image-overlay-inner">
+                          <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc1}</span>
+                          <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule1Desc2}</span>
                         </div>
                       </div>
                     </div>
-                    <div className="guide-module guide-module-title-first">
-                      <div className="guide-module-content">
-                        <h3 className="guide-module-title">{translations[language].products.guideModule2Title}</h3>
-                      </div>
-                      <div className="guide-module-image-wrap">
-                        <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/2.jpg)` }} />
-                        <div className="guide-module-image-overlay">
-                          <div className="guide-module-image-overlay-inner">
-                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc1}</span>
-                            <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc2}</span>
-                          </div>
+                  </div>
+                  <div className="guide-module guide-module-title-first">
+                    <div className="guide-module-content">
+                      <h3 className="guide-module-title">{translations[language].products.guideModule2Title}</h3>
+                    </div>
+                    <div className="guide-module-image-wrap">
+                      <div className="guide-module-image" style={{ backgroundImage: `url(${import.meta.env.BASE_URL}images/home/guide/2.jpg)` }} />
+                      <div className="guide-module-image-overlay">
+                        <div className="guide-module-image-overlay-inner">
+                          <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc1}</span>
+                          <span className="guide-module-image-overlay-desc">{translations[language].products.guideModule2Desc2}</span>
                         </div>
                       </div>
                     </div>
@@ -543,433 +523,423 @@ const Home = () => {
                 </div>
               </div>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
       </div>
 
       <div ref={featuresRef} className="lazy-section-root">
-        {!featuresLoaded ? (
-          <div className="lazy-section-placeholder" style={{ minHeight: '70vh' }} aria-hidden />
-        ) : (
-          <section id="home-features" className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
-            <div className="container">
-              <h2 className="section-title">{t.featuresTitle}</h2>
-              <p className="features-subtitle">{t.featuresSubtitle}</p>
-              <div className="features-grid">
-                <FadeSection className="feature-card">
-                  <div className="feature-image feature-phone-gallery">
-                    <button className="phone-nav-btn phone-nav-prev" onClick={() => scrollPhoneGallery(-1)}>
-                      ‹
-                    </button>
-                    <div className="phone-gallery-scroll" ref={phoneGalleryRef}>
-                      <div className="phone-gallery-inner">
-                        {[1, 2, 3, 4, 5, 6, 7].map((num) => (
-                          <div key={num} className="phone-mockup">
-                            <div className="phone-screen-mockup">
-                              <div className="phone-dynamic-island"></div>
-                              <img
-                                src={`${import.meta.env.BASE_URL}images/home/phone-screens/${num}.png`}
-                                alt={language === 'zh' ? `界面 ${num}` : `Screen ${num}`}
-                                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                                loading="lazy"
-                                decoding="async"
-                                fetchPriority="low"
-                              />
-                            </div>
+        <section id="home-features" className={`features section-reveal ${featuresRevealed ? 'in-view' : ''}`}>
+          <div className="container">
+            <h2 className="section-title">{t.featuresTitle}</h2>
+            <p className="features-subtitle">{t.featuresSubtitle}</p>
+            <div className="features-grid">
+              <FadeSection className="feature-card">
+                <div className="feature-image feature-phone-gallery">
+                  <button className="phone-nav-btn phone-nav-prev" onClick={() => scrollPhoneGallery(-1)}>
+                    ‹
+                  </button>
+                  <div className="phone-gallery-scroll" ref={phoneGalleryRef}>
+                    <div className="phone-gallery-inner">
+                      {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                        <div key={num} className="phone-mockup">
+                          <div className="phone-screen-mockup">
+                            <div className="phone-dynamic-island"></div>
+                            <img
+                              src={`${import.meta.env.BASE_URL}images/home/phone-screens/${num}.png`}
+                              alt={language === 'zh' ? `界面 ${num}` : `Screen ${num}`}
+                              style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                              loading="lazy"
+                              decoding="async"
+                              fetchPriority="low"
+                            />
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                    <button className="phone-nav-btn phone-nav-next" onClick={() => scrollPhoneGallery(1)}>
-                      ›
-                    </button>
-                  </div>
-                  <div className="feature-card-content">
-                    <div className="feature-card-text-wrap">
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[0]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[1]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[2]}deg` }} />
-                      <h3>
-                        {(t.feature1Title.split('\n').length > 1) ? (
-                          <>
-                            <span className="feature-title-line1">{t.feature1Title.split('\n')[0]}</span>
-                            <br />
-                            <span className="feature-title-line2">{t.feature1Title.split('\n')[1]}</span>
-                          </>
-                        ) : t.feature1Title}
-                      </h3>
-                      <p className="feature-card-subtitle">{t.feature1Subtitle}</p>
-                      <p className="feature-card-desc feature-card-desc-small">{t.feature1Desc}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </FadeSection>
-                <FadeSection className="feature-card">
-                  <div className="feature-image feature-image-grid">
-                    <div className="image-grid-container">
-                      <div className="grid-image grid-image-1" data-keyword="实名认证">
+                  <button className="phone-nav-btn phone-nav-next" onClick={() => scrollPhoneGallery(1)}>
+                    ›
+                  </button>
+                </div>
+                <div className="feature-card-content">
+                  <div className="feature-card-text-wrap">
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[0]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[1]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[2]}deg` }} />
+                    <h3>
+                      {(t.feature1Title.split('\n').length > 1) ? (
+                        <>
+                          <span className="feature-title-line1">{t.feature1Title.split('\n')[0]}</span>
+                          <br />
+                          <span className="feature-title-line2">{t.feature1Title.split('\n')[1]}</span>
+                        </>
+                      ) : t.feature1Title}
+                    </h3>
+                    <p className="feature-card-subtitle">{t.feature1Subtitle}</p>
+                    <p className="feature-card-desc feature-card-desc-small">{t.feature1Desc}</p>
+                  </div>
+                </div>
+              </FadeSection>
+              <FadeSection className="feature-card">
+                <div className="feature-image feature-image-grid">
+                  <div className="image-grid-container">
+                    <div className="grid-image grid-image-1" data-keyword="实名认证">
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/home/features/security/1.jpeg`}
+                        alt={language === 'zh' ? '实名认证' : 'Identity Verification'}
+                        className="grid-image-img"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
+                      />
+                    </div>
+                    <div className="grid-image grid-image-2" data-keyword="换宿 checklist">
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/home/features/security/2.jpeg`}
+                        alt={language === 'zh' ? '换宿 checklist' : 'Homestay Checklist'}
+                        className="grid-image-img"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
+                      />
+                    </div>
+                    <div className="grid-image grid-image-3" data-keyword="双向评价">
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/home/features/security/3.jpeg`}
+                        alt={language === 'zh' ? '双向评价' : 'Two-way Review'}
+                        className="grid-image-img"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
+                      />
+                    </div>
+                    <div className="grid-image grid-image-4" data-keyword="举报系统">
+                      <img
+                        src={`${import.meta.env.BASE_URL}images/home/features/security/4.jpeg`}
+                        alt={language === 'zh' ? '举报系统' : 'Reporting System'}
+                        className="grid-image-img"
+                        loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="feature-card-content">
+                  <div className="feature-card-text-wrap feature-card-text-wrap--right">
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[3]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[4]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[5]}deg` }} />
+                    <h3>
+                      {(t.feature2Title.split('\n').length > 1) ? (
+                        <>
+                          <span className="feature-title-line1">{t.feature2Title.split('\n')[0]}</span>
+                          <br />
+                          <span className="feature-title-line2">{t.feature2Title.split('\n')[1]}</span>
+                        </>
+                      ) : t.feature2Title}
+                    </h3>
+                    <p className="feature-card-subtitle">{t.feature2Subtitle}</p>
+                    <p className="feature-card-desc feature-card-desc-small">
+                      {language === 'zh' ? (
+                        <>
+                          EuroStay 提供一套完整的换宿支持机制，包括
+                          <span className="keyword-highlight" data-target="实名认证">实名认证</span>、
+                          <span className="keyword-highlight" data-target="换宿 checklist">换宿 checklist</span>、
+                          <span className="keyword-highlight" data-target="双向评价">双向评价</span>与
+                          <span className="keyword-highlight" data-target="举报系统">举报系统</span>，帮助你在做出选择前，拥有更多判断依据。
+                        </>
+                      ) : (
+                        <>
+                          EuroStay provides a complete homestay support system—including
+                          <span className="keyword-highlight" data-target="实名认证">identity verification</span>,
+                          <span className="keyword-highlight" data-target="换宿 checklist">homestay checklist</span>,
+                          <span className="keyword-highlight" data-target="双向评价">two-way reviews</span> and
+                          <span className="keyword-highlight" data-target="举报系统">reporting</span>—so you have more to go on before you choose.
+                        </>
+                      )}
+                    </p>
+                  </div>
+                </div>
+              </FadeSection>
+              <FadeSection className="feature-card">
+                <div className="feature-image feature-community-gallery">
+                  <button className="community-nav-btn community-nav-prev" onClick={() => scrollCommunityGallery(-1)}>
+                    ‹
+                  </button>
+                  <div className="community-gallery-scroll" ref={communityGalleryRef}>
+                    <div className="community-gallery-inner">
+                      <div className="community-image-item">
                         <img
-                          src={`${import.meta.env.BASE_URL}images/home/features/security/1.jpeg`}
-                          alt={language === 'zh' ? '实名认证' : 'Identity Verification'}
-                          className="grid-image-img"
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/1.jpeg`}
+                          alt={language === 'zh' ? '社群图片 1' : 'Community Image 1'}
+                          className="community-image"
                           loading="lazy"
                           decoding="async"
                           fetchPriority="low"
                         />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery1Location}</div>
+                          <div className="community-info-theme">{t.communityGallery1Theme}</div>
+                        </div>
                       </div>
-                      <div className="grid-image grid-image-2" data-keyword="换宿 checklist">
+                      <div className="community-image-item">
                         <img
-                          src={`${import.meta.env.BASE_URL}images/home/features/security/2.jpeg`}
-                          alt={language === 'zh' ? '换宿 checklist' : 'Homestay Checklist'}
-                          className="grid-image-img"
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/2.jpeg`}
+                          alt={language === 'zh' ? '社群图片 2' : 'Community Image 2'}
+                          className="community-image"
                           loading="lazy"
                           decoding="async"
                           fetchPriority="low"
                         />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery2Location}</div>
+                          <div className="community-info-theme">{t.communityGallery2Theme}</div>
+                        </div>
                       </div>
-                      <div className="grid-image grid-image-3" data-keyword="双向评价">
+                      <div className="community-image-item">
                         <img
-                          src={`${import.meta.env.BASE_URL}images/home/features/security/3.jpeg`}
-                          alt={language === 'zh' ? '双向评价' : 'Two-way Review'}
-                          className="grid-image-img"
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/3.jpeg`}
+                          alt={language === 'zh' ? '社群图片 3' : 'Community Image 3'}
+                          className="community-image"
                           loading="lazy"
                           decoding="async"
                           fetchPriority="low"
                         />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery3Location}</div>
+                          <div className="community-info-theme">{t.communityGallery3Theme}</div>
+                        </div>
                       </div>
-                      <div className="grid-image grid-image-4" data-keyword="举报系统">
+                      <div className="community-image-item">
                         <img
-                          src={`${import.meta.env.BASE_URL}images/home/features/security/4.jpeg`}
-                          alt={language === 'zh' ? '举报系统' : 'Reporting System'}
-                          className="grid-image-img"
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/4.jpeg`}
+                          alt={language === 'zh' ? '社群图片 4' : 'Community Image 4'}
+                          className="community-image"
                           loading="lazy"
                           decoding="async"
                           fetchPriority="low"
                         />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery4Location}</div>
+                          <div className="community-info-theme">{t.communityGallery4Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/5.jpeg`}
+                          alt={language === 'zh' ? '社群图片 5' : 'Community Image 5'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery5Location}</div>
+                          <div className="community-info-theme">{t.communityGallery5Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/6.jpeg`}
+                          alt={language === 'zh' ? '社群图片 6' : 'Community Image 6'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery6Location}</div>
+                          <div className="community-info-theme">{t.communityGallery6Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/7.jpeg`}
+                          alt={language === 'zh' ? '社群图片 7' : 'Community Image 7'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery7Location}</div>
+                          <div className="community-info-theme">{t.communityGallery7Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/8.jpeg`}
+                          alt={language === 'zh' ? '社群图片 8' : 'Community Image 8'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery8Location}</div>
+                          <div className="community-info-theme">{t.communityGallery8Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/9.jpeg`}
+                          alt={language === 'zh' ? '社群图片 9' : 'Community Image 9'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery9Location}</div>
+                          <div className="community-info-theme">{t.communityGallery9Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/10.jpeg`}
+                          alt={language === 'zh' ? '社群图片 10' : 'Community Image 10'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery10Location}</div>
+                          <div className="community-info-theme">{t.communityGallery10Theme}</div>
+                        </div>
+                      </div>
+                      <div className="community-image-item">
+                        <img
+                          src={`${import.meta.env.BASE_URL}images/home/features/community/11.jpeg`}
+                          alt={language === 'zh' ? '社群图片 11' : 'Community Image 11'}
+                          className="community-image"
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
+                        <div className="community-image-info">
+                          <div className="community-info-location">{t.communityGallery11Location}</div>
+                          <div className="community-info-theme">{t.communityGallery11Theme}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="feature-card-content">
-                    <div className="feature-card-text-wrap feature-card-text-wrap--right">
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[3]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[4]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[5]}deg` }} />
-                      <h3>
-                        {(t.feature2Title.split('\n').length > 1) ? (
-                          <>
-                            <span className="feature-title-line1">{t.feature2Title.split('\n')[0]}</span>
-                            <br />
-                            <span className="feature-title-line2">{t.feature2Title.split('\n')[1]}</span>
-                          </>
-                        ) : t.feature2Title}
-                      </h3>
-                      <p className="feature-card-subtitle">{t.feature2Subtitle}</p>
-                      <p className="feature-card-desc feature-card-desc-small">
-                        {language === 'zh' ? (
-                          <>
-                            EuroStay 提供一套完整的换宿支持机制，包括
-                            <span className="keyword-highlight" data-target="实名认证">实名认证</span>、
-                            <span className="keyword-highlight" data-target="换宿 checklist">换宿 checklist</span>、
-                            <span className="keyword-highlight" data-target="双向评价">双向评价</span>与
-                            <span className="keyword-highlight" data-target="举报系统">举报系统</span>，帮助你在做出选择前，拥有更多判断依据。
-                          </>
-                        ) : (
-                          <>
-                            EuroStay provides a complete homestay support system—including
-                            <span className="keyword-highlight" data-target="实名认证">identity verification</span>,
-                            <span className="keyword-highlight" data-target="换宿 checklist">homestay checklist</span>,
-                            <span className="keyword-highlight" data-target="双向评价">two-way reviews</span> and
-                            <span className="keyword-highlight" data-target="举报系统">reporting</span>—so you have more to go on before you choose.
-                          </>
-                        )}
-                      </p>
-                    </div>
+                  <button className="community-nav-btn community-nav-next" onClick={() => scrollCommunityGallery(1)}>
+                    ›
+                  </button>
+                </div>
+                <div className="feature-card-content">
+                  <div className="feature-card-text-wrap feature-card-text-wrap--left">
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[6]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[7]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[8]}deg` }} />
+                    <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--4" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[9]}deg` }} />
+                    <h3>
+                      {(t.feature3Title.split('\n').length > 1) ? (
+                        <>
+                          <span className="feature-title-line1">{t.feature3Title.split('\n')[0]}</span>
+                          <br />
+                          <span className="feature-title-line2">{t.feature3Title.split('\n')[1]}</span>
+                        </>
+                      ) : t.feature3Title}
+                    </h3>
+                    <p className="feature-card-subtitle">{t.feature3Subtitle}</p>
+                    <p className="feature-card-desc feature-card-desc-small">{t.feature3Desc}</p>
                   </div>
-                </FadeSection>
-                <FadeSection className="feature-card">
-                  <div className="feature-image feature-community-gallery">
-                    <button className="community-nav-btn community-nav-prev" onClick={() => scrollCommunityGallery(-1)}>
-                      ‹
-                    </button>
-                    <div className="community-gallery-scroll" ref={communityGalleryRef}>
-                      <div className="community-gallery-inner">
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/1.jpeg`}
-                            alt={language === 'zh' ? '社群图片 1' : 'Community Image 1'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery1Location}</div>
-                            <div className="community-info-theme">{t.communityGallery1Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/2.jpeg`}
-                            alt={language === 'zh' ? '社群图片 2' : 'Community Image 2'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery2Location}</div>
-                            <div className="community-info-theme">{t.communityGallery2Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/3.jpeg`}
-                            alt={language === 'zh' ? '社群图片 3' : 'Community Image 3'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery3Location}</div>
-                            <div className="community-info-theme">{t.communityGallery3Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/4.jpeg`}
-                            alt={language === 'zh' ? '社群图片 4' : 'Community Image 4'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery4Location}</div>
-                            <div className="community-info-theme">{t.communityGallery4Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/5.jpeg`}
-                            alt={language === 'zh' ? '社群图片 5' : 'Community Image 5'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery5Location}</div>
-                            <div className="community-info-theme">{t.communityGallery5Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/6.jpeg`}
-                            alt={language === 'zh' ? '社群图片 6' : 'Community Image 6'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery6Location}</div>
-                            <div className="community-info-theme">{t.communityGallery6Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/7.jpeg`}
-                            alt={language === 'zh' ? '社群图片 7' : 'Community Image 7'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery7Location}</div>
-                            <div className="community-info-theme">{t.communityGallery7Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/8.jpeg`}
-                            alt={language === 'zh' ? '社群图片 8' : 'Community Image 8'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery8Location}</div>
-                            <div className="community-info-theme">{t.communityGallery8Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/9.jpeg`}
-                            alt={language === 'zh' ? '社群图片 9' : 'Community Image 9'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery9Location}</div>
-                            <div className="community-info-theme">{t.communityGallery9Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/10.jpeg`}
-                            alt={language === 'zh' ? '社群图片 10' : 'Community Image 10'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery10Location}</div>
-                            <div className="community-info-theme">{t.communityGallery10Theme}</div>
-                          </div>
-                        </div>
-                        <div className="community-image-item">
-                          <img
-                            src={`${import.meta.env.BASE_URL}images/home/features/community/11.jpeg`}
-                            alt={language === 'zh' ? '社群图片 11' : 'Community Image 11'}
-                            className="community-image"
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                          <div className="community-image-info">
-                            <div className="community-info-location">{t.communityGallery11Location}</div>
-                            <div className="community-info-theme">{t.communityGallery11Theme}</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <button className="community-nav-btn community-nav-next" onClick={() => scrollCommunityGallery(1)}>
-                      ›
-                    </button>
-                  </div>
-                  <div className="feature-card-content">
-                    <div className="feature-card-text-wrap feature-card-text-wrap--left">
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--1" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[6]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--2" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[7]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--3" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[8]}deg` }} />
-                      <img src={`${import.meta.env.BASE_URL}images/cursor/3.png`} className="feature-card-star-bg feature-card-star-bg--4" alt="" aria-hidden style={{ '--star-rotate': `${starRotations[9]}deg` }} />
-                      <h3>
-                        {(t.feature3Title.split('\n').length > 1) ? (
-                          <>
-                            <span className="feature-title-line1">{t.feature3Title.split('\n')[0]}</span>
-                            <br />
-                            <span className="feature-title-line2">{t.feature3Title.split('\n')[1]}</span>
-                          </>
-                        ) : t.feature3Title}
-                      </h3>
-                      <p className="feature-card-subtitle">{t.feature3Subtitle}</p>
-                      <p className="feature-card-desc feature-card-desc-small">{t.feature3Desc}</p>
-                    </div>
-                  </div>
-                </FadeSection>
-              </div>
+                </div>
+              </FadeSection>
             </div>
-          </section>
-        )}
+          </div>
+        </section>
       </div>
 
       <div ref={visionRef} className="lazy-section-root">
-        {!visionLoaded ? (
-          <div className="lazy-section-placeholder" style={{ minHeight: '60vh' }} aria-hidden />
-        ) : (
-          <section id="home-vision" className={`vision section-reveal ${visionRevealed ? 'in-view' : ''}`}>
-            <div className="container">
-              <div className="vision-header">
-                <h2 className="vision-title-primary">{t.visionTitlePrimary}</h2>
-                <p className="vision-tagline">{t.visionTagline}</p>
-              </div>
+        <section id="home-vision" className={`vision section-reveal ${visionRevealed ? 'in-view' : ''}`}>
+          <div className="container">
+            <div className="vision-header">
+              <h2 className="vision-title-primary">{t.visionTitlePrimary}</h2>
+              <p className="vision-tagline">{t.visionTagline}</p>
+            </div>
 
-              <p className="vision-description">{t.visionDesc}</p>
+            <p className="vision-description">{t.visionDesc}</p>
 
-
-              <div className="vision-gallery">
-                <div className="gallery-container" ref={galleryContainerRef}>
-                  <div className="gallery-track">
-                    {hostCardImages.map((card, index) => (
-                      <div key={index} className="host-card">
-                        <div className="host-card-image">
-                          <img
-                            src={card.src}
-                            alt={card.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            loading="lazy"
-                            decoding="async"
-                            fetchPriority="low"
-                          />
-                        </div>
+            <div className="vision-gallery">
+              <div className="gallery-container" ref={galleryContainerRef}>
+                <div className="gallery-track">
+                  {hostCardImages.map((card, index) => (
+                    <div key={index} className="host-card">
+                      <div className="host-card-image">
+                        <img
+                          src={card.src}
+                          alt={card.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          loading="lazy"
+                          decoding="async"
+                          fetchPriority="low"
+                        />
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-                <button className="gallery-btn gallery-btn-prev" onClick={() => scrollGallery(-1)}>
-                  ‹
-                </button>
-                <button className="gallery-btn gallery-btn-next" onClick={() => scrollGallery(1)}>
-                  ›
-                </button>
               </div>
-
-
-            </div>
-          </section>
-        )}
-      </div>
-
-      <div ref={reviewsRef} className="lazy-section-root">
-        {!reviewsLoaded ? (
-          <div className="lazy-section-placeholder" style={{ minHeight: '55vh' }} aria-hidden />
-        ) : (
-          <section id="home-reviews" className={`reviews-section section-reveal ${reviewsRevealed ? 'in-view' : ''}`}>
-            <h2 className="reviews-title">{t.reviewsTitle}</h2>
-            <div className="reviews-grid">
-              {reviews.map((review, index) => (
-                <ReviewCard key={index} review={review} index={index} />
-              ))}
-            </div>
-            <div className="vision-cta">
-              <p className="join-community-text">{t.joinCommunityText}</p>
-              <button className="btn-copy-wechat" onClick={copyWeChatId}>
-                {language === 'zh' ? '复制微信号' : 'Copy WeChat ID'}
+              <button className="gallery-btn gallery-btn-prev" onClick={() => scrollGallery(-1)}>
+                ‹
               </button>
-            </div>
-          </section>
-        )}
-      </div>
-
-      {showCopyToast && (
-        <div className="copy-toast">
-          <p>{translations[language].products.qaCopySuccess}</p>
-        </div>
-      )}
-
-      {/* Android 弹窗 - 使用 Portal 确保在视口中央 */}
-      {showAndroidModal && createPortal(
-        <div className="android-modal-overlay" onClick={() => setShowAndroidModal(false)}>
-          <div className="android-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="android-modal-close" onClick={() => setShowAndroidModal(false)}>×</button>
-            <div className="android-modal-content">
-              <h3>{t.androidModalTitle}</h3>
-              <p>{t.androidModalDesc}</p>
-              <button className="android-modal-btn" onClick={() => setShowAndroidModal(false)}>
-                {t.androidModalBtn}
+              <button className="gallery-btn gallery-btn-next" onClick={() => scrollGallery(1)}>
+                ›
               </button>
             </div>
           </div>
-        </div>,
-        document.body
-      )}
+        </section>
+      </div>
 
-    </div>
+      <div ref={reviewsRef} className="lazy-section-root">
+        <section id="home-reviews" className={`reviews-section section-reveal ${reviewsRevealed ? 'in-view' : ''}`}>
+          <h2 className="reviews-title">{t.reviewsTitle}</h2>
+          <div className="reviews-grid">
+            {reviews.map((review, index) => (
+              <ReviewCard key={index} review={review} index={index} />
+            ))}
+          </div>
+          <div className="vision-cta">
+            <p className="join-community-text">{t.joinCommunityText}</p>
+            <button className="btn-copy-wechat" onClick={copyWeChatId}>
+              {language === 'zh' ? '复制微信号' : 'Copy WeChat ID'}
+            </button>
+          </div>
+
+        </section>
+      </div>
+
+      {
+        showCopyToast && (
+          <div className="copy-toast">
+            <p>{translations[language].products.qaCopySuccess}</p>
+          </div>
+        )
+      }
+
+      {/* Android 弹窗 - 使用 Portal 确保在视口中央 */}
+      {
+        showAndroidModal && createPortal(
+          <div className="android-modal-overlay" onClick={() => setShowAndroidModal(false)}>
+            <div className="android-modal" onClick={(e) => e.stopPropagation()}>
+              <button className="android-modal-close" onClick={() => setShowAndroidModal(false)}>×</button>
+              <div className="android-modal-content">
+                <h3>{t.androidModalTitle}</h3>
+                <p>{t.androidModalDesc}</p>
+                <button className="android-modal-btn" onClick={() => setShowAndroidModal(false)}>
+                  {t.androidModalBtn}
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )
+      }
+
+    </div >
   )
 }
 
