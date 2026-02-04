@@ -1,5 +1,6 @@
 .stories-page {
   width: 100%;
+  --scroll-amount: 85%;
 }
 
 .stories-hero {
@@ -1285,6 +1286,10 @@
     border-radius: 2.0rem;
   }
 
+  .stories-page {
+    --scroll-amount: 99%;
+  }
+
   .story-info-bar {
     padding: 1.2rem 1.5rem;
   }
@@ -1395,6 +1400,10 @@
 
   .story-card {
     flex: 0 0 100%;
+  }
+
+  .stories-page {
+    --scroll-amount: 100%;
   }
 }
 

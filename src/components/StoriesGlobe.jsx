@@ -36,6 +36,9 @@ const getGeoCentroid = (feature) => {
 // 故事地点 -> 国家 ISO_A2，用于点击国家时跳转/弹窗
 const LOCATION_TO_COUNTRY = {
   '巴黎, 法国': 'FR', 'Paris, France': 'FR', '巴黎': 'FR', 'Paris': 'FR',
+  '米兰, 意大利': 'IT', 'Milan, Italy': 'IT', '米兰': 'IT', 'Milan': 'IT',
+  '苏黎世, 瑞士': 'CH', 'Zurich, Switzerland': 'CH', '苏黎世': 'CH', 'Zurich': 'CH',
+  '马耳他': 'MT', 'Malta': 'MT',
   '巴塞罗那, 西班牙': 'ES', 'Barcelona, Spain': 'ES', '巴塞罗那': 'ES', 'Barcelona': 'ES',
   '阿姆斯特丹, 荷兰': 'NL', 'Amsterdam, Netherlands': 'NL', '阿姆斯特丹': 'NL', 'Amsterdam': 'NL',
   '罗马, 意大利': 'IT', 'Rome, Italy': 'IT', '罗马': 'IT', 'Rome': 'IT',
@@ -141,6 +144,16 @@ const StoriesGlobe = ({ stories = [], currentIndex = 0, highlightCountry = null,
       'Amsterdam': { lat: 52.3676, lng: 4.9041 },
       '阿姆斯特丹, 荷兰': { lat: 52.3676, lng: 4.9041 },
       'Amsterdam, Netherlands': { lat: 52.3676, lng: 4.9041 },
+      '米兰': { lat: 45.4642, lng: 9.1900 },
+      'Milan': { lat: 45.4642, lng: 9.1900 },
+      '米兰, 意大利': { lat: 45.4642, lng: 9.1900 },
+      'Milan, Italy': { lat: 45.4642, lng: 9.1900 },
+      '苏黎世': { lat: 47.3769, lng: 8.5417 },
+      'Zurich': { lat: 47.3769, lng: 8.5417 },
+      '苏黎世, 瑞士': { lat: 47.3769, lng: 8.5417 },
+      'Zurich, Switzerland': { lat: 47.3769, lng: 8.5417 },
+      '马耳他': { lat: 35.8989, lng: 14.5144 },
+      'Malta': { lat: 35.8989, lng: 14.5144 },
     }
 
     // Try to match by exact location name
