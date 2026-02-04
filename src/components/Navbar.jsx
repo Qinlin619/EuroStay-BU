@@ -103,19 +103,28 @@ const Navbar = () => {
               }}
               onMouseLeave={() => setHoverStyle(null)}
             >
-              <Link
-                to={item.path}
-                className={`navbar-link ${isActive(item.path) ? 'active' : ''}`}
-                onClick={(e) => {
-                  if (item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') {
-                    toggleMobileSubmenu(item.path, e);
-                  } else {
-                    setIsMenuOpen(false);
-                  }
-                }}
-              >
-                {item.label}
-              </Link>
+              <div className="navbar-link-wrapper">
+                <Link
+                  to={item.path}
+                  className={`navbar-link ${isActive(item.path) ? 'active' : ''}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+                {(item.path === '/' || item.path === '/about' || item.path === '/stories' || item.path === '/products') && (
+                  <button
+                    className={`mobile-dropdown-toggle ${expandedMobileItem === item.path ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleMobileSubmenu(item.path, e);
+                    }}
+                    aria-label="Toggle submenu"
+                  >
+                    <span className="chevron-icon"></span>
+                  </button>
+                )}
+              </div>
               {item.path === '/' && (
                 <ul className={`navbar-dropdown ${expandedMobileItem === '/' ? 'show' : ''}`}>
                   <li>

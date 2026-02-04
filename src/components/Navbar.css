@@ -111,6 +111,17 @@
   color: var(--color-white);
 }
 
+.navbar-link-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.mobile-dropdown-toggle {
+  display: none;
+}
+
 .navbar-tip-btn {
   background: linear-gradient(135deg, #FF5E62 0%, #FF99AC 100%);
   /* 更深、更高饱和度的爱心色 */
@@ -347,15 +358,54 @@
 
   .navbar-link {
     font-size: 2.1rem;
-    padding: 1.8rem 2rem;
+    padding: 1.8rem 1rem 1.8rem 2rem;
     width: 100%;
     height: auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    text-align: center;
     color: white;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    min-width: 0;
+    flex: 1;
+  }
+
+  .navbar-link-wrapper {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .mobile-dropdown-toggle:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .chevron-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+    margin-top: -0.4rem;
+  }
+
+  .mobile-dropdown-toggle.active .chevron-icon {
+    transform: rotate(-135deg);
+    margin-top: 0.4rem;
   }
 
   /* Accordion Submenu Styling */

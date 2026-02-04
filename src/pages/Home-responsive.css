@@ -299,6 +299,103 @@
         color: #666 !important;
         font-weight: 400 !important;
     }
+
+    /* 换宿安全 - 2x2 网格排列 */
+    .features {
+        padding: 4.0rem 1.0rem !important;
+    }
+
+    .feature-card {
+        flex-direction: column !important;
+        gap: 2.0rem !important;
+        padding: 2.0rem 0 !important;
+        text-align: center !important;
+    }
+
+    .feature-card:nth-child(odd) {
+        flex-direction: column !important;
+    }
+
+    .feature-image {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .feature-image-grid {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        aspect-ratio: auto !important;
+    }
+
+    .image-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.2rem !important;
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        padding: 0.5rem !important;
+    }
+
+    .grid-image {
+        position: static !important;
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        transform: none !important;
+        opacity: 1 !important;
+        animation: none !important;
+        border-radius: 1.2rem !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .feature-card-content {
+        width: 100% !important;
+    }
+
+    .feature-card-text-wrap {
+        padding: 0 1.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .feature-card-text-wrap h3 {
+        font-size: 2.2rem !important;
+        margin-bottom: 1.0rem !important;
+    }
+
+    .feature-card-subtitle {
+        font-size: 1.4rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .feature-card-desc {
+        font-size: 1.4rem !important;
+        text-align: center !important;
+        line-height: 1.6 !important;
+    }
+
+    /* 禁用移动端的位移悬浮效果，仅保留轻微缩放 */
+    .grid-image:hover,
+    .grid-image.keyword-active {
+        transform: scale(1.05) !important;
+        z-index: 5 !important;
+        box-shadow: 0 8px 20px rgba(122, 99, 199, 0.2) !important;
+    }
+
+    .grid-image-1:hover,
+    .grid-image-1.keyword-active,
+    .grid-image-2:hover,
+    .grid-image-2.keyword-active,
+    .grid-image-3:hover,
+    .grid-image-3.keyword-active,
+    .grid-image-4:hover,
+    .grid-image-4.keyword-active {
+        transform: scale(1.05) !important;
+    }
 }
 
 /* 小手机 - 480px */
@@ -339,7 +436,7 @@
         padding: 0.8rem 0.5rem !important;
     }
 
-    .features-section {
+    .features {
         padding: 3.5rem 1.0rem !important;
     }
 
