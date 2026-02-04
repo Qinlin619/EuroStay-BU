@@ -146,7 +146,7 @@
         display: flex !important;
         flex-direction: column !important;
         justify-content: flex-start !important;
-        /* 顶部对齐开始 */
+        /* 顶部对齐开始，防止内容过多时往上挤 */
         overflow: visible !important;
         /* 允许滚动 */
         box-sizing: border-box !important;
@@ -159,7 +159,9 @@
         flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
-        justify-content: center !important;
+        justify-content: flex-start !important;
+        /* 修改为 flex-start，防止垂直居中把顶部内容推入导航栏 */
+        padding-top: 1.0rem !important;
     }
 
     .hero-content {
@@ -401,7 +403,8 @@
 /* 小手机 - 480px */
 @media (max-width: 480px) {
     .hero {
-        padding: 1.5rem 1.0rem 0.5rem 1.0rem !important;
+        padding: 8.5rem 1.0rem 0.5rem 1.0rem !important;
+        /* 修正此处 padding，必须大于 7rem */
     }
 
     .hero-title-slogan {
