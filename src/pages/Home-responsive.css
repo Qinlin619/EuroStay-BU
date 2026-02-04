@@ -1,4 +1,39 @@
-/* ========== 统一响应式优化（覆盖旧样式）========== */
+/* 针对移动端换宿安全图片的特殊处理：改为 2x2 网格 */
+@media (max-width: 1024px) {
+    .image-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        gap: 1.0rem !important;
+        width: 100% !important;
+        max-width: 40rem !important;
+        /* 限制最大宽度，防止过大 */
+        margin: 0 auto !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        /* 整体正方形 */
+    }
+
+    .grid-image {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        left: auto !important;
+        top: auto !important;
+        transform: none !important;
+        /* 移除原来的绝对定位和偏移 */
+        opacity: 1 !important;
+        border-radius: 1.2rem !important;
+        overflow: hidden !important;
+        box-shadow: 0 0.4rem 1.0rem rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .grid-image-img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+}
 
 /* 小桌面 - 1280px */
 @media (max-width: 1280px) {
@@ -638,5 +673,50 @@
 
     .review-content {
         font-size: 1.3rem !important;
+    }
+}
+
+/* 强制重置换宿安全图片的网格布局 - 高权重覆盖 */
+@media (max-width: 1024px) {
+    .feature-card .image-grid-container {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        gap: 1.0rem !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+    }
+
+    /* 必须覆盖具体类名的样式 */
+    .feature-card .image-grid-container .grid-image,
+    .feature-card .image-grid-container .grid-image-1,
+    .feature-card .image-grid-container .grid-image-2,
+    .feature-card .image-grid-container .grid-image-3,
+    .feature-card .image-grid-container .grid-image-4 {
+        position: relative !important;
+        width: 100% !important;
+        height: 100% !important;
+        left: auto !important;
+        top: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+        border-radius: 1.2rem !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        animation: none !important;
+        transition: none !important;
+        aspect-ratio: 1 / 1 !important;
+    }
+
+    .feature-image.feature-image-grid {
+        height: auto !important;
+        display: block !important;
     }
 }
