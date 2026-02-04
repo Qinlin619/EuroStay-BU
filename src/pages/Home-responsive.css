@@ -2,7 +2,8 @@
 
 @media (max-width: 76.8rem) {
     .hero {
-        padding: 0 4rem !important;
+        padding: 7.0rem 4rem 0 !important;
+        /* 增加顶部内边距避开导航栏 */
         height: 100vh !important;
         min-height: 100vh !important;
         display: flex !important;
@@ -137,13 +138,17 @@
 /* 移动端 - 640px */
 @media (max-width: 640px) {
     .hero {
-        padding: 1.0rem 1.0rem 0 !important;
+        padding: 8.5rem 1.0rem 0 !important;
+        /* 增加顶部内边距（7rem导航栏 + 1.5rem间距），确保不被遮挡 */
         min-height: 100vh !important;
-        height: 100vh !important;
+        height: auto !important;
+        /* 不再锁死固定高度，允许内容撑开 */
         display: flex !important;
         flex-direction: column !important;
-        justify-content: space-between !important;
-        overflow: hidden !important;
+        justify-content: flex-start !important;
+        /* 顶部对齐开始 */
+        overflow: visible !important;
+        /* 允许滚动 */
         box-sizing: border-box !important;
     }
 
@@ -248,6 +253,8 @@
         /* 抵消 .hero 的 1.0rem 左右内边距 */
         margin-left: -1.0rem !important;
         margin-right: -1.0rem !important;
+        margin-top: auto !important;
+        /* 在 flex-start 布局下依然推到底部 */
         position: relative !important;
         left: 0 !important;
         transform: none !important;
