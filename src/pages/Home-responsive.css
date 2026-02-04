@@ -237,21 +237,23 @@
         transform: none !important;
     }
 
-    /* 统计数据横幅 - 使用绝对视口定位彻底解决贴边和截断问题 */
+    /* 统计数据横幅 - 修复贴边问题：通过负外边距抵消父容器的 padding 并移除阴影 */
     .hero-stats {
         display: grid !important;
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 1.0rem !important;
         padding: 1.5rem 1rem !important;
         background: #FFFCF5 !important;
-        width: 100vw !important;
+        width: calc(100% + 2.0rem) !important;
+        /* 抵消 .hero 的 1.0rem 左右内边距 */
+        margin-left: -1.0rem !important;
+        margin-right: -1.0rem !important;
         position: relative !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
+        left: 0 !important;
+        transform: none !important;
         border-radius: 2.4rem 2.4rem 0 0 !important;
-        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05) !important;
+        box-shadow: none !important;
+        /* 移除阴影 */
         box-sizing: border-box !important;
         z-index: 100 !important;
     }
