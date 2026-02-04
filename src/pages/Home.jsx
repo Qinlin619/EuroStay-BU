@@ -417,12 +417,10 @@ const Home = () => {
             <div className="hero-buttons-wrapper">
               <div className="hero-buttons">
                 <a
-                  href="#"
+                  href="https://apps.apple.com/us/app/eurostay/id6746250674"
                   className="btn btn-primary"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    alert(language === 'zh' ? '下载链接将在这里添加' : 'Download link will be added here')
-                  }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {t.downloadIOS}
                 </a>

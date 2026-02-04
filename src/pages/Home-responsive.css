@@ -2,17 +2,18 @@
 
 @media (max-width: 76.8rem) {
     .hero {
-        padding: 7.0rem 4rem 0 !important;
-        /* 增加顶部内边距避开导航栏 */
-        height: 100vh !important;
+        padding: 8.5rem 4rem 4rem !important;
+        /* 增加底部 padding */
+        /* 解锁固定高度，允许内容根据屏幕高度自然撑开 */
+        height: auto !important;
         min-height: 100vh !important;
         display: flex !important;
         flex-direction: column !important;
-        justify-content: space-between !important;
-        /* 关键：确保横幅贴地 */
+        justify-content: flex-start !important;
         align-items: center !important;
         background-color: var(--color-white) !important;
-        overflow: hidden !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
     .hero-main {
@@ -23,8 +24,9 @@
         text-align: center !important;
         width: 100% !important;
         flex: 1 !important;
-        /* 使内容区域占据剩余空间并居中 */
-        justify-content: center !important;
+        /* 改为居上对齐并预留间距，防止垂直居中导致顶部内容被导航栏遮挡 */
+        justify-content: flex-start !important;
+        padding-top: 2.0rem !important;
     }
 
     .hero-content {
@@ -94,8 +96,10 @@
         display: none !important;
     }
 
-    /* 确保统计横幅在平板上也是贴边的 - 使用负边距抵消父容器 padding */
+    /* 确保统计横幅在平板上也是贴边的 - 增加间距防止遮挡按钮 */
     .hero-stats {
+        margin-top: 6.0rem !important;
+        /* 核心：确保和上方按钮有足够距离 */
         width: calc(100% + 8rem) !important;
         margin-left: -4rem !important;
         margin-right: -4rem !important;
@@ -107,10 +111,8 @@
         display: flex !important;
         flex-direction: row !important;
         justify-content: space-around !important;
-        /* 使用 space-around 让内容更自然地分散 */
         align-items: center !important;
         padding: 2.5rem 2rem !important;
-        /* 调整内边距适应平板 */
     }
 
     .hero-stats .stat-column {
