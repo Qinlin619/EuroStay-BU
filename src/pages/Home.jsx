@@ -451,37 +451,37 @@ const Home = () => {
             )}
           </div>
         </div>
-      </section>
 
-      <section id="home-stats" ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
-        <div className="stat-column">
-          <div className="stat-number">2024</div>
-          <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>
-        </div>
-        <div className="stat-column">
-          <div className="stat-number">
-            <CountUpNumber value="100万+" duration={2000} />
+        <section id="home-stats" ref={statsRef} className={`hero-stats home-stats-below-globe section-reveal ${statsRevealed ? 'in-view' : ''}`}>
+          <div className="stat-column">
+            <div className="stat-number">2024</div>
+            <div className="stat-label">{language === 'zh' ? '至今' : 'To Date'}</div>
           </div>
-          <div className="stat-label">{language === 'zh' ? '话题热度' : 'Topic Popularity'}</div>
-        </div>
-        <div className="stat-column">
-          <div className="stat-number">
-            <CountUpNumber value="30000+" duration={2000} />
+          <div className="stat-column">
+            <div className="stat-number">
+              <CountUpNumber value="100万+" duration={2000} />
+            </div>
+            <div className="stat-label">{language === 'zh' ? '话题热度' : 'Topic Popularity'}</div>
           </div>
-          <div className="stat-label">{language === 'zh' ? '换宿会员' : 'Community Members'}</div>
-        </div>
-        <div className="stat-column">
-          <div className="stat-number">
-            <CountUpNumber value="30+" duration={1500} />
+          <div className="stat-column">
+            <div className="stat-number">
+              <CountUpNumber value="30000+" duration={2000} />
+            </div>
+            <div className="stat-label">{language === 'zh' ? '换宿会员' : 'Community Members'}</div>
           </div>
-          <div className="stat-label">{language === 'zh' ? '覆盖国家' : 'Countries Covered'}</div>
-        </div>
-        <div className="stat-column">
-          <div className="stat-number">
-            <CountUpNumber value="500+" duration={1500} />
+          <div className="stat-column">
+            <div className="stat-number">
+              <CountUpNumber value="30+" duration={1500} />
+            </div>
+            <div className="stat-label">{language === 'zh' ? '覆盖国家' : 'Countries Covered'}</div>
           </div>
-          <div className="stat-label">{language === 'zh' ? '房源总量' : 'House Resources'}</div>
-        </div>
+          <div className="stat-column">
+            <div className="stat-number">
+              <CountUpNumber value="500+" duration={1500} />
+            </div>
+            <div className="stat-label">{language === 'zh' ? '房源总量' : 'House Resources'}</div>
+          </div>
+        </section>
       </section>
 
       <div id="home-guide" ref={productRef} className="lazy-section-root">
@@ -550,7 +550,7 @@ const Home = () => {
                               style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                               loading="lazy"
                               decoding="async"
-                              fetchPriority="low"
+                              fetchpriority="low"
                             />
                           </div>
                         </div>
@@ -590,7 +590,7 @@ const Home = () => {
                         className="grid-image-img"
                         loading="lazy"
                         decoding="async"
-                        fetchPriority="low"
+                        fetchpriority="low"
                       />
                     </div>
                     <div className="grid-image grid-image-2" data-keyword="换宿 checklist">
@@ -600,7 +600,7 @@ const Home = () => {
                         className="grid-image-img"
                         loading="lazy"
                         decoding="async"
-                        fetchPriority="low"
+                        fetchpriority="low"
                       />
                     </div>
                     <div className="grid-image grid-image-3" data-keyword="双向评价">
@@ -610,7 +610,7 @@ const Home = () => {
                         className="grid-image-img"
                         loading="lazy"
                         decoding="async"
-                        fetchPriority="low"
+                        fetchpriority="low"
                       />
                     </div>
                     <div className="grid-image grid-image-4" data-keyword="举报系统">
@@ -620,7 +620,7 @@ const Home = () => {
                         className="grid-image-img"
                         loading="lazy"
                         decoding="async"
-                        fetchPriority="low"
+                        fetchpriority="low"
                       />
                     </div>
                   </div>
@@ -676,7 +676,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery1Location}</div>
@@ -690,7 +690,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery2Location}</div>
@@ -704,7 +704,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery3Location}</div>
@@ -718,7 +718,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery4Location}</div>
@@ -732,7 +732,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery5Location}</div>
@@ -746,7 +746,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery6Location}</div>
@@ -760,7 +760,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery7Location}</div>
@@ -774,7 +774,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery8Location}</div>
@@ -788,7 +788,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery9Location}</div>
@@ -802,7 +802,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery10Location}</div>
@@ -816,7 +816,7 @@ const Home = () => {
                           className="community-image"
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                         <div className="community-image-info">
                           <div className="community-info-location">{t.communityGallery11Location}</div>
@@ -876,7 +876,7 @@ const Home = () => {
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                           loading="lazy"
                           decoding="async"
-                          fetchPriority="low"
+                          fetchpriority="low"
                         />
                       </div>
                     </div>

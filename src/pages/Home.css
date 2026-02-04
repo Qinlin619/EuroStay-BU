@@ -21,32 +21,46 @@
 }
 
 .hero {
-  max-width: 120.0rem;
+  max-width: 144.0rem;
   margin: 0 auto;
-  padding: 6.0rem 2.0rem 0 0.5rem;
+  padding: 6.0rem 4vw 0 6vw;
+  /* 增加左侧内边距并使用 vw 保持比例，右侧稍窄 */
   background-color: var(--color-white);
   border: none !important;
   box-shadow: none !important;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .hero-main {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6.0rem;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: clamp(2rem, 5vw, 8rem);
+  /* 间距随屏幕减小而减少 */
   align-items: center;
   margin-bottom: 0;
   position: relative;
   z-index: 1;
+  flex: 1;
+  min-height: 0;
 }
 
 .hero-content {
   display: flex;
   flex-direction: column;
-  gap: 2.8rem;
+  gap: clamp(1.5rem, 2.5vh, 2.8rem);
+  /* 垂直间距也动态调整 */
   position: relative;
   z-index: 2;
-  margin-top: calc(14rem - 50px);
-  margin-left: -100px;
+  margin-top: 0;
+  margin-left: 0;
+  /* 移除原来的负边距，配合 hero 的 padding 实现左侧距离固定 */
+  transform: scale(clamp(0.85, 0.9vw + 0.1, 1));
+  /* 内容等比缩放 */
+  transform-origin: left center;
 }
 
 .hero-title-wrapper {
@@ -421,7 +435,7 @@
   justify-content: center;
   align-items: flex-end;
   width: 100%;
-  min-height: 40.0rem;
+  min-height: 30.0rem;
   position: relative;
   z-index: 0;
   background: transparent;
@@ -430,15 +444,18 @@
 
 .hero-image .globe-3d-wrapper {
   width: 100%;
-  height: 42rem;
-  max-height: 42rem;
-  margin-top: 120px;
+  height: clamp(30rem, 45vh, 45rem);
+  /* 地球容器高度等比缩放 */
+  margin-top: 0;
   background: transparent !important;
   overflow: visible;
   flex-shrink: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  /* 地球也在区域内尽量居中 */
   align-items: center;
+  transform: scale(clamp(0.8, 1vw, 1));
+  /* 地球整体等比缩放 */
 }
 
 .hero-image .globe-3d-container {
@@ -493,7 +510,7 @@
 
 /* 大标题：下方从细到粗的黄色横线 + 右端星星 */
 .steps-title {
-  font-size: 4.8rem;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-top: 0;
@@ -866,7 +883,7 @@
 /* 仅首页 features 区块的 section-title：下方从细到粗的黄色横线 + 右端星星 */
 .features .section-title {
   text-align: center;
-  font-size: 4.8rem;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 1.5rem;
@@ -1781,7 +1798,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   filter: drop-shadow(0 0.05rem 0.08rem rgba(122, 99, 199, 0.25));
   overflow: visible;
 }
@@ -1851,7 +1867,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   overflow: visible;
 }
 
@@ -1868,7 +1883,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   overflow: visible;
 }
 
@@ -1936,23 +1950,26 @@
   text-align: justify;
 }
 
-/* 数据条：左右分散、单排 5 列，防止数字被截断、视觉更柔和 */
+/* 数据条：桌面版样式 */
 .hero-stats {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  gap: 0;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
   background-color: #FFFBF3;
-  margin-top: -20px;
-  margin-bottom: -20px;
   padding: 3.2rem 4.0rem;
-  width: 100%;
-  max-width: 100vw;
-  margin-right: 0;
-  margin-left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: 0;
+  margin-bottom: 0;
   box-sizing: border-box;
-  overflow: visible;
   border: none !important;
   box-shadow: none !important;
 }
@@ -1960,16 +1977,21 @@
 .home-stats-below-globe {
   position: relative;
   z-index: 10;
-  margin-top: calc(-2rem + 130px);
-  padding-top: 1.2rem;
+  margin-top: 0;
+  flex-shrink: 0;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
 }
 
 .hero-stats .stat-column {
   text-align: center;
   flex: 1 1 0;
   min-width: 8rem;
-  position: relative;
   padding: 0 0.5rem;
+  position: relative;
 }
 
 .hero-stats .stat-column:not(:last-child)::after {
@@ -1985,9 +2007,9 @@
 
 .hero-stats .stat-number {
   font-size: 3.8rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  line-height: 1.25;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+  line-height: 1.2;
   white-space: nowrap;
   letter-spacing: -0.02em;
 }
@@ -2023,7 +2045,6 @@
   font-size: 1.4rem;
   color: #6B6B6B;
   font-weight: 400;
-  letter-spacing: 0.02em;
 }
 
 .advantages {
@@ -2033,7 +2054,7 @@
 
 .advantages-title {
   text-align: center;
-  font-size: 4.8rem;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 6.0rem;
@@ -2275,7 +2296,7 @@
 }
 
 .vision-title-primary {
-  font-size: 4.8rem;
+  font-size: clamp(2.8rem, 5vw, 4.8rem);
   font-weight: bold;
   color: var(--color-purple-primary);
   margin-bottom: 1.0rem;
@@ -3034,20 +3055,21 @@
   }
 
   .hero-stats {
-    flex-wrap: nowrap;
-    padding: 2.5rem 1.0rem;
+    flex-wrap: wrap;
+    padding: 3.0rem 2.0rem;
   }
 
   .hero-stats .stat-column {
-    padding: 0 1.6rem;
+    padding: 0;
   }
 
   .hero-stats .stat-column:not(:last-child)::after {
-    height: 50%;
+    height: 60%;
   }
 
   .hero-stats .stat-number {
     font-size: 2.6rem;
+    margin-bottom: 0.8rem;
   }
 
   .hero-stats .stat-label {
@@ -3067,16 +3089,17 @@
 
 @media (max-width: 48.0rem) {
   .hero-stats {
-    flex-wrap: nowrap;
-    padding: 2.0rem 0.8rem;
+    flex-wrap: wrap;
+    padding: 2.5rem 1.5rem;
   }
 
   .hero-stats .stat-column {
-    padding: 0 0.8rem;
+    padding: 0;
   }
 
   .hero-stats .stat-number {
     font-size: 2.0rem;
+    margin-bottom: 0.6rem;
   }
 
   .hero-stats .stat-label {
@@ -3179,5 +3202,4 @@
   .review-content {
     font-size: 1.4rem;
   }
-} 
- 
+}

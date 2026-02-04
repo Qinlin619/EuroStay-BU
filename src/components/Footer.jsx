@@ -30,7 +30,7 @@ const Footer = () => {
               className="footer-logo-image"
               loading="lazy"
               decoding="async"
-              fetchPriority="low"
+              fetchpriority="low"
             />
           </div>
           <p className="footer-description">{footer.description}</p>

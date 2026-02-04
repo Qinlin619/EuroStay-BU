@@ -87,8 +87,8 @@ export const translations = {
       review6Content: '在西班牙的换宿让我感受到了当地人的热情好客。Host非常友好，提供了很多有用的旅行建议。这是一次完美的换宿体验！',
       joinCommunityText: '欢迎添加我们的微信，成为EuroStay换宿社群的一员~',
       androidModalTitle: '暂未上线 Android 版本',
-      androidModalDesc: '目前 EuroStay 仅支持 iOS 系统，建议购入苹果设备以获得最佳体验！',
-      androidModalBtn: '我知道了',
+      androidModalDesc: '等主要功能优化稳定后我们将会更新升级安卓版本，因为安卓版本更新比较麻烦需要卸载重装软件......请友友们耐心等等！',
+      androidModalBtn: '鞭策一下',
     },
     products: {
       title: '产品介绍',
@@ -432,8 +432,8 @@ export const translations = {
       review6Location: '🇨🇳 Shenzhen',
       review6Content: 'The homestay in Spain made me feel the warmth of local hospitality. The host was very friendly and provided many useful travel tips. A perfect homestay experience!',
       androidModalTitle: 'Android Version Not Available Yet',
-      androidModalDesc: 'EuroStay currently only supports iOS. We recommend getting an Apple device for the best experience!',
-      androidModalBtn: 'Got it',
+      androidModalDesc: 'We will update the Android version once the main features are stabilized. It is a bit complex as it requires a full reinstallation... Please stay tuned!',
+      androidModalBtn: 'Urge development',
     },
     products: {
       title: 'Products',
