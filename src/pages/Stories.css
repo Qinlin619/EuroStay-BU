@@ -1484,7 +1484,7 @@
     scroll-snap-type: x mandatory;
     gap: 0;
     /* 使用 margin 控制重叠 */
-    padding: 6rem 4rem 6rem;
+    padding: 12rem 4rem 6rem;
     /* 底部 padding 多留点给阴影 */
     max-width: 100%;
     margin: 0;

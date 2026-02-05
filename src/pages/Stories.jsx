@@ -56,7 +56,7 @@ const Stories = () => {
       author: language === 'zh' ? 'Sherry' : 'Sherry',
       location: language === 'zh' ? '米兰, 意大利' : 'Milan, Italy',
       title: language === 'zh' ? '睡觉时头上会长猫耶！' : 'Cats Grow on Your Head While Sleeping!',
-      content: language === 'zh' ? '成功和苏苏以房换房啦！她住进我在巴塞的房间里，然后我再去米兰住她家，刚刚好！真的好幸运能够有这样的一段缘分！在房间里聊天到深夜，睡觉时一起裹成木乃伊，一醒来还能面对猫猫的大屁股…太多有趣的回忆啦～苏苏还给我们推荐了好多好吃的餐厅，跟着本地人逛街就是爽！明明只是短短三天的相处，却一下子感觉我们像很多年的朋友一样了呢' : 'Swapped rooms with Susu! She stayed in my Barcelona room, and I stayed at her place in Milan—perfect match! So lucky to have this connection. Late-night chats, wrapping ourselves like mummies to sleep, and waking up to a cat\'s big butt... so many fun memories! Susu recommended amazing restaurants; exploring with a local is the best. Even though it was only three days, it felt like we’ve been friends for years.',
+      content: language === 'zh' ? '成功和苏苏以房换房啦！她住进我在巴塞的房间里，然后我再去米兰住她家，刚刚好！真的好幸运能够有这样的一段缘分！在房间里聊天到深夜，睡觉时一起裹成木乃伊，一醒来还能面对猫猫的大屁股…太多有趣的回忆啦～苏苏还给我们推荐了好多好吃的餐厅，跟着本地人逛街就是爽！' : 'Swapped rooms with Susu! She stayed in my Barcelona room, and I stayed at her place in Milan—perfect match! So lucky to have this connection. Late-night chats, wrapping ourselves like mummies to sleep, and waking up to a cat\'s big butt... so many fun memories! Susu recommended amazing restaurants; exploring with a local is the best. Even though it was only three days, it felt like we’ve been friends for years.',
       date: language === 'zh' ? '2026年1月10日' : 'Jan 10, 2026',
       image: `${import.meta.env.BASE_URL}images/stories/stories/3.jpg`,
       coordinates: { x: 52.5, y: 37.6 }
