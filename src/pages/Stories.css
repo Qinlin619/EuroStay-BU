@@ -595,13 +595,21 @@
   display: flex;
   width: 100%;
   height: 100%;
+  /* Desktop default: transform based */
+  overflow-x: hidden;
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   will-change: transform;
+}
+
+.stories-gallery-track::-webkit-scrollbar {
+  display: none;
 }
 
 .story-card {
   flex: 0 0 70%;
   /* 1.5个卡片：1 / 1.5 = 0.66, 这里用70%稍微给点间隙感 */
+  scroll-snap-align: start;
+  flex-shrink: 0;
   height: 100%;
   margin-right: 2.0rem;
   background: var(--color-white);
@@ -758,6 +766,26 @@
     flex: 0 0 82%;
   }
 }
+
+@media (max-width: 768px) {
+  .stories-gallery-track {
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    transform: none !important;
+    /* Disable JS transform on mobile */
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .story-card {
+    flex: 0 0 90%;
+    margin-right: 1.5rem;
+    scroll-snap-align: start;
+    /* Ensure snapping works even if we overwrite */
+  }
+}
+
 
 
 /* --- 活动历史 3.0 (Polaroid Photo Wall - Cute Edition) --- */
@@ -1440,15 +1468,64 @@
     margin: 0.5rem auto 6.0rem;
   }
 
+  /* 手机端横向堆叠照片墙 */
+  /* 手机端横向堆叠照片墙 */
   .photo-wall {
-    grid-template-columns: 1fr;
-    max-width: 45rem;
-    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    /* 允许纵向溢出（阴影/贴纸） */
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    /* 使用 margin 控制重叠 */
+    padding: 6rem 4rem 6rem;
+    /* 底部 padding 多留点给阴影 */
+    max-width: 100%;
+    margin: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .photo-wall::-webkit-scrollbar {
+    display: none;
   }
 
   .polaroid-card {
-    transform: rotate(0deg) !important;
-    margin-bottom: 4rem;
+    flex: 0 0 24rem;
+    /* 固定宽度 */
+    margin-right: -12rem;
+    /* 负边距制造堆叠效果 */
+    transform-origin: center bottom;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), margin 0.4s ease, z-index 0s;
+    /* Z-index instant change */
+    margin-bottom: 0 !important;
+    scroll-snap-align: center;
+  }
+
+  /* 最后一个元素不需要负边距，否则最右边空太多 */
+  .polaroid-card:last-child {
+    margin-right: 4rem;
+    /* 留点余地 */
+  }
+
+  /* 随机旋转让堆叠更自然 */
+  .polaroid-card:nth-child(odd) {
+    transform: rotate(-6deg);
+  }
+
+  .polaroid-card:nth-child(even) {
+    transform: rotate(4deg) translateY(1rem);
+  }
+
+  /* 激活状态（点击置顶） */
+  .polaroid-card.active {
+    z-index: 100 !important;
+    transform: scale(1.1) rotate(0deg) translateY(-2rem) !important;
+    margin-right: -2rem;
+    /* 展开一点点，让它脱颖而出 */
+    margin-left: 2rem;
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.25);
   }
 }
 

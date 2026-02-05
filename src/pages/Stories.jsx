@@ -97,6 +97,11 @@ const Stories = () => {
   ]
 
   const [hoveredMapMarker, setHoveredMapMarker] = useState(null)
+  const [activeActivityId, setActiveActivityId] = useState(null)
+
+  const handleActivityClick = (id) => {
+    setActiveActivityId(id)
+  }
 
   const totalPages = Math.ceil(stories.length / CARDS_PER_PAGE)
   const pageStories = stories.slice(
@@ -104,9 +109,17 @@ const Stories = () => {
     currentPage * CARDS_PER_PAGE + CARDS_PER_PAGE
   )
 
+  const trackRef = useRef(null)
+
   const scrollToStory = (index) => {
     setCurrentIndex(index)
     setCurrentPage(index)
+    if (trackRef.current && window.innerWidth <= 768) {
+      const card = trackRef.current.children[index]
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+      }
+    }
   }
 
   const handleCountryClick = (isoCode, storyIndex, countryName) => {
@@ -141,9 +154,41 @@ const Stories = () => {
       direction === 1
         ? Math.min(currentPage + 1, stories.length - 1)
         : Math.max(currentPage - 1, 0)
-    setCurrentPage(nextIndex)
-    setCurrentIndex(nextIndex)
+    scrollToStory(nextIndex)
     setHighlightCountryForMap(stories[nextIndex].countryCode)
+  }
+
+  const handleScroll = () => {
+    if (!trackRef.current) return
+
+    // 简单的防抖或直接计算当前最左侧对齐的卡片
+    const track = trackRef.current
+    const scrollLeft = track.scrollLeft
+    const containerLeft = track.getBoundingClientRect().left
+
+    let newIndex = -1
+    let minDiff = Number.MAX_VALUE
+
+    // 遍历所有子元素，找到最接近容器左边缘的那个
+    Array.from(track.children).forEach((child, index) => {
+      const childRect = child.getBoundingClientRect()
+      // 计算卡片左边缘与容器左边缘的距离
+      const diff = Math.abs(childRect.left - containerLeft)
+
+      if (diff < minDiff) {
+        minDiff = diff
+        newIndex = index
+      }
+    })
+
+    if (newIndex !== -1 && newIndex !== currentIndex) {
+      setCurrentIndex(newIndex)
+      setCurrentPage(newIndex)
+      // 注意：这里不要 setHighlightCountryForMap，否则滑动时地图也会疯狂旋转，体验可能不好
+      // 或者如果想要联动，可以加个防抖。这里暂时仅更新下方圆点和高亮卡片
+      // 如果确实需要地图联动：
+      // setHighlightCountryForMap(stories[newIndex].countryCode) 
+    }
   }
 
   const activities = [
@@ -337,6 +382,8 @@ const Stories = () => {
               <div className="stories-gallery">
                 <div
                   className="stories-gallery-track"
+                  ref={trackRef}
+                  onScroll={handleScroll}
                   style={{ transform: `translateX(calc(-1 * var(--scroll-amount) * ${currentPage}))` }}
                 >
                   {stories.map((story, index) => (
@@ -422,7 +469,11 @@ const Stories = () => {
           <div className="photo-wall-container">
             <div className="photo-wall">
               {activities.map((activity, index) => (
-                <div key={activity.id} className={`polaroid-card polaroid-card-${index + 1}`}>
+                <div
+                  key={activity.id}
+                  className={`polaroid-card polaroid-card-${index + 1} ${activeActivityId === activity.id ? 'active' : ''}`}
+                  onClick={() => handleActivityClick(activity.id)}
+                >
                   <div className="polaroid-decorations">
                     <div className="washi-tape"></div>
                     <span className="polaroid-star polaroid-star-1">✦</span>
