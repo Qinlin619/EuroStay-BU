@@ -784,6 +784,11 @@
     scroll-snap-align: start;
     /* Ensure snapping works even if we overwrite */
   }
+
+  .story-card:hover,
+  .story-card-selected {
+    transform: none !important;
+  }
 }
 
 
