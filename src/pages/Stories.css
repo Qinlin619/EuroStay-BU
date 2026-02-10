@@ -1,6 +1,7 @@
 .stories-page {
   width: 100%;
-  --scroll-amount: 85%;
+  --scroll-amount: 84%;
+  /* 适应 80% 宽度 + 间距 */
 }
 
 .stories-hero {
@@ -581,24 +582,19 @@
   width: 100%;
   flex: 1;
   overflow: hidden;
-  padding: 4.0rem 0;
-  margin-top: -4.0rem;
-  /* 只保留右边的渐变淡出效果 */
-  mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, black 0%, black 85%, transparent 100%);
-  transform: scale(0.9);
-  /* 等比缩小 */
-  transform-origin: center center;
+  padding: 2.0rem 0;
+  /* 移除 transform: scale(0.9)，它是导致裁剪边界不准和产生“白蒙版”视觉错觉的主因 */
 }
 
 .stories-gallery-track {
   display: flex;
   width: 100%;
   height: 100%;
-  /* Desktop default: transform based */
-  overflow-x: hidden;
-  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  will-change: transform;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .stories-gallery-track::-webkit-scrollbar {
@@ -606,8 +602,7 @@
 }
 
 .story-card {
-  flex: 0 0 70%;
-  /* 1.5个卡片：1 / 1.5 = 0.66, 这里用70%稍微给点间隙感 */
+  flex: 0 0 85%;
   scroll-snap-align: start;
   flex-shrink: 0;
   height: 100%;
@@ -630,8 +625,8 @@
 }
 
 .story-card:hover {
-  transform: translateY(-0.8rem);
-  box-shadow: 0 2.0rem 5.0rem rgba(122, 99, 199, 0.2);
+  box-shadow: 0 1.5rem 4.0rem rgba(122, 99, 199, 0.15);
+  /* 仅保留阴影加深效果，移除上移 */
 }
 
 /* Header with Instagram feel */
@@ -690,9 +685,7 @@
   transition: transform 0.8s ease;
 }
 
-.story-card:hover .story-image {
-  transform: scale(1.05);
-}
+/* 移除了 .story-card:hover .story-image 的缩放规则 */
 
 .story-hover-overlay {
   position: absolute;
@@ -768,15 +761,7 @@
 }
 
 @media (max-width: 768px) {
-  .stories-gallery-track {
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory;
-    transform: none !important;
-    /* Disable JS transform on mobile */
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    /* Firefox */
-  }
+  /* 移除空的 stories-gallery-track 规则 */
 
   .story-card {
     flex: 0 0 90%;
@@ -1069,6 +1054,10 @@
 
   .story-card {
     flex: 0 0 85%;
+  }
+
+  .stories-page {
+    --scroll-amount: 91%;
   }
 }
 

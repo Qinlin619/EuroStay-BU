@@ -114,7 +114,7 @@ const Stories = () => {
   const scrollToStory = (index) => {
     setCurrentIndex(index)
     setCurrentPage(index)
-    if (trackRef.current && window.innerWidth <= 768) {
+    if (trackRef.current) {
       const card = trackRef.current.children[index]
       if (card) {
         card.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
@@ -384,7 +384,6 @@ const Stories = () => {
                   className="stories-gallery-track"
                   ref={trackRef}
                   onScroll={handleScroll}
-                  style={{ transform: `translateX(calc(-1 * var(--scroll-amount) * ${currentPage}))` }}
                 >
                   {stories.map((story, index) => (
                     <div
