@@ -242,10 +242,10 @@ const Products = () => {
               <div className="phone-bezel">
                 <div
                   className="phone-screen clickable"
-                  onClick={() => setCurrentAppImage(prev => prev === 7 ? 1 : prev + 1)}
+                  onClick={() => setCurrentAppImage(prev => prev === 8 ? 1 : prev + 1)}
                   title="Click to next page"
                 >
-                  {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                     <img
                       key={num}
                       src={`${import.meta.env.BASE_URL}images/product/app/${num}.png`}

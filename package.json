@@ -2,7 +2,7 @@
   "name": "eurostay-website",
   "version": "1.0.2",
   "description": "EuroStay Company Landing Page",
-  "homepage": "https://Qinlin619.github.io/EuroStay-BU/",
+  "homepage": "https://www.eurostay.co",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

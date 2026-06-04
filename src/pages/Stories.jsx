@@ -194,105 +194,171 @@ const Stories = () => {
   const activities = [
     {
       id: 1,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹.jpg`
+      title: language === 'zh' ? 'Lelystad烧烤音乐节' : 'Lelystad BBQ & Music Festival',
+      date: '2024.08',
+      location: language === 'zh' ? '莱利斯塔德' : 'Lelystad',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260603210022.jpg`
     },
     {
       id: 2,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹2.jpg`
+      title: language === 'zh' ? '中秋做月饼' : 'Mid-Autumn Mooncake Making',
+      date: '2024.09',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/WhatsApp Image 2026-06-03 at 9.54.12 PM.jpg`
     },
     {
       id: 3,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹3.jpg`
+      title: language === 'zh' ? '万圣节手工蜡烛' : 'Halloween Candle Making',
+      date: '2024.10',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260603220244.jpg`
     },
     {
       id: 4,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹4.jpg`
+      title: language === 'zh' ? '圣诞手工曲奇' : 'Christmas Cookies Workshop',
+      date: '2024.12',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/thumbnail.jpg`
     },
     {
       id: 5,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹5.jpg`
+      title: language === 'zh' ? '精品咖啡品鉴' : 'Specialty Coffee Tasting',
+      date: '2025.01',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250118_152718720_iOS.jpg`
     },
     {
       id: 6,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹6.jpg`
+      title: language === 'zh' ? '新春读书分享会' : 'Book Sharing Session',
+      date: '2025.01',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250125_133519506_iOS.jpg`
     },
     {
       id: 7,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹7.jpg`
+      title: language === 'zh' ? '除夕包饺子聚会' : 'Chinese New Year\'s Eve Party',
+      date: '2025.01',
+      location: language === 'zh' ? '阿姆斯特丹' : 'Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250128_205808399_iOS.jpg`
     },
     {
       id: 8,
-      date: '2024',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024鹿特丹13.jpg`
+      title: language === 'zh' ? '代尔夫特饭团工坊' : 'Delft Onigiri Workshop',
+      date: '2025.02',
+      location: language === 'zh' ? '代尔夫特' : 'Delft',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250208_151108281_iOS.jpg`
     },
     {
       id: 9,
-      date: '2024',
-      location: '🇳🇱 Amsterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2024阿姆斯特丹.jpg`
+      title: language === 'zh' ? '情人节桌游微醺派对' : 'Valentine Boardgame Party',
+      date: '2025.02',
+      location: language === 'zh' ? '阿姆斯特丹 & 代尔夫特' : 'Amsterdam & Delft',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250214_165132067_iOS.jpg`
     },
     {
       id: 10,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹.jpg`
+      title: language === 'zh' ? '因乐交友音乐会' : 'Music & Friends Concert',
+      date: '2025.02',
+      location: language === 'zh' ? '阿姆斯特丹' : 'Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250215_213333000_iOS.jpg`
     },
     {
       id: 11,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹8.jpg`
+      title: language === 'zh' ? '荷兰大学吐槽会' : 'Dutch Universities Talk',
+      date: '2025.03',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250315_165334421_iOS.jpg`
     },
     {
       id: 12,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹9.jpg`
+      title: language === 'zh' ? '海牙家庭KTV派对' : 'The Hague Home KTV Party',
+      date: '2025.03',
+      location: language === 'zh' ? '海牙' : 'The Hague',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_2997.jpg`
     },
     {
       id: 13,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹10.jpg`
+      title: language === 'zh' ? '温暖社群记录' : 'Warm Community Moments',
+      date: '2025.04',
+      location: language === 'zh' ? '欧洲' : 'Europe',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260603220237.jpg`
     },
     {
       id: 14,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹11.jpg`
+      title: language === 'zh' ? '猫咪手绘抽象画' : 'Cat Abstract Painting',
+      date: '2025.01',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250118_162018464_iOS.jpg`
     },
     {
       id: 15,
-      date: '2025',
-      location: '🇳🇱 Rotterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025鹿特丹12.jpg`
+      title: language === 'zh' ? 'Delft手工饭团' : 'Delft Handmade Onigiri',
+      date: '2025.02',
+      location: language === 'zh' ? '代尔夫特' : 'Delft',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250208_155559461_iOS.jpg`
     },
     {
       id: 16,
-      date: '2025',
-      location: '🇳🇱 Amsterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2025阿姆斯特丹.jpg`
+      title: language === 'zh' ? '中秋月饼手作' : 'Mid-Autumn Mooncake Making',
+      date: '2024.09',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/DSC01615.jpg`
     },
     {
       id: 17,
-      date: '2026',
-      location: '🇳🇱 Amsterdam',
-      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/2026阿姆斯特丹2.jpg`
+      title: language === 'zh' ? '因乐交友分享会' : 'Music & Friends Share Session',
+      date: '2025.02',
+      location: language === 'zh' ? '阿姆斯特丹' : 'Amsterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_4356.jpg`
+    },
+    {
+      id: 18,
+      title: language === 'zh' ? '欧洲社群记录' : 'Europe Community Life',
+      date: '2025.05',
+      location: language === 'zh' ? '欧洲' : 'Europe',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260603220241.jpg`
+    },
+    {
+      id: 19,
+      title: language === 'zh' ? '粤语饭团趣味工坊' : 'Cantonese Onigiri Workshop',
+      date: '2025.02',
+      location: language === 'zh' ? '代尔夫特' : 'Delft',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/WhatsApp Image 2026-06-03 at 9.54.13 PM (4).jpg`
+    },
+    {
+      id: 20,
+      title: language === 'zh' ? '社群私密沙龙聚餐' : 'Private Community Dining',
+      date: '2024.12',
+      location: language === 'zh' ? '欧洲' : 'Europe',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/WhatsApp Image 2026-06-03 at 9.54.13 PM (5).jpg`
+    },
+    {
+      id: 21,
+      title: language === 'zh' ? '海牙暖心家庭KTV' : 'The Hague Home KTV Party',
+      date: '2025.03',
+      location: language === 'zh' ? '海牙' : 'The Hague',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/IMG_3037.jpg`
+    },
+    {
+      id: 22,
+      title: language === 'zh' ? '双城情人节桌游' : 'Delft & Ams Boardgames',
+      date: '2025.02',
+      location: language === 'zh' ? '阿姆斯特丹 & 代尔夫特' : 'Amsterdam & Delft',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250214_174508353_iOS.jpg`
+    },
+    {
+      id: 23,
+      title: language === 'zh' ? '精品手冲咖啡沙龙' : 'Pour-Over Coffee Salon',
+      date: '2025.01',
+      location: language === 'zh' ? '鹿特丹' : 'Rotterdam',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/20250118_155609611_iOS.jpg`
+    },
+    {
+      id: 24,
+      title: language === 'zh' ? '烧烤音乐节花絮' : 'BBQ & Music Fest Moments',
+      date: '2024.08',
+      location: language === 'zh' ? '莱利斯塔德' : 'Lelystad',
+      image: `${import.meta.env.BASE_URL}images/stories/历史活动/compressed/图片_20260603215910.jpg`
     }
   ]
 
@@ -483,8 +549,11 @@ const Stories = () => {
                       <img src={activity.image} alt={activity.title} className="polaroid-img" loading="lazy" />
                     </div>
                     <div className="polaroid-caption">
-                      <div className="polaroid-location">📍 {activity.location}</div>
-                      <div className="polaroid-date">{activity.date}</div>
+                      <h4 className="polaroid-title">{activity.title}</h4>
+                      <div className="polaroid-meta-row">
+                        <span className="polaroid-location">📍 {activity.location}</span>
+                        <span className="polaroid-date">{activity.date}</span>
+                      </div>
                     </div>
                   </div>
 
