@@ -104,7 +104,7 @@ const Products = () => {
                 <p>{t.step1Desc}</p>
               </div>
               <div className="step-image-wrap">
-                <img src={`${import.meta.env.BASE_URL}images/product/guide/1.png`} alt={t.step1Title} />
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/1.png?v=2`} alt={t.step1Title} />
               </div>
             </div>
             <div className="guide-step-card">
@@ -116,7 +116,7 @@ const Products = () => {
                 <p>{t.step2Desc}</p>
               </div>
               <div className="step-image-wrap">
-                <img src={`${import.meta.env.BASE_URL}images/product/guide/2.png`} alt={t.step2Title} />
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/2.png?v=2`} alt={t.step2Title} />
               </div>
             </div>
             <div className="guide-step-card">
@@ -128,7 +128,7 @@ const Products = () => {
                 <p>{t.step3Desc}</p>
               </div>
               <div className="step-image-wrap">
-                <img src={`${import.meta.env.BASE_URL}images/product/guide/3.png`} alt={t.step3Title} />
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/3.png?v=2`} alt={t.step3Title} />
               </div>
             </div>
             <div className="guide-step-card">
@@ -140,7 +140,7 @@ const Products = () => {
                 <p>{t.step4Desc}</p>
               </div>
               <div className="step-image-wrap">
-                <img src={`${import.meta.env.BASE_URL}images/product/guide/4.png`} alt={t.step4Title} />
+                <img src={`${import.meta.env.BASE_URL}images/product/guide/4.png?v=2`} alt={t.step4Title} />
               </div>
             </div>
           </div>
@@ -248,7 +248,7 @@ const Products = () => {
                   {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
                     <img
                       key={num}
-                      src={`${import.meta.env.BASE_URL}images/product/app/${num}.png`}
+                      src={`${import.meta.env.BASE_URL}images/product/app/${num}.png?v=2`}
                       alt={`App Screen ${num}`}
                       className={`app-screen-img ${currentAppImage === num ? 'active' : ''}`}
                     />
